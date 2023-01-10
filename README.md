@@ -27,6 +27,12 @@ Visual Studio
 #### Requirements:
 
 - NodeJS LTS https://nodejs.org/en/
+- Yarn / npm
+
+#### Development
+
+Install dependencies: `yarn` or `npm i`
+Start the application: `yarn run dev` or `npm run dev`
 
 #### Commands:
 
