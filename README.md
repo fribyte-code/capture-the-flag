@@ -13,14 +13,16 @@ friByte has a tradition for hosting Capture the Flag, this is our open source co
 #### Commands:
 
 VSCode
-1. `cd friByte.capture-the-flag.service`
-2. `dotnet run`
-3. Terminal will log what port it listens to
+1. Start postgres: `docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres;`
+2. `cd friByte.capture-the-flag.service`
+3. `dotnet run`
+4. Terminal will log what port it listens to
 
 Visual Studio
-1. Open *.sln file (should open Visual Studio automatically)
-2. Press run in the IDE
-3. Terminal will log what port it listens on
+1. Start postgres: `docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres;`
+2. Open *.sln file (should open Visual Studio automatically)
+3. Press run in the IDE
+4. Terminal will log what port it listens on
 
 ### Frontend
 
