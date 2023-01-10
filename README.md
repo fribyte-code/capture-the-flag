@@ -24,6 +24,18 @@ Visual Studio
 3. Press run in the IDE
 4. Terminal will log what port it listens on
 
+#### Entity Framework migrations (modify database model)
+
+We are using Entity Framework for handling database models. We are using the concept called `Code-First` where we define models in CSharp then EFCore automatically create SQL code.
+
+Basic guide from Microsoft: https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli 
+
+Essentially:
+1. Update models in the `models` folder
+2. Run `dotnet ef migrations add <NAME-OF-MIGRATION>` ex: `dotnet ef migrations add CtfFlag-AddHint`
+3. The migration will automatically be applied when you run the application either by clicking run in the IDE or by `dotnet run`.
+
+
 ### Frontend
 
 #### Requirements:
