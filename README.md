@@ -1,6 +1,23 @@
 # friByte Capture the flag
 friByte has a tradition for hosting Capture the Flag, this is our open source code repository for our self developed and self hosted solution.
 
+Functionality:
+
+- [ ] Basic auth
+- [ ] User roles
+- [ ] Hints for challenges
+- [ ] Challenges with flag
+- [ ] Scoreboard
+- [ ] Live scoreboard
+- [ ] Challenges Management panel
+- [ ] Team Management panel
+- [ ] User Management panel
+- [ ] Release challenges at certain time
+- [ ] SSO Auth
+- [ ] Connect challenges to a certain event (allow for keeping challenges over time and reusing them)
+- [ ] Easy export and import of challenges
+- [ ] More features?
+
 ## Getting started
 
 ### Backend
