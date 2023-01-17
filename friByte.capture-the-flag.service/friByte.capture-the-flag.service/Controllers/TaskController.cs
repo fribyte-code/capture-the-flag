@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace friByte.capture_the_flag.service.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("Api/[controller]")]
 public class 
     TaskController : ControllerBase {
 

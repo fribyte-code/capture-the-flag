@@ -1,5 +1,14 @@
+import { useTask } from "../api/backendComponents";
+
 function Index() {
-  return <div>Hello, world!</div>;
+  const { data, isLoading, error } = useTask({});
+
+  return (
+    <div>
+      Hello, world! <br />
+      /Api/Task returned: {JSON.stringify(data, undefined, 2)}
+    </div>
+  );
 }
 
 export default Index;

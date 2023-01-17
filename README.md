@@ -1,4 +1,5 @@
 # friByte Capture the flag
+
 friByte has a tradition for hosting Capture the Flag, this is our open source code repository for our self developed and self hosted solution.
 
 Functionality:
@@ -30,14 +31,16 @@ Functionality:
 #### Commands:
 
 VSCode
+
 1. Start postgres: `docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres;`
 2. `cd friByte.capture-the-flag.service`
 3. `dotnet run`
 4. Terminal will log what port it listens to
 
 Visual Studio
+
 1. Start postgres: `docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres;`
-2. Open *.sln file (should open Visual Studio automatically)
+2. Open \*.sln file (should open Visual Studio automatically)
 3. Press run in the IDE
 4. Terminal will log what port it listens on
 
@@ -45,13 +48,13 @@ Visual Studio
 
 We are using Entity Framework for handling database models. We are using the concept called `Code-First` where we define models in CSharp then EFCore automatically create SQL code.
 
-Basic guide from Microsoft: https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli 
+Basic guide from Microsoft: https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=netcore-cli
 
 Essentially:
+
 1. Update models in the `models` folder
 2. Run `dotnet ef migrations add <NAME-OF-MIGRATION>` ex: `dotnet ef migrations add CtfFlag-AddHint`
 3. The migration will automatically be applied when you run the application either by clicking run in the IDE or by `dotnet run`.
-
 
 ### Frontend
 
@@ -63,6 +66,7 @@ Essentially:
 #### Development
 
 Install dependencies: `yarn` or `npm i`
+
 Start the application: `yarn run dev` or `npm run dev`
 
 #### Commands:
@@ -70,4 +74,12 @@ Start the application: `yarn run dev` or `npm run dev`
 1. `cd frontend`
 2. `npm install`
 3. `npm run dev`
-4. Open http://localhost:8080/ in browser
+4. Open http://localhost:5173/ in browser
+
+#### Regenerating react query hooks
+
+This is done to update the frontends knowledge about routes the backend exposes.
+
+`yarn run gen-backend-hooks` or `npm run gen-backend-hooks`
+
+Make sure the backend is running on your machine on :5072 when running this command.
