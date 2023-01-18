@@ -1,9 +1,12 @@
 using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Services;
+using friByte.capture_the_flag.service.Services.Auth;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // ====================================
 // Dependency inject services here
@@ -19,8 +22,48 @@ builder.Services.AddTransient<ICtfTaskService, CtfTaskService>();
 
 // ====================================
 
+// DbContext for normal data
 builder.Services.AddDbContext<CtfContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("postgres")));
+// Separate DbContext for applicationUsers etc. It's good practice to have separate db for accounts
+builder.Services.AddDbContext<IdentityContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityPostgres")));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+    {
+        opt.Password.RequireLowercase = false;
+        opt.Password.RequireNonAlphanumeric = false;
+        opt.Password.RequireUppercase = false;
+        opt.Password.RequireDigit = false;
+        opt.Password.RequiredLength = 6;
+        opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._+/ ";
+    })
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<IdentityContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication()
+    .AddCookie();
+builder.Services.AddAuthorization();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events = new CookieAuthenticationEvents
+    {
+        OnRedirectToLogin = redirectContext =>
+        {
+            redirectContext.Response.Clear();
+            redirectContext.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return Task.CompletedTask;
+        },
+        OnRedirectToAccessDenied = redirectContext =>
+        {
+            redirectContext.Response.Clear();
+            redirectContext.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return Task.CompletedTask;
+        },
+    };
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,7 +72,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-MigrateAndSeedData();
+await MigrateAndSeedData();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -40,6 +83,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -47,10 +91,20 @@ app.MapControllers();
 app.Run();
 
 
-void MigrateAndSeedData()
+async Task MigrateAndSeedData()
 {
     // Updates database to latest version and add demo data if empty
     using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
     var dbContext = serviceScope.ServiceProvider.GetRequiredService<CtfContext>();
     dbContext.Migrate();
+
+    // Updates database to latest version and add demo data if empty
+    var identityContext = serviceScope.ServiceProvider.GetRequiredService<IdentityContext>();
+    identityContext.Migrate();
+
+    // Add initial admin account
+    var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var initialAdminPassword = builder.Configuration.GetValue<string>("InitialAdminPassword");
+    await IdentityContextSeeder.SeedIdentityContextAsync(userManager, roleManager, initialAdminPassword);
 }

@@ -4,8 +4,9 @@ friByte has a tradition for hosting Capture the Flag, this is our open source co
 
 Functionality:
 
-- [ ] Basic auth
-- [ ] User roles
+- [x] Basic auth
+- [x] User roles
+- [x] Automatic Swagger frontend client code generation
 - [ ] Hints for challenges
 - [ ] Challenges with flag
 - [ ] Scoreboard
