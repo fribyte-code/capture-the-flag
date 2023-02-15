@@ -5,18 +5,22 @@ namespace friByte.capture_the_flag.service.Models;
 /// </summary>
 public class CtfTask : DbBaseEntity
 {
-    // TODO: Refine model
-    public CtfTask(string name, string flag)
+    public CtfTask(string name, string flag, int points, string description)
     {
         Name = name;
         Flag = flag;
+        Points = points;
+        Description = description;
     }
     
     /// <summary>
     /// Only to be used by Entity Framework
     /// </summary>
-    public CtfTask() {}
+    public CtfTask()
+    { }
 
     public string Name { get; set; }
     public string Flag { get; set; }
+    public int Points { get; set; }
+    public string Description { get; set; }
 }

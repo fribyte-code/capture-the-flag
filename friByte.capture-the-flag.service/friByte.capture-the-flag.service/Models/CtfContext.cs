@@ -8,6 +8,7 @@ public class CtfContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseNpgsql();
     
     public DbSet<CtfTask> CtfTasks { get; set; }
+    public DbSet<SolvedTask> SolvedTasks { get; set; }
 
     public void Migrate()
     {

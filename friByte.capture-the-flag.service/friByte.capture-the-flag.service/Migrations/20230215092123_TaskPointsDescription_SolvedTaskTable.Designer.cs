@@ -2,18 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using friByte.capture_the_flag.service.Models;
 
 #nullable disable
 
-namespace friByte.capturetheflag.service.Migrations
+namespace friByte.capturetheflag.service.Migrations.Ctf
 {
     [DbContext(typeof(CtfContext))]
-    partial class CtfContextModelSnapshot : ModelSnapshot
+    [Migration("20230215092123_TaskPointsDescription_SolvedTaskTable")]
+    partial class TaskPointsDescriptionSolvedTaskTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

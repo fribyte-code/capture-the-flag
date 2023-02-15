@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using friByte.capture_the_flag.service.Models;
+using friByte.capture_the_flag.service.Services.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
