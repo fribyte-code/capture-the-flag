@@ -7,4 +7,5 @@ namespace friByte.capture_the_flag.service.Models;
 /// </summary>
 public class ApplicationUser : IdentityUser
 {
+    public string? TeamPassword { get; set; }
 }
