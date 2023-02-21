@@ -3,6 +3,31 @@
  *
  * @version 1.0
  */
+export type ApplicationUser = {
+  id?: string | null;
+  userName?: string | null;
+  normalizedUserName?: string | null;
+  email?: string | null;
+  normalizedEmail?: string | null;
+  emailConfirmed?: boolean;
+  passwordHash?: string | null;
+  securityStamp?: string | null;
+  concurrencyStamp?: string | null;
+  phoneNumber?: string | null;
+  phoneNumberConfirmed?: boolean;
+  twoFactorEnabled?: boolean;
+  /**
+   * @format date-time
+   */
+  lockoutEnd?: string | null;
+  lockoutEnabled?: boolean;
+  /**
+   * @format int32
+   */
+  accessFailedCount?: number;
+  teamPassword?: string | null;
+};
+
 export type CtfTask = {
   /**
    * @format uuid
@@ -13,5 +38,42 @@ export type CtfTask = {
    */
   createdAt: string;
   name?: string | null;
+  flag?: string | null;
+  /**
+   * @format int32
+   */
+  points?: number;
+  description?: string | null;
+};
+
+export type CtfTaskReadModel = {
+  name?: string | null;
+  /**
+   * @format int32
+   */
+  points?: number;
+  description?: string | null;
+};
+
+export type CtfTaskWriteModel = {
+  name?: string | null;
+  flag?: string | null;
+  /**
+   * @format int32
+   */
+  points?: number;
+  description?: string | null;
+};
+
+export type LoginCredentials = {
+  username?: string | null;
+  password?: string | null;
+};
+
+export type NewTeam = {
+  username?: string | null;
+};
+
+export type SolveTaskRequest = {
   flag?: string | null;
 };

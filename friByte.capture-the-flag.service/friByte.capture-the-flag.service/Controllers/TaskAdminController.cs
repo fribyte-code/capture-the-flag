@@ -15,12 +15,12 @@ namespace friByte.capture_the_flag.service.Controllers;
 [ApiController]
 [Produces("application/json")]
 [Route("Api/[controller]")]
-public class AdminController : ControllerBase {
+public class TaskAdminController : ControllerBase {
 
-    private readonly ILogger<AdminController> _logger;
+    private readonly ILogger<TaskAdminController> _logger;
     private readonly ICtfTaskService _ctfTaskService;
 
-    public AdminController(ILogger<AdminController> logger, ICtfTaskService ctfTaskService)
+    public TaskAdminController(ILogger<TaskAdminController> logger, ICtfTaskService ctfTaskService)
     {
         _logger = logger;
         _ctfTaskService = ctfTaskService;
@@ -29,7 +29,7 @@ public class AdminController : ControllerBase {
     /// <summary>
     /// Get all tasks in database
     /// </summary>
-    [HttpGet("")]
+    [HttpGet("", Name = "AllTasks")]
     public async Task<List<CtfTask>> Get()
     {
         return await _ctfTaskService.GetAllAsync();
@@ -38,7 +38,7 @@ public class AdminController : ControllerBase {
     /// <summary>
     /// Add new task
     /// </summary>
-    [HttpPost("")]
+    [HttpPost("", Name = "AddTask")]
     public async Task<CtfTask> Post(CtfTaskWriteModel updatedTask)
     {
         var updatedDbTask = await _ctfTaskService.AddAsync(updatedTask);
@@ -48,7 +48,7 @@ public class AdminController : ControllerBase {
     /// <summary>
     /// Update existing task
     /// </summary>
-    [HttpPut("{id:Guid}")]
+    [HttpPut("{id:Guid}", Name = "UpdateTask")]
     public async Task<CtfTask> Put(Guid id, CtfTaskWriteModel updatedTask)
     {
         var updatedDbTask = await _ctfTaskService.UpdateAsync(id, updatedTask);
@@ -58,7 +58,7 @@ public class AdminController : ControllerBase {
     /// <summary>
     /// Delete existing task
     /// </summary>
-    [HttpDelete("{id:Guid}")]
+    [HttpDelete("{id:Guid}", Name = "DeleteTask")]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _ctfTaskService.DeleteAsync(id);

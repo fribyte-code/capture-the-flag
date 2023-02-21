@@ -38,8 +38,8 @@ public class
     /// <summary>
     /// Add a new team
     /// </summary>
-    [HttpPost("/add-team")]
-    public async Task<IActionResult> Login([FromBody] NewTeam newTeam)
+    [HttpPost("/add-team", Name = "AddTeam")]
+    public async Task<IActionResult> Add([FromBody] NewTeam newTeam)
     {
         var password = GenerateTeamPassword();
         // password for teams are stored in clear text

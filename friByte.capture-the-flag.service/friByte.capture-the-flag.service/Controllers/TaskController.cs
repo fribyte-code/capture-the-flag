@@ -39,7 +39,7 @@ public class TaskController : ControllerBase {
     /// <summary>
     /// Try to solve a task, returned response will indicate whether or not the flag was correct
     /// </summary>
-    [HttpPost("/solve/{id:Guid}")]
+    [HttpPost("/solve/{id:Guid}", Name = "Solve")]
     public async Task<IActionResult> Solve(Guid id, [FromBody] SolveTaskRequest solveTaskRequest)
     {
         var teamId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier); // Should return the id of the current logged in user
