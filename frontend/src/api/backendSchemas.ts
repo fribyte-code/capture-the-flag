@@ -47,6 +47,10 @@ export type CtfTask = {
 };
 
 export type CtfTaskReadModel = {
+  /**
+   * @format uuid
+   */
+  id?: string;
   name?: string | null;
   /**
    * @format int32

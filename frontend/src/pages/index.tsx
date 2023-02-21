@@ -1,7 +1,7 @@
-import { useTask } from "../api/backendComponents";
+import { useTasks } from "../api/backendComponents";
 
 function Index() {
-  const { data, isLoading, error } = useTask({});
+  const { data, isLoading, error } = useTasks({});
 
   return (
     <div>

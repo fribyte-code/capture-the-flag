@@ -68,77 +68,6 @@ export const useLogout = <TData = undefined>(
   );
 };
 
-export type TaskError = Fetcher.ErrorWrapper<undefined>;
-
-export type TaskResponse = Schemas.CtfTaskReadModel[];
-
-export type TaskVariables = BackendContext["fetcherOptions"];
-
-export const fetchTask = (variables: TaskVariables, signal?: AbortSignal) =>
-  backendFetch<TaskResponse, TaskError, undefined, {}, {}, {}>({
-    url: "/Api/Task",
-    method: "get",
-    ...variables,
-    signal,
-  });
-
-export const useTask = <TData = TaskResponse>(
-  variables: TaskVariables,
-  options?: Omit<
-    reactQuery.UseQueryOptions<TaskResponse, TaskError, TData>,
-    "queryKey" | "queryFn"
-  >
-) => {
-  const { fetcherOptions, queryOptions, queryKeyFn } =
-    useBackendContext(options);
-  return reactQuery.useQuery<TaskResponse, TaskError, TData>(
-    queryKeyFn({ path: "/Api/Task", operationId: "task", variables }),
-    ({ signal }) => fetchTask({ ...fetcherOptions, ...variables }, signal),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
-};
-
-export type SolvePathParams = {
-  /**
-   * @format uuid
-   */
-  id: string;
-};
-
-export type SolveError = Fetcher.ErrorWrapper<undefined>;
-
-export type SolveVariables = {
-  body?: Schemas.SolveTaskRequest;
-  pathParams: SolvePathParams;
-} & BackendContext["fetcherOptions"];
-
-export const fetchSolve = (variables: SolveVariables, signal?: AbortSignal) =>
-  backendFetch<
-    undefined,
-    SolveError,
-    Schemas.SolveTaskRequest,
-    {},
-    {},
-    SolvePathParams
-  >({ url: "/solve/{id}", method: "post", ...variables, signal });
-
-export const useSolve = (
-  options?: Omit<
-    reactQuery.UseMutationOptions<undefined, SolveError, SolveVariables>,
-    "mutationFn"
-  >
-) => {
-  const { fetcherOptions } = useBackendContext();
-  return reactQuery.useMutation<undefined, SolveError, SolveVariables>(
-    (variables: SolveVariables) =>
-      fetchSolve({ ...fetcherOptions, ...variables }),
-    options
-  );
-};
-
 export type AllTasksError = Fetcher.ErrorWrapper<undefined>;
 
 export type AllTasksResponse = Schemas.CtfTask[];
@@ -313,6 +242,77 @@ export const useDeleteTask = (
   );
 };
 
+export type TasksError = Fetcher.ErrorWrapper<undefined>;
+
+export type TasksResponse = Schemas.CtfTaskReadModel[];
+
+export type TasksVariables = BackendContext["fetcherOptions"];
+
+export const fetchTasks = (variables: TasksVariables, signal?: AbortSignal) =>
+  backendFetch<TasksResponse, TasksError, undefined, {}, {}, {}>({
+    url: "/Api/Tasks",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useTasks = <TData = TasksResponse>(
+  variables: TasksVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<TasksResponse, TasksError, TData>,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useBackendContext(options);
+  return reactQuery.useQuery<TasksResponse, TasksError, TData>(
+    queryKeyFn({ path: "/Api/Tasks", operationId: "tasks", variables }),
+    ({ signal }) => fetchTasks({ ...fetcherOptions, ...variables }, signal),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type SolvePathParams = {
+  /**
+   * @format uuid
+   */
+  id: string;
+};
+
+export type SolveError = Fetcher.ErrorWrapper<undefined>;
+
+export type SolveVariables = {
+  body?: Schemas.SolveTaskRequest;
+  pathParams: SolvePathParams;
+} & BackendContext["fetcherOptions"];
+
+export const fetchSolve = (variables: SolveVariables, signal?: AbortSignal) =>
+  backendFetch<
+    undefined,
+    SolveError,
+    Schemas.SolveTaskRequest,
+    {},
+    {},
+    SolvePathParams
+  >({ url: "/Api/Tasks/Solve/{id}", method: "post", ...variables, signal });
+
+export const useSolve = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<undefined, SolveError, SolveVariables>,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useBackendContext();
+  return reactQuery.useMutation<undefined, SolveError, SolveVariables>(
+    (variables: SolveVariables) =>
+      fetchSolve({ ...fetcherOptions, ...variables }),
+    options
+  );
+};
+
 export type AddTeamError = Fetcher.ErrorWrapper<undefined>;
 
 export type AddTeamVariables = {
@@ -351,12 +351,12 @@ export type QueryOperation =
       variables: LogoutVariables;
     }
   | {
-      path: "/Api/Task";
-      operationId: "task";
-      variables: TaskVariables;
-    }
-  | {
       path: "/Api/TaskAdmin";
       operationId: "allTasks";
       variables: AllTasksVariables;
+    }
+  | {
+      path: "/Api/Tasks";
+      operationId: "tasks";
+      variables: TasksVariables;
     };
