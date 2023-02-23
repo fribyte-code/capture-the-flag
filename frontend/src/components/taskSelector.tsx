@@ -6,12 +6,12 @@ export interface TaskSelectorProps {
   updateIx: (ix: number) => void;
 }
 
+// Denne skal gi oversikt over hvilken task du står på, og gå frem og tilbake - litt som eksamen..
 const TaskSelector: React.FC<TaskSelectorProps> = (props) => {
   return (
-    <>
-      {props.currentIx + 1}
-      {props.taskCount}
-    </>
+    <div>
+      {props.currentIx + 1} / {props.taskCount}
+    </div>
   );
 };
 

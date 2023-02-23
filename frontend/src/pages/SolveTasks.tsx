@@ -23,10 +23,13 @@ export default function SolveTasks() {
     <Layout>
       {data != undefined && taskCount != undefined && taskCount != 0 && (
         <>
-          <button onClick={() => safeSetTaskIx(taskIx - 1)}>{"<-"}</button>
-          <TaskComponent task={data[taskIx]} />
-          <button onClick={() => safeSetTaskIx(taskIx + 1)}>{"->"}</button>
-          <br />
+          <div className="container">
+            <div className="grid grid-cols-3">
+              <button onClick={() => safeSetTaskIx(taskIx - 1)}>&larr;</button>
+              <TaskComponent task={data[taskIx]} />
+              <button onClick={() => safeSetTaskIx(taskIx + 1)}>&rarr;</button>
+            </div>
+          </div>
           <TaskSelector
             currentIx={taskIx}
             taskCount={taskCount}

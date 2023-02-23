@@ -6,7 +6,7 @@ export interface TaskComponentProps {
 }
 
 const TaskComponent: React.FC<TaskComponentProps> = (props) => {
-  return <>{JSON.stringify(props.task)}</>;
+  return <div>{JSON.stringify(props.task)}</div>;
 };
 
 export default TaskComponent;
