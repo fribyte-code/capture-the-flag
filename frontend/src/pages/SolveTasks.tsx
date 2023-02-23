@@ -5,7 +5,22 @@ import TaskComponent from "../components/taskComponent";
 import TaskSelector from "../components/taskSelector";
 
 export default function SolveTasks() {
-  const { data, isLoading, error } = useTasks({});
+  // const { data, isLoading, error } = useTasks({});
+  const data = [
+    {
+      id: "2b7ca9da-5701-44b1-acc6-aacb68b970ea",
+      name: "Hello",
+      points: 0,
+      description: "",
+    },
+    {
+      id: "a8f98cc7-36d5-4e33-b75a-7215a48add1e",
+      name: "Shalom",
+      points: 0,
+      description: "Empty",
+    },
+  ];
+
   const [taskIx, setTaskIx] = useState(0);
   const taskCount = data?.length;
 
