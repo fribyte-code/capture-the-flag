@@ -6,7 +6,11 @@ name: Dotnet Backend Build and Push to DockerHub
 on:
   push:
     branches: ["main"]
-    paths: ["friByte.capture-the-flag.service/**"]
+    paths:
+      [
+        "friByte.capture-the-flag.service/**",
+        ".github/workflows/dotnet-backend.yml",
+      ]
   pull_request:
     branches: ["main"]
     paths: ["friByte.capture-the-flag.service/**"]
@@ -22,7 +26,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ variables.DOCKERHUB_USERNAME }}
+          username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
