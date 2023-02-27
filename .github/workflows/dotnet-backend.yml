@@ -33,11 +33,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: friByte/ctf-backend
+          images: fribyte/ctf-backend
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: ./friByte.capture-the-flag.service/
           push: true
-          tags: friByte/ctf-backend:latest
+          tags: fribyte/ctf-backend:latest
