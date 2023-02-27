@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  ctf-backend:
+    image: friByte/ctf-backend:latest
+    container_name: ctf-backend
+    restart: always
+    environment:
+      VIRTUAL_HOST: ctf-api.fribyte.no
+      LETSENCRYPT_HOST: ctf-api.fribyte.no
+      ConnectionStrings__postgres: Host=localhost;Database=ctf-postgres;Username=postgres;Password=postgres
+
+  ctf-frontend:
+    image: friByte/ctf-frontend:latest
+    container_name: ctf-frontend
+    restart: always
+    environment:
+      VIRTUAL_HOST: ctf.fribyte.no
+      LETSENCRYPT_HOST: ctf.fribyte.no
+      APP_API_URL: ctf-api.fribyte.no
+
+  ctf-postgres:
+    image: postgres:14.1-alpine
+    container_name: ctf-postgres
+    volumes:
+      - ctf-postgres:/var/lib/postgresql/data
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+volumes:
+  ctf-postgres:
