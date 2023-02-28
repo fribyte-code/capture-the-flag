@@ -33,7 +33,7 @@ public class CtfTaskService : ICtfTaskService
 
     public Task<List<CtfTask>> GetAllAsync()
     {
-        return _ctfContext.CtfTasks.ToListAsync();
+        return _ctfContext.CtfTasks.OrderBy(t => t.CreatedAt).ToListAsync();
     }
 
     public async Task<CtfTask> AddAsync(CtfTaskWriteModel newTask)

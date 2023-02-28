@@ -10,11 +10,13 @@ public class CtfTaskReadModel
 {
     public CtfTaskReadModel(CtfTask dbModel)
     {
+        Id = dbModel.Id;
         Name = dbModel.Name;
         Points = dbModel.Points;
         Description = dbModel.Description;
     }
 
+    public Guid Id { get; }
     public string Name { get; }
     public int Points { get; }
     public string Description { get;  }

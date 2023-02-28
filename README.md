@@ -70,6 +70,8 @@ Install dependencies: `yarn` or `npm i`
 
 Start the application: `yarn run dev` or `npm run dev`
 
+To make sessions acquired from logging in with swagger persist to the frontend, make sure you access them using the same hostname (either 127.0.0.1 or localhost, as long as you use the same both places)
+
 #### Commands:
 
 1. `cd frontend`
@@ -79,7 +81,7 @@ Start the application: `yarn run dev` or `npm run dev`
 
 #### Regenerating react query hooks
 
-This is done to update the frontends knowledge about routes the backend exposes.
+This is done to update the frontend's knowledge about routes the backend exposes.
 
 `yarn run gen-backend-hooks` or `npm run gen-backend-hooks`
 

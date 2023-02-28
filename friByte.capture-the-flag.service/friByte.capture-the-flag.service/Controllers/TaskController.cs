@@ -14,12 +14,12 @@ namespace friByte.capture_the_flag.service.Controllers;
 [ApiController]
 [Produces("application/json")]
 [Route("Api/[controller]")]
-public class TaskController : ControllerBase {
+public class TasksController : ControllerBase {
 
-    private readonly ILogger<TaskController> _logger;
+    private readonly ILogger<TasksController> _logger;
     private readonly ICtfTaskService _ctfTaskService;
 
-    public TaskController(ILogger<TaskController> logger, ICtfTaskService ctfTaskService)
+    public TasksController(ILogger<TasksController> logger, ICtfTaskService ctfTaskService)
     {
         _logger = logger;
         _ctfTaskService = ctfTaskService;
@@ -28,7 +28,7 @@ public class TaskController : ControllerBase {
     /// <summary>
     /// Get all tasks in database
     /// </summary>
-    [HttpGet(Name = "task")]
+    [HttpGet(Name = "Tasks")]
     public async Task<List<CtfTaskReadModel>> Get()
     {
         var tasks = await _ctfTaskService.GetAllAsync();
@@ -39,7 +39,7 @@ public class TaskController : ControllerBase {
     /// <summary>
     /// Try to solve a task, returned response will indicate whether or not the flag was correct
     /// </summary>
-    [HttpPost("/solve/{id:Guid}", Name = "Solve")]
+    [HttpPost("Solve/{id:Guid}", Name = "Solve")]
     public async Task<IActionResult> Solve(Guid id, [FromBody] SolveTaskRequest solveTaskRequest)
     {
         var teamId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier); // Should return the id of the current logged in user
