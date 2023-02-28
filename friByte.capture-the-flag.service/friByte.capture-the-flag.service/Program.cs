@@ -17,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 //            mostly the same as transient, but could be more resource efficient in some cases.
 //              -> Rarely used
 builder.Services.AddTransient<ICtfTaskService, CtfTaskService>();
+builder.Services.AddTransient<ICtfLeaderboardService, CtfLeaderboardService>();
 
 // TODO: Add more services
 
