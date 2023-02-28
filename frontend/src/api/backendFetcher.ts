@@ -1,6 +1,7 @@
 import { BackendContext } from "./backendContext";
 
-const baseUrl = ""; // TODO add your baseUrl
+// @ts-ignore
+const baseUrl = typeof env !== "undefined" ? env.APP_API_URL : "";
 
 export type ErrorWrapper<TError> =
   | TError
