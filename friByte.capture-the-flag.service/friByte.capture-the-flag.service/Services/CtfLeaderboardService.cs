@@ -27,17 +27,19 @@ public class CtfLeaderboardService : ICtfLeaderboardService
     {
         return _ctfContext.SolvedTasks
             .GroupBy(t => t.TeamId)
-            .Select(g => new LeaderboardEntry()
-            {
-                teamId = g.Key,
-                points = g.Sum(t => t.Task.Points)
-            })
+            .Select(g => new LeaderboardEntry(g.Key, g.Sum(t => t.Task.Points)))
             .ToListAsync();
     }
 }
 
 public class LeaderboardEntry
 {
-    public string teamId { get; set; }
-    public int points { get; set; }
+    public LeaderboardEntry(string teamId, int points)
+    {
+        TeamId = teamId;
+        Points = points;
+    }
+
+    public string TeamId { get; set; }
+    public int Points { get; set; }
 }
