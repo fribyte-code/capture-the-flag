@@ -7,6 +7,7 @@ Functionality:
 - [x] Basic auth
 - [x] User roles
 - [x] Automatic Swagger frontend client code generation
+- [x] Bruteforce checker
 - [ ] Hints for challenges
 - [ ] Challenges with flag
 - [ ] Scoreboard
