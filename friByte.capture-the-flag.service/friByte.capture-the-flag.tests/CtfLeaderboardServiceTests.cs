@@ -24,7 +24,7 @@ public class CtfLeaderboardServiceTests
 
     private static ICtfTaskService GetCtfTaskService()
     {
-        return new CtfTaskService(GetContext(), new Mock<ILogger<CtfTaskService>>().Object);
+        return new CtfTaskService(GetContext(), new Mock<ILogger<CtfTaskService>>().Object, new Mock<IBruteforceCheckerService>().Object);
     }
 
     [TestInitialize]

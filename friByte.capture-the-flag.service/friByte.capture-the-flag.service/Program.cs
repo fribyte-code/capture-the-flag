@@ -18,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 //              -> Rarely used
 builder.Services.AddTransient<ICtfTaskService, CtfTaskService>();
 builder.Services.AddTransient<ICtfLeaderboardService, CtfLeaderboardService>();
+builder.Services.AddSingleton<IBruteforceCheckerService, BruteforceCheckerService>();
 
 // TODO: Add more services
 

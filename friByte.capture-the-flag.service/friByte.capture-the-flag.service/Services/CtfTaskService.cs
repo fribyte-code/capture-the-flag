@@ -1,6 +1,7 @@
 using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Models.Api;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.Serialization;
 
 namespace friByte.capture_the_flag.service.Services;
 
@@ -24,11 +25,13 @@ public class CtfTaskService : ICtfTaskService
 {
     private readonly CtfContext _ctfContext;
     private readonly ILogger<CtfTaskService> _logger;
+    private readonly IBruteforceCheckerService _bruteforceCheckerService;
 
-    public CtfTaskService(CtfContext ctfContext, ILogger<CtfTaskService> logger)
+    public CtfTaskService(CtfContext ctfContext, ILogger<CtfTaskService> logger, IBruteforceCheckerService bruteforceCheckerService)
     {
         _ctfContext = ctfContext;
         _logger = logger;
+        _bruteforceCheckerService = bruteforceCheckerService;
     }
 
     public Task<List<CtfTask>> GetAllAsync()
@@ -93,6 +96,11 @@ public class CtfTaskService : ICtfTaskService
             // Team has already solved this task
             return true;
         }
+
+        if (_bruteforceCheckerService.IsWithinBruteforceTimeout(teamId, taskId))
+        {
+            throw new BruteForceException();
+        }
         
         if (task.Flag == flag)
         {
@@ -108,5 +116,25 @@ public class CtfTaskService : ICtfTaskService
         _logger.LogInformation("Team {TeamName} failed to solve task: {TaskName}", teamId,
             task.Name);
         return false;
+    }
+}
+
+[Serializable]
+internal class BruteForceException : Exception
+{
+    public BruteForceException()
+    {
+    }
+
+    public BruteForceException(string? message) : base(message)
+    {
+    }
+
+    public BruteForceException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    protected BruteForceException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
     }
 }
