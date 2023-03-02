@@ -68,6 +68,47 @@ export const useLogout = <TData = undefined>(
   );
 };
 
+export type LeaderboardError = Fetcher.ErrorWrapper<undefined>;
+
+export type LeaderboardResponse = Schemas.LeaderboardEntry[];
+
+export type LeaderboardVariables = BackendContext["fetcherOptions"];
+
+export const fetchLeaderboard = (
+  variables: LeaderboardVariables,
+  signal?: AbortSignal
+) =>
+  backendFetch<LeaderboardResponse, LeaderboardError, undefined, {}, {}, {}>({
+    url: "/Api/Leaderboard",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useLeaderboard = <TData = LeaderboardResponse>(
+  variables: LeaderboardVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<LeaderboardResponse, LeaderboardError, TData>,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useBackendContext(options);
+  return reactQuery.useQuery<LeaderboardResponse, LeaderboardError, TData>(
+    queryKeyFn({
+      path: "/Api/Leaderboard",
+      operationId: "leaderboard",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchLeaderboard({ ...fetcherOptions, ...variables }, signal),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
 export type AllTasksError = Fetcher.ErrorWrapper<undefined>;
 
 export type AllTasksResponse = Schemas.CtfTask[];
@@ -349,6 +390,11 @@ export type QueryOperation =
       path: "/Api/Auth/Logout";
       operationId: "logout";
       variables: LogoutVariables;
+    }
+  | {
+      path: "/Api/Leaderboard";
+      operationId: "leaderboard";
+      variables: LeaderboardVariables;
     }
   | {
       path: "/Api/TaskAdmin";

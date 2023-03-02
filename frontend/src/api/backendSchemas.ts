@@ -69,6 +69,14 @@ export type CtfTaskWriteModel = {
   description?: string | null;
 };
 
+export type LeaderboardEntry = {
+  teamId?: string | null;
+  /**
+   * @format int32
+   */
+  points?: number;
+};
+
 export type LoginCredentials = {
   username?: string | null;
   password?: string | null;
