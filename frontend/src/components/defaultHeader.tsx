@@ -1,4 +1,12 @@
+import { useNavigate } from "react-router-dom";
+import { fetchLogout } from "../api/backendComponents";
+
 export default function Example() {
+  const navigate = useNavigate();
+  const logout = async () => {
+    await fetchLogout({});
+    navigate("/login");
+  };
   return (
     <header>
       <nav
@@ -16,9 +24,14 @@ export default function Example() {
           </a>
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <button
+            role="button"
+            aria-label="Logout"
+            onClick={logout}
+            className="text-sm font-semibold leading-6 text-gray-900"
+          >
             Logg ut
-          </a>
+          </button>
         </div>
       </nav>
     </header>
