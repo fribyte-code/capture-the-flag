@@ -1,10 +1,16 @@
+using System.Threading.Tasks;
 using friByte.capture_the_flag.service.Hubs;
 using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Services;
 using friByte.capture_the_flag.service.Services.Auth;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -124,5 +130,9 @@ async Task MigrateAndSeedData()
     var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var initialAdminPassword = builder.Configuration.GetValue<string>("InitialAdminPassword");
-    await IdentityContextSeeder.SeedIdentityContextAsync(userManager, roleManager, initialAdminPassword);
+    await DbContextSeeder.SeedIdentityContextAsync(userManager, roleManager, initialAdminPassword);
+    
+    // Add initial ctfTasks
+    var ctfContext = serviceScope.ServiceProvider.GetRequiredService<CtfContext>();
+    await DbContextSeeder.SeedTasks(ctfContext);
 }

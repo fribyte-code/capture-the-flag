@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using friByte.capture_the_flag.service.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -9,7 +13,7 @@ public static class IdentityRoleNames
     public const string TeamRoleName = "Team";
 }
 
-public static class IdentityContextSeeder
+public static class DbContextSeeder
 {
     /// <summary>
     /// Add the initial admin account to the IdentityContext
@@ -59,6 +63,23 @@ public static class IdentityContextSeeder
             {
                 throw new Exception($"Failed to add admin account. {string.Join(", ", createAdminResult.Errors.Select(e => e.Description))}");
             }
+        }
+    }
+
+    public static async Task SeedTasks(CtfContext ctfContext)
+    {
+        if (!ctfContext.CtfTasks.Any())
+        {
+            // No tasks in database, populate some demo tasks
+            var taskA = new CtfTask("Lets start easy", "Flag{2002}", 1, "What year was friByte started?");
+            var taskB = new CtfTask("What is my name?", "Flag{friByte}", 1, "What is the name of friByte?");
+            ctfContext.CtfTasks.Add(taskA);
+            ctfContext.CtfTasks.Add(taskB);
+            await ctfContext.SaveChangesAsync();
+            Console.WriteLine("Seeded 2 tasks into the database");
+
+            ctfContext.SolvedTasks.Add(new SolvedTask("admin", taskA));
+            await ctfContext.SaveChangesAsync();
         }
     }
 }
