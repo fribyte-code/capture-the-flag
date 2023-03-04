@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentAssertions;
 using friByte.capture_the_flag.service.Hubs;
 using friByte.capture_the_flag.service.Models;
@@ -19,13 +21,6 @@ public class CtfLeaderboardServiceTests
     private readonly Mock<IHubContext<CtfSignalrHub, ICtfSignalrHubClient>> _ctfSignalrHubMock = new();
     private readonly Mock<IHubCallerClients<ICtfSignalrHubClient>> _ctfSignalrClientsMock = new();
     private readonly Mock<ICtfSignalrHubClient> _hubSensorHubClientMock = new();
-
-    [TestInitialize]
-    public void SetUp()
-    {
-        _ctfSignalrHubMock.SetupGet(h => h.Clients).Returns(_ctfSignalrClientsMock.Object);
-        _ctfSignalrClientsMock.SetupGet(c => c.All).Returns(_hubSensorHubClientMock.Object);
-    }
 
     private static CtfContext GetContext()
     {
@@ -55,6 +50,8 @@ public class CtfLeaderboardServiceTests
         //Cleanup the database prior to each test
         var dbContext = GetContext();
         await DbCleaner.CleanDatabase(dbContext);
+        _ctfSignalrHubMock.SetupGet(h => h.Clients).Returns(_ctfSignalrClientsMock.Object);
+        _ctfSignalrClientsMock.SetupGet(c => c.All).Returns(_hubSensorHubClientMock.Object);
     }
 
     [TestMethod]
@@ -85,7 +82,7 @@ public class CtfLeaderboardServiceTests
         await SolveTasks();
 
         // Verify leaderboard
-        var teamAScore = await GetService().GetScoreForTeamId(TeamB);
+        var teamAScore = await GetService().GetScoreForTeamId(TeamA);
         teamAScore.Should().BeEquivalentTo(new LeaderboardEntry(points: 17, teamId: TeamA));
 
         var teamBScore = await GetService().GetScoreForTeamId(TeamB);
