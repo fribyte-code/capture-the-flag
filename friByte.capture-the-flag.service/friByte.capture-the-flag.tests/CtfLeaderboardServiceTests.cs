@@ -15,7 +15,18 @@ public class CtfLeaderboardServiceTests
 {
     private const string TeamA = "teamA";
     private const string TeamB = "teamB";
-    
+
+    private readonly Mock<IHubContext<CtfSignalrHub, ICtfSignalrHubClient>> _ctfSignalrHubMock = new();
+    private readonly Mock<IHubCallerClients<ICtfSignalrHubClient>> _ctfSignalrClientsMock = new();
+    private readonly Mock<ICtfSignalrHubClient> _hubSensorHubClientMock = new();
+
+    [TestInitialize]
+    public void SetUp()
+    {
+        _ctfSignalrHubMock.SetupGet(h => h.Clients).Returns(_ctfSignalrClientsMock.Object);
+        _ctfSignalrClientsMock.SetupGet(c => c.All).Returns(_hubSensorHubClientMock.Object);
+    }
+
     private static CtfContext GetContext()
     {
         var options = DbTestHelper.GetDbContextOptionsBuilder();
@@ -27,13 +38,13 @@ public class CtfLeaderboardServiceTests
         return new CtfLeaderboardService(GetContext(), new Mock<ILogger<CtfLeaderboardService>>().Object);
     }
 
-    private static ICtfTaskService GetCtfTaskService()
+    private ICtfTaskService GetCtfTaskService()
     {
         return new CtfTaskService(
             GetContext(),
             new Mock<ILogger<CtfTaskService>>().Object,
             new Mock<IBruteforceCheckerService>().Object,
-            new Mock<IHubContext<CtfSignalrHub, ICtfSignalrHubClient>>().Object,
+            _ctfSignalrHubMock.Object,
             new Mock<ICtfLeaderboardService>().Object
         );
     }
@@ -58,7 +69,7 @@ public class CtfLeaderboardServiceTests
     public async Task GetLeaderBoard_CorrectlySummarizePoints()
     {
         await SolveTasks();
-        
+
         // Verify leaderboard
         var leaderboard = await GetService().GetLeaderboard();
         leaderboard.Should().BeEquivalentTo(new List<LeaderboardEntry>()
@@ -76,12 +87,12 @@ public class CtfLeaderboardServiceTests
         // Verify leaderboard
         var teamAScore = await GetService().GetScoreForTeamId(TeamB);
         teamAScore.Should().BeEquivalentTo(new LeaderboardEntry(points: 17, teamId: TeamA));
-        
+
         var teamBScore = await GetService().GetScoreForTeamId(TeamB);
         teamBScore.Should().BeEquivalentTo(new LeaderboardEntry(points: 10, teamId: TeamB));
     }
 
-    private static async Task SolveTasks()
+    private async Task SolveTasks()
     {
         // Populate database
         var ctfTaskService = GetCtfTaskService();
