@@ -11,7 +11,7 @@ export default function Leaderboard() {
       {isLoading ? (
         <p>Loading</p>
       ) : (
-        <table>
+        <table className="table-auto">
           <thead>
             <tr>
               <th>TeamId</th>

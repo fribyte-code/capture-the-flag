@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SolveTasks from "./pages/SolveTasks";
 import Login from "./pages/Login";
 import Leaderboard from "./pages/Leaderboard";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Route path="/" element={<SolveTasks />} />
           <Route path="/login" element={<Login />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
