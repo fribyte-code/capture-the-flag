@@ -9,7 +9,8 @@ namespace friByte.capture_the_flag.service.Services;
 /// </summary>
 public interface ICtfLeaderboardService
 {
-    public Task<List<LeaderboardEntry>> GetLeaderboard();
+    Task<List<LeaderboardEntry>> GetLeaderboard();
+    Task<LeaderboardEntry> GetScoreForTeamId(string teamId);
 }
 
 public class CtfLeaderboardService : ICtfLeaderboardService
@@ -23,12 +24,24 @@ public class CtfLeaderboardService : ICtfLeaderboardService
         _logger = logger;
     }
 
-    public Task<List<LeaderboardEntry>> GetLeaderboard()
+    public async Task<List<LeaderboardEntry>> GetLeaderboard()
     {
-        return _ctfContext.SolvedTasks
+        var leaderboard = await _ctfContext.SolvedTasks
             .GroupBy(t => t.TeamId)
             .Select(g => new LeaderboardEntry(g.Key, g.Sum(t => t.Task.Points)))
             .ToListAsync();
+        // It was not possible to run OrderByDescending directly after the .Select statement as it changes the model or something like that...
+        // So we need to sort the list in memory instead of in the database
+        return leaderboard.OrderByDescending(e => e.Points)
+            .ToList();
+    }
+
+    public async Task<LeaderboardEntry> GetScoreForTeamId(string teamId)
+    {
+        var teamScore = await _ctfContext.SolvedTasks
+            .Where(t => t.TeamId == teamId)
+            .SumAsync(t => t.Task.Points);
+        return new LeaderboardEntry(teamId, teamScore);
     }
 }
 
@@ -40,6 +53,6 @@ public class LeaderboardEntry
         Points = points;
     }
 
-    public string TeamId { get; set; }
-    public int Points { get; set; }
+    public string TeamId { get; }
+    public int Points { get; }
 }

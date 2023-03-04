@@ -332,7 +332,7 @@ export type SolveVariables = {
 
 export const fetchSolve = (variables: SolveVariables, signal?: AbortSignal) =>
   backendFetch<
-    undefined,
+    Schemas.SolveTaskResponse,
     SolveError,
     Schemas.SolveTaskRequest,
     {},
@@ -342,15 +342,64 @@ export const fetchSolve = (variables: SolveVariables, signal?: AbortSignal) =>
 
 export const useSolve = (
   options?: Omit<
-    reactQuery.UseMutationOptions<undefined, SolveError, SolveVariables>,
+    reactQuery.UseMutationOptions<
+      Schemas.SolveTaskResponse,
+      SolveError,
+      SolveVariables
+    >,
     "mutationFn"
   >
 ) => {
   const { fetcherOptions } = useBackendContext();
-  return reactQuery.useMutation<undefined, SolveError, SolveVariables>(
+  return reactQuery.useMutation<
+    Schemas.SolveTaskResponse,
+    SolveError,
+    SolveVariables
+  >(
     (variables: SolveVariables) =>
       fetchSolve({ ...fetcherOptions, ...variables }),
     options
+  );
+};
+
+export type SolveHistoryError = Fetcher.ErrorWrapper<undefined>;
+
+export type SolveHistoryResponse = Schemas.SolvedTaskReadModel[];
+
+export type SolveHistoryVariables = BackendContext["fetcherOptions"];
+
+export const fetchSolveHistory = (
+  variables: SolveHistoryVariables,
+  signal?: AbortSignal
+) =>
+  backendFetch<SolveHistoryResponse, SolveHistoryError, undefined, {}, {}, {}>({
+    url: "/Api/Tasks/solve/history",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useSolveHistory = <TData = SolveHistoryResponse>(
+  variables: SolveHistoryVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<SolveHistoryResponse, SolveHistoryError, TData>,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useBackendContext(options);
+  return reactQuery.useQuery<SolveHistoryResponse, SolveHistoryError, TData>(
+    queryKeyFn({
+      path: "/Api/Tasks/solve/history",
+      operationId: "solveHistory",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchSolveHistory({ ...fetcherOptions, ...variables }, signal),
+    {
+      ...options,
+      ...queryOptions,
+    }
   );
 };
 
@@ -405,4 +454,9 @@ export type QueryOperation =
       path: "/Api/Tasks";
       operationId: "tasks";
       variables: TasksVariables;
+    }
+  | {
+      path: "/Api/Tasks/solve/history";
+      operationId: "solveHistory";
+      variables: SolveHistoryVariables;
     };

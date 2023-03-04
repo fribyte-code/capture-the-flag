@@ -12,6 +12,7 @@
     "gen-backend-hooks": "openapi-codegen gen backend"
   },
   "dependencies": {
+    "@microsoft/signalr": "^7.0.3",
     "@tanstack/react-query": "^4.22.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

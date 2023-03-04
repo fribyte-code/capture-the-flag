@@ -1,3 +1,4 @@
+using friByte.capture_the_flag.service.Hubs;
 using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Services;
 using friByte.capture_the_flag.service.Services.Auth;
@@ -19,7 +20,10 @@ builder.Services.AddTransient<ICtfTaskService, CtfTaskService>();
 builder.Services.AddTransient<ICtfLeaderboardService, CtfLeaderboardService>();
 builder.Services.AddSingleton<IBruteforceCheckerService, BruteforceCheckerService>();
 
-// TODO: Add more services
+// SignalR is Microsoft's implementation of the WebSocket standard
+// It enables us to push messages to all subscribed clients
+// We use it mainly to have a live scoreboard
+builder.Services.AddSignalR();
 
 // ====================================
 
@@ -70,7 +74,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("DefaultCorsPolicy", policy =>
     {
-        policy.WithOrigins("https://ctf.fribyte.no");
+        policy.WithOrigins("https://ctf.fribyte.no", "http://localhost:5173");
         policy.AllowAnyMethod();
         policy.AllowAnyHeader();
     });
@@ -100,6 +104,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<CtfSignalrHub>("/api/signalr");
 
 app.Run();
 

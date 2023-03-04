@@ -89,3 +89,20 @@ export type NewTeam = {
 export type SolveTaskRequest = {
   flag?: string | null;
 };
+
+export type SolveTaskResponse = {
+  success?: boolean;
+};
+
+export type SolvedTaskReadModel = {
+  /**
+   * @format uuid
+   */
+  id?: string;
+  /**
+   * @format date-time
+   */
+  createdAt: string;
+  teamId?: string | null;
+  task?: CtfTaskReadModel;
+};
