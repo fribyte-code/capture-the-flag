@@ -109,35 +109,46 @@ export const useLeaderboard = <TData = LeaderboardResponse>(
   );
 };
 
-export type AllTasksError = Fetcher.ErrorWrapper<undefined>;
+export type AdminAllTasksError = Fetcher.ErrorWrapper<undefined>;
 
-export type AllTasksResponse = Schemas.CtfTask[];
+export type AdminAllTasksResponse = Schemas.CtfTask[];
 
-export type AllTasksVariables = BackendContext["fetcherOptions"];
+export type AdminAllTasksVariables = BackendContext["fetcherOptions"];
 
-export const fetchAllTasks = (
-  variables: AllTasksVariables,
+export const fetchAdminAllTasks = (
+  variables: AdminAllTasksVariables,
   signal?: AbortSignal
 ) =>
-  backendFetch<AllTasksResponse, AllTasksError, undefined, {}, {}, {}>({
-    url: "/Api/TaskAdmin",
-    method: "get",
-    ...variables,
-    signal,
-  });
+  backendFetch<
+    AdminAllTasksResponse,
+    AdminAllTasksError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/Api/TaskAdmin", method: "get", ...variables, signal });
 
-export const useAllTasks = <TData = AllTasksResponse>(
-  variables: AllTasksVariables,
+export const useAdminAllTasks = <TData = AdminAllTasksResponse>(
+  variables: AdminAllTasksVariables,
   options?: Omit<
-    reactQuery.UseQueryOptions<AllTasksResponse, AllTasksError, TData>,
+    reactQuery.UseQueryOptions<
+      AdminAllTasksResponse,
+      AdminAllTasksError,
+      TData
+    >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
-  return reactQuery.useQuery<AllTasksResponse, AllTasksError, TData>(
-    queryKeyFn({ path: "/Api/TaskAdmin", operationId: "allTasks", variables }),
-    ({ signal }) => fetchAllTasks({ ...fetcherOptions, ...variables }, signal),
+  return reactQuery.useQuery<AdminAllTasksResponse, AdminAllTasksError, TData>(
+    queryKeyFn({
+      path: "/Api/TaskAdmin",
+      operationId: "adminAllTasks",
+      variables,
+    }),
+    ({ signal }) =>
+      fetchAdminAllTasks({ ...fetcherOptions, ...variables }, signal),
     {
       ...options,
       ...queryOptions,
@@ -145,31 +156,31 @@ export const useAllTasks = <TData = AllTasksResponse>(
   );
 };
 
-export type AddTaskError = Fetcher.ErrorWrapper<undefined>;
+export type AdminAddTaskError = Fetcher.ErrorWrapper<undefined>;
 
-export type AddTaskVariables = {
+export type AdminAddTaskVariables = {
   body?: Schemas.CtfTaskWriteModel;
 } & BackendContext["fetcherOptions"];
 
-export const fetchAddTask = (
-  variables: AddTaskVariables,
+export const fetchAdminAddTask = (
+  variables: AdminAddTaskVariables,
   signal?: AbortSignal
 ) =>
   backendFetch<
     Schemas.CtfTask,
-    AddTaskError,
+    AdminAddTaskError,
     Schemas.CtfTaskWriteModel,
     {},
     {},
     {}
   >({ url: "/Api/TaskAdmin", method: "post", ...variables, signal });
 
-export const useAddTask = (
+export const useAdminAddTask = (
   options?: Omit<
     reactQuery.UseMutationOptions<
       Schemas.CtfTask,
-      AddTaskError,
-      AddTaskVariables
+      AdminAddTaskError,
+      AdminAddTaskVariables
     >,
     "mutationFn"
   >
@@ -177,48 +188,48 @@ export const useAddTask = (
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
     Schemas.CtfTask,
-    AddTaskError,
-    AddTaskVariables
+    AdminAddTaskError,
+    AdminAddTaskVariables
   >(
-    (variables: AddTaskVariables) =>
-      fetchAddTask({ ...fetcherOptions, ...variables }),
+    (variables: AdminAddTaskVariables) =>
+      fetchAdminAddTask({ ...fetcherOptions, ...variables }),
     options
   );
 };
 
-export type UpdateTaskPathParams = {
+export type AdminUpdateTaskPathParams = {
   /**
    * @format uuid
    */
   id: string;
 };
 
-export type UpdateTaskError = Fetcher.ErrorWrapper<undefined>;
+export type AdminUpdateTaskError = Fetcher.ErrorWrapper<undefined>;
 
-export type UpdateTaskVariables = {
+export type AdminUpdateTaskVariables = {
   body?: Schemas.CtfTaskWriteModel;
-  pathParams: UpdateTaskPathParams;
+  pathParams: AdminUpdateTaskPathParams;
 } & BackendContext["fetcherOptions"];
 
-export const fetchUpdateTask = (
-  variables: UpdateTaskVariables,
+export const fetchAdminUpdateTask = (
+  variables: AdminUpdateTaskVariables,
   signal?: AbortSignal
 ) =>
   backendFetch<
     Schemas.CtfTask,
-    UpdateTaskError,
+    AdminUpdateTaskError,
     Schemas.CtfTaskWriteModel,
     {},
     {},
-    UpdateTaskPathParams
+    AdminUpdateTaskPathParams
   >({ url: "/Api/TaskAdmin/{id}", method: "put", ...variables, signal });
 
-export const useUpdateTask = (
+export const useAdminUpdateTask = (
   options?: Omit<
     reactQuery.UseMutationOptions<
       Schemas.CtfTask,
-      UpdateTaskError,
-      UpdateTaskVariables
+      AdminUpdateTaskError,
+      AdminUpdateTaskVariables
     >,
     "mutationFn"
   >
@@ -226,47 +237,47 @@ export const useUpdateTask = (
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
     Schemas.CtfTask,
-    UpdateTaskError,
-    UpdateTaskVariables
+    AdminUpdateTaskError,
+    AdminUpdateTaskVariables
   >(
-    (variables: UpdateTaskVariables) =>
-      fetchUpdateTask({ ...fetcherOptions, ...variables }),
+    (variables: AdminUpdateTaskVariables) =>
+      fetchAdminUpdateTask({ ...fetcherOptions, ...variables }),
     options
   );
 };
 
-export type DeleteTaskPathParams = {
+export type AdminDeleteTaskPathParams = {
   /**
    * @format uuid
    */
   id: string;
 };
 
-export type DeleteTaskError = Fetcher.ErrorWrapper<undefined>;
+export type AdminDeleteTaskError = Fetcher.ErrorWrapper<undefined>;
 
-export type DeleteTaskVariables = {
-  pathParams: DeleteTaskPathParams;
+export type AdminDeleteTaskVariables = {
+  pathParams: AdminDeleteTaskPathParams;
 } & BackendContext["fetcherOptions"];
 
-export const fetchDeleteTask = (
-  variables: DeleteTaskVariables,
+export const fetchAdminDeleteTask = (
+  variables: AdminDeleteTaskVariables,
   signal?: AbortSignal
 ) =>
   backendFetch<
     undefined,
-    DeleteTaskError,
+    AdminDeleteTaskError,
     undefined,
     {},
     {},
-    DeleteTaskPathParams
+    AdminDeleteTaskPathParams
   >({ url: "/Api/TaskAdmin/{id}", method: "delete", ...variables, signal });
 
-export const useDeleteTask = (
+export const useAdminDeleteTask = (
   options?: Omit<
     reactQuery.UseMutationOptions<
       undefined,
-      DeleteTaskError,
-      DeleteTaskVariables
+      AdminDeleteTaskError,
+      AdminDeleteTaskVariables
     >,
     "mutationFn"
   >
@@ -274,11 +285,11 @@ export const useDeleteTask = (
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
     undefined,
-    DeleteTaskError,
-    DeleteTaskVariables
+    AdminDeleteTaskError,
+    AdminDeleteTaskVariables
   >(
-    (variables: DeleteTaskVariables) =>
-      fetchDeleteTask({ ...fetcherOptions, ...variables }),
+    (variables: AdminDeleteTaskVariables) =>
+      fetchAdminDeleteTask({ ...fetcherOptions, ...variables }),
     options
   );
 };
@@ -447,8 +458,8 @@ export type QueryOperation =
     }
   | {
       path: "/Api/TaskAdmin";
-      operationId: "allTasks";
-      variables: AllTasksVariables;
+      operationId: "adminAllTasks";
+      variables: AdminAllTasksVariables;
     }
   | {
       path: "/Api/Tasks";

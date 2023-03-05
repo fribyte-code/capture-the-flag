@@ -30,7 +30,7 @@ export default function Example() {
             <span>friByte CTF</span>
           </a>
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="lg:flex lg:flex-1 lg:justify-end">
           <a
             href="/leaderboard"
             onClick={(e) => {
@@ -39,6 +39,15 @@ export default function Example() {
             }}
           >
             Leaderboard
+          </a>
+          <a
+            href="/admin"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/admin");
+            }}
+          >
+            Admin
           </a>
           <button
             role="button"
