@@ -40,7 +40,7 @@ public class TasksController : ControllerBase {
     /// Try to solve a task, returned response will indicate whether or not the flag was correct
     /// </summary>
     [HttpPost("Solve/{id:Guid}", Name = "Solve")]
-    public async Task<IActionResult> Solve(Guid id, [FromBody] SolveTaskRequest solveTaskRequest)
+    public async Task<ActionResult<SolveTaskResponse>> Solve(Guid id, [FromBody] SolveTaskRequest solveTaskRequest)
     {
         var teamId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier); // Should return the id of the current logged in user
         if (teamId == null)
@@ -49,14 +49,25 @@ public class TasksController : ControllerBase {
         }
         var success = await _ctfTaskService.AttemptToSolveAsync(teamId, id, solveTaskRequest.Flag);
 
-        return Ok(
-        new {
-            success,
-        });
+        return Ok(new SolveTaskResponse { Success = success, });
+    }
+
+    /// <returns>
+    /// <inheritdoc cref="ICtfTaskService.GetSolveHistoryAsync"/>
+    /// </returns>
+    [HttpGet("solve/history", Name = "SolveHistory")]
+    public Task<List<SolvedTaskReadModel>> GetSolveHistoryAsync()
+    {
+        return _ctfTaskService.GetSolveHistoryAsync();
     }
 }
 
 public class SolveTaskRequest
 {
     public string Flag { get; set; }
+}
+
+public class SolveTaskResponse
+{
+    public bool Success { get; set; }
 }

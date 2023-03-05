@@ -2,6 +2,8 @@ using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Models.Api;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.Serialization;
+using friByte.capture_the_flag.service.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace friByte.capture_the_flag.service.Services;
 
@@ -19,6 +21,8 @@ public interface ICtfTaskService
     public Task<CtfTask> UpdateAsync(Guid id, CtfTaskWriteModel updatedTask);
     public Task DeleteAsync(Guid id);
     public Task<bool> AttemptToSolveAsync(string teamId, Guid taskId, string flag);
+    /// <returns>A list of all "solved flag"-events</returns>
+    public Task<List<SolvedTaskReadModel>> GetSolveHistoryAsync();
 }
 
 public class CtfTaskService : ICtfTaskService
@@ -26,12 +30,22 @@ public class CtfTaskService : ICtfTaskService
     private readonly CtfContext _ctfContext;
     private readonly ILogger<CtfTaskService> _logger;
     private readonly IBruteforceCheckerService _bruteforceCheckerService;
+    private readonly IHubContext<CtfSignalrHub, ICtfSignalrHubClient> _ctfSignalrHubContext;
+    private readonly ICtfLeaderboardService _ctfLeaderboardService;
 
-    public CtfTaskService(CtfContext ctfContext, ILogger<CtfTaskService> logger, IBruteforceCheckerService bruteforceCheckerService)
+    public CtfTaskService(
+        CtfContext ctfContext,
+        ILogger<CtfTaskService> logger,
+        IBruteforceCheckerService bruteforceCheckerService,
+        IHubContext<CtfSignalrHub, ICtfSignalrHubClient> ctfSignalrHubContext,
+        ICtfLeaderboardService ctfLeaderboardService
+    )
     {
         _ctfContext = ctfContext;
         _logger = logger;
         _bruteforceCheckerService = bruteforceCheckerService;
+        _ctfSignalrHubContext = ctfSignalrHubContext;
+        _ctfLeaderboardService = ctfLeaderboardService;
     }
 
     public Task<List<CtfTask>> GetAllAsync()
@@ -99,6 +113,7 @@ public class CtfTaskService : ICtfTaskService
 
         if (_bruteforceCheckerService.IsWithinBruteforceTimeout(teamId, taskId))
         {
+            // Maybe send an event to frontend clients with bruteforce attempts as well?
             throw new BruteForceException();
         }
         
@@ -107,34 +122,50 @@ public class CtfTaskService : ICtfTaskService
             // Correct answer
             _logger.LogInformation("Team {TeamName} solved task: {TaskName} and received {Points} points", teamId, task.Name,
                 task.Points);
-            _ctfContext.SolvedTasks.Add(new SolvedTask(teamId, task));
+            var solvedTask = new SolvedTask(teamId, task);
+            _ctfContext.SolvedTasks.Add(solvedTask);
             await _ctfContext.SaveChangesAsync();
+
+            // Notify all clients of the newly solved task
+            await SendSolvedTaskEventToClients(solvedTask);
+            
             return true;
         }
 
         // Wrong answer
         _logger.LogInformation("Team {TeamName} failed to solve task: {TaskName}", teamId,
             task.Name);
+        // Maybe send an event to frontend clients with failed attempt as well?
         return false;
+    }
+    
+    public Task<List<SolvedTaskReadModel>> GetSolveHistoryAsync()
+    {
+        return _ctfContext.SolvedTasks
+            .Include(t => t.Task)
+            .OrderByDescending(t => t.CreatedAt)
+            .Select(t => new SolvedTaskReadModel(t))
+            .ToListAsync();
+    }
+
+    /// <summary>
+    /// Sends live signalR events to frontend to let the scoreboard update live without page refresh
+    /// </summary>
+    private Task SendSolvedTaskEventToClients(SolvedTask solvedTask)
+    {
+        // Runs both calls in parallel
+        return Task.WhenAll(
+            _ctfSignalrHubContext.Clients.All.ReceiveSolvedTask(new SolvedTaskReadModel(solvedTask)),
+            _ctfSignalrHubContext.Clients.All.ReceiveLeaderboardEntryChange(
+                _ctfLeaderboardService.GetScoreForTeamId(solvedTask.TeamId).Result)
+        );
     }
 }
 
 [Serializable]
 internal class BruteForceException : Exception
 {
-    public BruteForceException()
-    {
-    }
+    public BruteForceException() { }
 
-    public BruteForceException(string? message) : base(message)
-    {
-    }
-
-    public BruteForceException(string? message, Exception? innerException) : base(message, innerException)
-    {
-    }
-
-    protected BruteForceException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
+    public BruteForceException(string? message) : base(message) { }
 }

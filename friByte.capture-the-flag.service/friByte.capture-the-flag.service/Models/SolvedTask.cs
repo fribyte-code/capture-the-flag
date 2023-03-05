@@ -14,9 +14,7 @@ public class SolvedTask : DbBaseEntity
     /// <summary>
     /// Only to be used by Entity Framework
     /// </summary>
-    public SolvedTask()
-    {
-    }
+    public SolvedTask() { }
 
     /// <summary>
     /// Team is stored as an applicationUser in the IdentityContext, so we can not reference it directly.

@@ -14,7 +14,14 @@ export default function Example() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+            className="-m-1.5 p-1.5"
+          >
             <img
               className="h-8 w-auto float-left"
               src="/images/fribyte-logo.png"
@@ -24,6 +31,15 @@ export default function Example() {
           </a>
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <a
+            href="/leaderboard"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/leaderboard");
+            }}
+          >
+            Leaderboard
+          </a>
           <button
             role="button"
             aria-label="Logout"
