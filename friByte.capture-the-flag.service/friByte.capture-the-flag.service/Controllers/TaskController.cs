@@ -47,9 +47,18 @@ public class TasksController : ControllerBase {
         {
             return Unauthorized();
         }
-        var success = await _ctfTaskService.AttemptToSolveAsync(teamId, id, solveTaskRequest.Flag);
 
-        return Ok(new SolveTaskResponse { Success = success, });
+        try
+        {
+            var success = await _ctfTaskService.AttemptToSolveAsync(teamId, id, solveTaskRequest.Flag);
+
+            return Ok(new SolveTaskResponse { Success = success, });
+        }
+        catch (BruteForceException )
+        {
+            _logger.LogInformation("Bruteforce detected from team {TeamName}", HttpContext.User.FindFirstValue(ClaimTypes.Name));
+            return Ok(new SolveTaskResponse { Success = false, IsBruteForceDetected = true, });
+        }
     }
 
     /// <returns>
@@ -70,4 +79,5 @@ public class SolveTaskRequest
 public class SolveTaskResponse
 {
     public bool Success { get; set; }
+    public bool IsBruteForceDetected { get; set; } = false;
 }
