@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<ICtfTaskService, CtfTaskService>();
 builder.Services.AddTransient<ICtfLeaderboardService, CtfLeaderboardService>();
 builder.Services.AddSingleton<IBruteforceCheckerService, BruteforceCheckerService>();
+
+builder.Services.AddSingleton<ISystemClock, SystemClock>();
 
 // SignalR is Microsoft's implementation of the WebSocket standard
 // It enables us to push messages to all subscribed clients
