@@ -3,7 +3,7 @@ import { fetchAdminAddTask, useAdminAllTasks } from "../api/backendComponents";
 import { useState } from "react";
 import { CtfTaskWriteModel } from "../api/backendSchemas";
 
-export default function Leaderboard() {
+export default function Admin() {
   const { data: tasks, isLoading, refetch } = useAdminAllTasks({});
   const [showFlag, setShowFlag] = useState(false);
   const [newTask, setNewTask] = useState<CtfTaskWriteModel>({
