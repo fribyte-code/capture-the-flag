@@ -20,7 +20,7 @@ public interface ICtfTaskService
     public Task<CtfTask> AddAsync(CtfTaskWriteModel newTask);
     public Task<CtfTask> UpdateAsync(Guid id, CtfTaskWriteModel updatedTask);
     public Task DeleteAsync(Guid id);
-    public Task<bool> AttemptToSolveAsync(string teamId, Guid taskId, string flag);
+    public Task<bool> AttemptToSolveAsync(string teamName, Guid taskId, string flag);
     /// <returns>A list of all "solved flag"-events</returns>
     public Task<List<SolvedTaskReadModel>> GetSolveHistoryAsync();
 }
@@ -96,7 +96,7 @@ public class CtfTaskService : ICtfTaskService
     /// </summary>
     /// <returns>True if solved, false if not solved</returns>
     /// <exception cref="ArgumentException">If task is not found</exception>
-    public async Task<bool> AttemptToSolveAsync(string teamId, Guid taskId, string flag)
+    public async Task<bool> AttemptToSolveAsync(string teamName, Guid taskId, string flag)
     {
         var task = await _ctfContext.CtfTasks.FindAsync(taskId);
         if (task == null)
@@ -104,14 +104,14 @@ public class CtfTaskService : ICtfTaskService
             throw new ArgumentException($"AttemptToSolve: Could not find task with taskId: {taskId}", nameof(taskId));
         }
 
-        var alreadySolved = await _ctfContext.SolvedTasks.Where(st => st.TeamId == teamId && st.Task.Id == taskId).AnyAsync();
+        var alreadySolved = await _ctfContext.SolvedTasks.Where(st => st.TeamId == teamName && st.Task.Id == taskId).AnyAsync();
         if (alreadySolved)
         {
             // Team has already solved this task
             return true;
         }
 
-        if (_bruteforceCheckerService.IsWithinBruteforceTimeout(teamId, taskId))
+        if (_bruteforceCheckerService.IsWithinBruteforceTimeout(teamName, taskId))
         {
             // Maybe send an event to frontend clients with bruteforce attempts as well?
             throw new BruteForceException();
@@ -120,9 +120,9 @@ public class CtfTaskService : ICtfTaskService
         if (task.Flag == flag)
         {
             // Correct answer
-            _logger.LogInformation("Team {TeamName} solved task: {TaskName} and received {Points} points", teamId, task.Name,
+            _logger.LogInformation("Team {TeamName} solved task: {TaskName} and received {Points} points", teamName, task.Name,
                 task.Points);
-            var solvedTask = new SolvedTask(teamId, task);
+            var solvedTask = new SolvedTask(teamName, task);
             _ctfContext.SolvedTasks.Add(solvedTask);
             await _ctfContext.SaveChangesAsync();
 
@@ -133,7 +133,7 @@ public class CtfTaskService : ICtfTaskService
         }
 
         // Wrong answer
-        _logger.LogInformation("Team {TeamName} failed to solve task: {TaskName}", teamId,
+        _logger.LogInformation("Team {TeamName} failed to solve task: {TaskName}", teamName,
             task.Name);
         // Maybe send an event to frontend clients with failed attempt as well?
         return false;

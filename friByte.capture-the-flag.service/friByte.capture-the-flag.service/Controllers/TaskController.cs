@@ -42,8 +42,8 @@ public class TasksController : ControllerBase {
     [HttpPost("Solve/{id:Guid}", Name = "Solve")]
     public async Task<ActionResult<SolveTaskResponse>> Solve(Guid id, [FromBody] SolveTaskRequest solveTaskRequest)
     {
-        var teamId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier); // Should return the id of the current logged in user
-        if (teamId == null)
+        var teamName = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+        if (teamName == null)
         {
             return Unauthorized();
         }
@@ -73,7 +73,7 @@ public class TasksController : ControllerBase {
 
 public class SolveTaskRequest
 {
-    public string Flag { get; set; }
+    public string Flag { get; set; } = null!;
 }
 
 public class SolveTaskResponse
