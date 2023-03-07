@@ -349,7 +349,7 @@ export const fetchSolve = (variables: SolveVariables, signal?: AbortSignal) =>
     {},
     {},
     SolvePathParams
-  >({ url: "/Api/Tasks/Solve/{id}", method: "post", ...variables, signal });
+  >({ url: "/Api/Tasks/solve/{id}", method: "post", ...variables, signal });
 
 export const useSolve = (
   options?: Omit<
@@ -414,6 +414,42 @@ export const useSolveHistory = <TData = SolveHistoryResponse>(
   );
 };
 
+export type AllTeamsError = Fetcher.ErrorWrapper<undefined>;
+
+export type AllTeamsResponse = Schemas.ApplicationUser[];
+
+export type AllTeamsVariables = BackendContext["fetcherOptions"];
+
+export const fetchAllTeams = (
+  variables: AllTeamsVariables,
+  signal?: AbortSignal
+) =>
+  backendFetch<AllTeamsResponse, AllTeamsError, undefined, {}, {}, {}>({
+    url: "/Api/Team",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useAllTeams = <TData = AllTeamsResponse>(
+  variables: AllTeamsVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<AllTeamsResponse, AllTeamsError, TData>,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useBackendContext(options);
+  return reactQuery.useQuery<AllTeamsResponse, AllTeamsError, TData>(
+    queryKeyFn({ path: "/Api/Team", operationId: "allTeams", variables }),
+    ({ signal }) => fetchAllTeams({ ...fetcherOptions, ...variables }, signal),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
 export type AddTeamError = Fetcher.ErrorWrapper<undefined>;
 
 export type AddTeamVariables = {
@@ -425,7 +461,7 @@ export const fetchAddTeam = (
   signal?: AbortSignal
 ) =>
   backendFetch<undefined, AddTeamError, Schemas.NewTeam, {}, {}, {}>({
-    url: "/add-team",
+    url: "/Api/Team",
     method: "post",
     ...variables,
     signal,
@@ -470,4 +506,9 @@ export type QueryOperation =
       path: "/Api/Tasks/solve/history";
       operationId: "solveHistory";
       variables: SolveHistoryVariables;
+    }
+  | {
+      path: "/Api/Team";
+      operationId: "allTeams";
+      variables: AllTeamsVariables;
     };

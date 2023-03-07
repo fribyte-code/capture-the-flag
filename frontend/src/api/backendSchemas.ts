@@ -71,7 +71,6 @@ export type CtfTaskWriteModel = {
 
 export type LeaderboardEntry = {
   teamId?: string;
-  teamName?: string;
   /**
    * @format int32
    */

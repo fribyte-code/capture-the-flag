@@ -6,6 +6,7 @@ import SolveTasks from "./pages/SolveTasks";
 import Login from "./pages/Login";
 import Leaderboard from "./pages/Leaderboard";
 import Admin from "./pages/Admin";
+import AdminTeamManagement from "./pages/AdminTeamManagement";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
           <Route path="/login" element={<Login />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/teams" element={<AdminTeamManagement />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
