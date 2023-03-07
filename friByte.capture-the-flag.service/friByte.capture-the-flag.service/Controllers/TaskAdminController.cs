@@ -29,7 +29,7 @@ public class TaskAdminController : ControllerBase {
     /// <summary>
     /// Get all tasks in database
     /// </summary>
-    [HttpGet("", Name = "AllTasks")]
+    [HttpGet("", Name = "AdminAllTasks")]
     public async Task<List<CtfTask>> Get()
     {
         return await _ctfTaskService.GetAllAsync();
@@ -38,7 +38,7 @@ public class TaskAdminController : ControllerBase {
     /// <summary>
     /// Add new task
     /// </summary>
-    [HttpPost("", Name = "AddTask")]
+    [HttpPost("", Name = "AdminAddTask")]
     public async Task<CtfTask> Post(CtfTaskWriteModel updatedTask)
     {
         var updatedDbTask = await _ctfTaskService.AddAsync(updatedTask);
@@ -48,7 +48,7 @@ public class TaskAdminController : ControllerBase {
     /// <summary>
     /// Update existing task
     /// </summary>
-    [HttpPut("{id:Guid}", Name = "UpdateTask")]
+    [HttpPut("{id:Guid}", Name = "AdminUpdateTask")]
     public async Task<CtfTask> Put(Guid id, CtfTaskWriteModel updatedTask)
     {
         var updatedDbTask = await _ctfTaskService.UpdateAsync(id, updatedTask);
@@ -58,7 +58,7 @@ public class TaskAdminController : ControllerBase {
     /// <summary>
     /// Delete existing task
     /// </summary>
-    [HttpDelete("{id:Guid}", Name = "DeleteTask")]
+    [HttpDelete("{id:Guid}", Name = "AdminDeleteTask")]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _ctfTaskService.DeleteAsync(id);

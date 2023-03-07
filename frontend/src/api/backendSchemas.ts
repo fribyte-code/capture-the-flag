@@ -4,7 +4,7 @@
  * @version 1.0
  */
 export type ApplicationUser = {
-  id?: string | null;
+  id?: string;
   userName?: string | null;
   normalizedUserName?: string | null;
   email?: string | null;
@@ -37,13 +37,13 @@ export type CtfTask = {
    * @format date-time
    */
   createdAt: string;
-  name?: string | null;
-  flag?: string | null;
+  name?: string;
+  flag?: string;
   /**
    * @format int32
    */
   points?: number;
-  description?: string | null;
+  description?: string;
 };
 
 export type CtfTaskReadModel = {
@@ -51,26 +51,27 @@ export type CtfTaskReadModel = {
    * @format uuid
    */
   id?: string;
-  name?: string | null;
+  name?: string;
   /**
    * @format int32
    */
   points?: number;
-  description?: string | null;
+  description?: string;
 };
 
 export type CtfTaskWriteModel = {
-  name?: string | null;
-  flag?: string | null;
+  name?: string;
+  flag?: string;
   /**
    * @format int32
    */
   points?: number;
-  description?: string | null;
+  description?: string;
 };
 
 export type LeaderboardEntry = {
-  teamId?: string | null;
+  teamId?: string;
+  teamName?: string;
   /**
    * @format int32
    */
@@ -78,16 +79,16 @@ export type LeaderboardEntry = {
 };
 
 export type LoginCredentials = {
-  username?: string | null;
-  password?: string | null;
+  username?: string;
+  password?: string;
 };
 
 export type NewTeam = {
-  username?: string | null;
+  username?: string;
 };
 
 export type SolveTaskRequest = {
-  flag?: string | null;
+  flag?: string;
 };
 
 export type SolveTaskResponse = {
@@ -103,6 +104,6 @@ export type SolvedTaskReadModel = {
    * @format date-time
    */
   createdAt: string;
-  teamId?: string | null;
+  teamId?: string;
   task?: CtfTaskReadModel;
 };
