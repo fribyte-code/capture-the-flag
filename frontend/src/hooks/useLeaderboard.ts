@@ -30,12 +30,17 @@ export function useLeaderboard() {
     console.debug("Leaderboard changed", leaderBoardEntry);
 
     // Arrays in react state should be treated as read-only in order to ensure reactivity
+    let existedInLeaderboard = false;
     const newLeaderboard = leaderboard.map((l) => {
       if (l.teamId == leaderBoardEntry.teamId) {
+        existedInLeaderboard = true;
         return leaderBoardEntry;
       }
       return l;
     });
+    if (!existedInLeaderboard) {
+      newLeaderboard.push(leaderBoardEntry);
+    }
     setLeaderboard(newLeaderboard);
   });
 
