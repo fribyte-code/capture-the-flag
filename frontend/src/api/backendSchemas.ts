@@ -93,6 +93,7 @@ export type SolveTaskRequest = {
 
 export type SolveTaskResponse = {
   success?: boolean;
+  isBruteForceDetected?: boolean;
 };
 
 export type SolvedTaskReadModel = {
