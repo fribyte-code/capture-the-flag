@@ -39,7 +39,7 @@ public class TasksController : ControllerBase {
     /// <summary>
     /// Try to solve a task, returned response will indicate whether or not the flag was correct
     /// </summary>
-    [HttpPost("Solve/{id:Guid}", Name = "Solve")]
+    [HttpPost("solve/{id:Guid}", Name = "Solve")]
     public async Task<ActionResult<SolveTaskResponse>> Solve(Guid id, [FromBody] SolveTaskRequest solveTaskRequest)
     {
         var teamName = HttpContext.User.FindFirstValue(ClaimTypes.Name);

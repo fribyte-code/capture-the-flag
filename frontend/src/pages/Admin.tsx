@@ -2,8 +2,10 @@ import Layout from "./layout";
 import { fetchAdminAddTask, useAdminAllTasks } from "../api/backendComponents";
 import { useState } from "react";
 import { CtfTaskWriteModel } from "../api/backendSchemas";
+import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
+  const navigate = useNavigate();
   const { data: tasks, isLoading, refetch } = useAdminAllTasks({});
   const [showFlag, setShowFlag] = useState(false);
   const [newTask, setNewTask] = useState<CtfTaskWriteModel>({
@@ -29,6 +31,18 @@ export default function Admin() {
         <p>Loading</p>
       ) : (
         <div>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/admin/teams");
+            }}
+            className="border shaded -m-1.5 p-1.5"
+          >
+            Team management
+          </a>
+          <br />
+          <br />
           <form
             className="bg-white shadow-md rounded mb-2"
             onSubmit={handleAddTask}

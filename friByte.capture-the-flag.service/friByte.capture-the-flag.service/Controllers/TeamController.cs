@@ -13,7 +13,7 @@ namespace friByte.capture_the_flag.service.Controllers;
 [ApiController]
 [Authorize(Roles = $"{IdentityRoleNames.AdminRoleName}")]
 [Produces("application/json")]
-[Route("Api/[controller]/[action]")]
+[Route("Api/[controller]")]
 public class 
     TeamController : ControllerBase
 {
@@ -28,7 +28,7 @@ public class
         _userManager = userManager;
     }
 
-    [HttpGet("")]
+    [HttpGet("", Name="AllTeams")]
     public async Task<ActionResult<IList<ApplicationUser>>> GetAll()
     {
         var teams = await _userManager.GetUsersInRoleAsync(IdentityRoleNames.TeamRoleName);
@@ -38,7 +38,7 @@ public class
     /// <summary>
     /// Add a new team
     /// </summary>
-    [HttpPost("/add-team", Name = "AddTeam")]
+    [HttpPost("", Name = "AddTeam")]
     public async Task<IActionResult> Add([FromBody] NewTeam newTeam)
     {
         var password = GenerateTeamPassword();
