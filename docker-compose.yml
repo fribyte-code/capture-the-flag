@@ -17,7 +17,7 @@ services:
     environment:
       VIRTUAL_HOST: ctf.fribyte.no
       LETSENCRYPT_HOST: ctf.fribyte.no
-      APP_API_URL: ctf-api.fribyte.no
+      APP_API_URL: https://ctf-api.fribyte.no
 
   ctf-postgres:
     image: postgres:14.1-alpine

@@ -57,7 +57,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
     .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication()
-    .AddCookie();
+    .AddCookie(opt => opt.Cookie = new CookieBuilder()
+    {
+        SameSite = SameSiteMode.None,
+        SecurePolicy = CookieSecurePolicy.Always,
+        HttpOnly = true,
+        Domain = "fribyte.no"
+        
+    });
 builder.Services.AddAuthorization();
 
 builder.Services.ConfigureApplicationCookie(options =>
