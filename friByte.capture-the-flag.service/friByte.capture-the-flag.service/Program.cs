@@ -95,6 +95,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("https://ctf.fribyte.no", "http://localhost:5173");
         policy.AllowAnyMethod();
         policy.AllowAnyHeader();
+        policy.AllowCredentials();
     });
 });
 
