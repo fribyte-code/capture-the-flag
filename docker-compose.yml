@@ -9,6 +9,7 @@ services:
       VIRTUAL_HOST: ctf-api.fribyte.no
       LETSENCRYPT_HOST: ctf-api.fribyte.no
       ConnectionStrings__postgres: Host=localhost;Database=ctf-postgres;Username=postgres;Password=postgres
+      CookieDomain: .fribyte.no
 
   ctf-frontend:
     image: friByte/ctf-frontend:latest

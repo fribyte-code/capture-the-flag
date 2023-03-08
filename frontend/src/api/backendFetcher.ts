@@ -70,6 +70,7 @@ export async function backendFetch<
             : JSON.stringify(body)
           : undefined,
         headers: requestHeaders,
+        credentials: "include", // Required to include cookies when sending requests to cross site
       }
     );
     if (!response.ok) {
