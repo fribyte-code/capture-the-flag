@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
   const navigate = useNavigate();
-  const { data: tasks, isLoading, refetch } = useAdminAllTasks({});
+  const { data: tasks, isLoading, refetch, error } = useAdminAllTasks({});
   const [showFlag, setShowFlag] = useState(false);
   const [newTask, setNewTask] = useState<CtfTaskWriteModel>({
     name: "",
@@ -102,14 +102,18 @@ export default function Admin() {
               </tr>
             </thead>
             <tbody>
-              {tasks?.map((t) => (
-                <tr key={t.id}>
-                  <td>{t.name}</td>
-                  <td>{t.points}</td>
-                  <td>{t.description}</td>
-                  <td>{showFlag ? t.flag : "***"}</td>
-                </tr>
-              ))}
+              {error
+                ? `${error.status} ${error.payload}`
+                : tasks
+                ? tasks.map((t) => (
+                    <tr key={t.id}>
+                      <td>{t.name}</td>
+                      <td>{t.points}</td>
+                      <td>{t.description}</td>
+                      <td>{showFlag ? t.flag : "***"}</td>
+                    </tr>
+                  ))
+                : ""}
             </tbody>
           </table>
         </div>
