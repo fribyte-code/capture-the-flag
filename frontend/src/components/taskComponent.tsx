@@ -38,13 +38,22 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
         {props.task.points}
       </p>
       <form onSubmit={handleSolveTask}>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Flag:</span>
+          </label>
+          <input
+            type="text"
+            name="flag"
+            placeholder="Flag{the-flag}"
+            className="input input-bordered"
+          />
+        </div>
         <input
-          type="text"
-          name="flag"
-          placeholder="Flag{the-flag}"
-          className="shaded border"
+          type="submit"
+          value="Solve"
+          className="btn btn-outline btn-primary"
         />
-        <input type="submit" value="Solve" className="shaded border" />
       </form>
       {solveTaskFeedback ? <p>{solveTaskFeedback}</p> : ""}
     </div>

@@ -8,26 +8,29 @@ export default function Leaderboard() {
 
   return (
     <Layout>
-      {isLoading ? (
-        <p>Loading</p>
-      ) : (
-        <table className="table-auto">
-          <thead>
-            <tr>
-              <th>TeamId</th>
-              <th>Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaderboard.map((l) => (
-              <tr key={l.teamId}>
-                <td>{l.teamId}</td>
-                <td>{l.points}</td>
+      <div className="w-screen flex flex-col align-center">
+        <h1 className="self-center font-bold">Live leaderboard</h1>
+        {isLoading ? (
+          <p>Loading</p>
+        ) : (
+          <table className="table table-zebra table-auto">
+            <thead>
+              <tr>
+                <th>TeamName</th>
+                <th>Points</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {leaderboard.map((l) => (
+                <tr key={l.teamId} className="hover">
+                  <td>{l.teamId}</td>
+                  <td>{l.points}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </Layout>
   );
 }

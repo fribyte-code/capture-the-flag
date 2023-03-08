@@ -9,11 +9,8 @@ export default function Example() {
   };
   return (
     <header>
-      <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
-        aria-label="Global"
-      >
-        <div className="flex lg:flex-1">
+      <nav className="navbar" aria-label="Global">
+        <div className="navbar-start">
           <a
             href="#"
             onClick={(e) => {
@@ -30,13 +27,14 @@ export default function Example() {
             <span>friByte CTF</span>
           </a>
         </div>
-        <div className="lg:flex lg:flex-1 lg:justify-end">
+        <div className="navbar-end">
           <a
             href="/leaderboard"
             onClick={(e) => {
               e.preventDefault();
               navigate("/leaderboard");
             }}
+            className="btn btn-ghost"
           >
             Leaderboard
           </a>
@@ -46,6 +44,7 @@ export default function Example() {
               e.preventDefault();
               navigate("/admin");
             }}
+            className="btn btn-ghost"
           >
             Admin
           </a>
@@ -53,7 +52,7 @@ export default function Example() {
             role="button"
             aria-label="Logout"
             onClick={logout}
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className="btn btn-ghost"
           >
             Logg ut
           </button>

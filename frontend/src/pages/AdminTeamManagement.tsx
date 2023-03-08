@@ -28,30 +28,37 @@ export default function AdminTeamManagement() {
       {isLoading ? (
         <p>Loading</p>
       ) : (
-        <div>
-          <form
-            className="bg-white shadow-md rounded mb-2"
-            onSubmit={handleAddNewTeam}
-          >
-            <p>Add new team</p>
-            <textarea
-              value={newTeams}
-              onChange={(e) => setNewTeams(e.target.value)}
-              name="usernames"
-              placeholder="Usernames, one per line"
-              className="shadow border rounded"
-              rows={15}
-              cols={20}
-            />
-            <input type="submit" className="shadow border rounded" />
+        <div style={{ maxWidth: "1200px" }}>
+          <form onSubmit={handleAddNewTeam}>
+            <h2>Add new teams</h2>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Team-names</span>
+              </label>
+              <textarea
+                value={newTeams}
+                onChange={(e) => setNewTeams(e.target.value)}
+                name="usernames"
+                placeholder="Usernames, one per line"
+                className="textarea textarea-bordered"
+                rows={15}
+                cols={10}
+              />
+            </div>
+            <input type="submit" className="btn btn-primary" />
           </form>
-          <button
-            onClick={(e) => setShowPassword(!showPassword)}
-            className="rounded shaded border"
-          >
-            Toggle Show password
-          </button>
-          <table className="table-auto">
+          <div className="form-control w-64">
+            <label className="label cursor-pointer">
+              <span className="label-text">Toggle Show password</span>
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={showPassword}
+                onClick={(e) => setShowPassword(!showPassword)}
+              />
+            </label>
+          </div>
+          <table className="table table-zebra">
             <thead>
               <tr>
                 <th>Username</th>
@@ -60,7 +67,7 @@ export default function AdminTeamManagement() {
             </thead>
             <tbody>
               {teams?.map((t) => (
-                <tr key={t.id}>
+                <tr key={t.id} className="hover">
                   <td>{t.userName}</td>
                   <td>{showPassword ? t.teamPassword : "***"}</td>
                 </tr>

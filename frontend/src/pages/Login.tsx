@@ -26,9 +26,30 @@ export default function SolveTasks() {
   return (
     <Layout>
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="TeamName" name="username" />
-        <input type="password" placeholder="Password" name="password" />
-        <input type="submit" value="Login" />
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">TeamName:</span>
+          </label>
+          <input
+            type="text"
+            placeholder="TeamName"
+            name="username"
+            className="input input-bordered"
+          />
+        </div>
+
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Password:</span>
+          </label>
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            className="input input-bordered"
+          />
+        </div>
+        <input type="submit" value="Login" className="btn btn-primary" />
       </form>
       {errorMsg ? <p>{errorMsg}</p> : ""}
     </Layout>
