@@ -62,7 +62,7 @@ builder.Services.AddAuthentication()
         opt.Cookie.SameSite = SameSiteMode.None;
         opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         opt.Cookie.HttpOnly = true;
-        opt.Cookie.Domain = "fribyte.no";
+        opt.Cookie.Domain = ".fribyte.no";
     });
 builder.Services.AddAuthorization();
 
@@ -70,7 +70,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.Domain = "fribyte.no";
+    options.Cookie.Domain = ".fribyte.no";
     options.Events = new CookieAuthenticationEvents
     {
         OnRedirectToLogin = redirectContext =>
