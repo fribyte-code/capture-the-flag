@@ -117,7 +117,7 @@ public class CtfTaskService : ICtfTaskService
             throw new BruteForceException();
         }
         
-        if (task.Flag == flag)
+        if (task.Flag.ToLower() == flag.ToLower())
         {
             // Correct answer
             _logger.LogInformation("Team {TeamName} solved task: {TaskName} and received {Points} points", teamName, task.Name,
