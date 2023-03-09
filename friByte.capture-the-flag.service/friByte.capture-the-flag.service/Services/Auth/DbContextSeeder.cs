@@ -78,7 +78,7 @@ public static class DbContextSeeder
             await ctfContext.SaveChangesAsync();
             Console.WriteLine("Seeded 2 tasks into the database");
 
-            ctfContext.SolvedTasks.Add(new SolvedTask("admin", taskA));
+            ctfContext.SolvedTasks.Add(new SolvedTask("friByte", taskA));
             await ctfContext.SaveChangesAsync();
         }
     }

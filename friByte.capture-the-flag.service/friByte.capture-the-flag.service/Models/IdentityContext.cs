@@ -7,9 +7,7 @@ namespace friByte.capture_the_flag.service.Models;
 public class IdentityContext : IdentityDbContext<ApplicationUser>
 {
     public IdentityContext(DbContextOptions<IdentityContext> options)
-        : base(options)
-    {
-    }
+        : base(options) { }
 
     public void Migrate()
     {

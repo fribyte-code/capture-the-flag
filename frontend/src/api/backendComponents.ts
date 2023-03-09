@@ -68,6 +68,37 @@ export const useLogout = <TData = undefined>(
   );
 };
 
+export type MeError = Fetcher.ErrorWrapper<undefined>;
+
+export type MeVariables = BackendContext["fetcherOptions"];
+
+export const fetchMe = (variables: MeVariables, signal?: AbortSignal) =>
+  backendFetch<Schemas.ApplicationUser, MeError, undefined, {}, {}, {}>({
+    url: "/Api/Auth/Me",
+    method: "get",
+    ...variables,
+    signal,
+  });
+
+export const useMe = <TData = Schemas.ApplicationUser>(
+  variables: MeVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<Schemas.ApplicationUser, MeError, TData>,
+    "queryKey" | "queryFn"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useBackendContext(options);
+  return reactQuery.useQuery<Schemas.ApplicationUser, MeError, TData>(
+    queryKeyFn({ path: "/Api/Auth/Me", operationId: "me", variables }),
+    ({ signal }) => fetchMe({ ...fetcherOptions, ...variables }, signal),
+    {
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
 export type LeaderboardError = Fetcher.ErrorWrapper<undefined>;
 
 export type LeaderboardResponse = Schemas.LeaderboardEntry[];
@@ -486,6 +517,11 @@ export type QueryOperation =
       path: "/Api/Auth/Logout";
       operationId: "logout";
       variables: LogoutVariables;
+    }
+  | {
+      path: "/Api/Auth/Me";
+      operationId: "me";
+      variables: MeVariables;
     }
   | {
       path: "/Api/Leaderboard";

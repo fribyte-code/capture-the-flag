@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace friByte.capture_the_flag.service.Controllers;
@@ -18,14 +19,16 @@ public class
 {
     private readonly ILogger<AuthController> _logger;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
     public AuthController(
         ILogger<AuthController> logger,
-        SignInManager<ApplicationUser> signInManager
-    )
+        SignInManager<ApplicationUser> signInManager,
+        UserManager<ApplicationUser> userManager)
     {
         _logger = logger;
         _signInManager = signInManager;
+        _userManager = userManager;
     }
     
     /// <summary>
@@ -60,12 +63,35 @@ public class
         return Ok(new { Message = "Logged in" });
     }
 
-    [Authorize]
     [HttpGet(Name = "logout")]
     public async Task<ActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignOutAsync("Identity.Application");
         return Ok(new { Message = "Logged out" });
+    }
+
+    /// <summary>
+    /// Get logged in account
+    /// </summary>
+    /// <response code="401">When cookie is invalid, indicates that user need to login</response>
+    [HttpGet(Name = "me")]
+    public async Task<ActionResult<ApplicationUser>> Me()
+    {
+        var teamName = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+        if (teamName == null)
+        {
+            return Unauthorized();
+        }
+
+        var team = await _userManager.Users.Where(t => t.UserName == teamName).FirstOrDefaultAsync();
+
+        if (team == null)
+        {
+            return Unauthorized();
+        }
+
+        return Ok(team);
     }
 }
 
