@@ -9,11 +9,12 @@ Functionality:
 - [x] Automatic Swagger frontend client code generation
 - [x] Bruteforce checker
 - [ ] Hints for challenges
-- [ ] Challenges with flag
-- [ ] Scoreboard
-- [ ] Live scoreboard
-- [ ] Challenges Management panel
-- [ ] Team Management panel
+- [x] Challenges with flag
+- [ ] Render challenge description as HTML or Markdown
+- [x] Scoreboard
+- [x] Live scoreboard
+- [x] Challenges Management panel
+- [x] Team Management panel
 - [ ] User Management panel
 - [ ] Release challenges at certain time
 - [ ] SSO Auth
