@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { fetchLogout } from "../api/backendComponents";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Example() {
   const navigate = useNavigate();
-  const logout = async () => {
-    await fetchLogout({});
-    navigate("/login");
-  };
+  const { logout } = useAuth();
+
   return (
     <header>
       <nav className="navbar" aria-label="Global">

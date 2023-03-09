@@ -1,27 +1,15 @@
 import Layout from "./layout";
-import { fetchLogin } from "../api/backendComponents";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
-export default function SolveTasks() {
-  const navigate = useNavigate();
-  let [errorMsg, setErrorMsg] = useState("");
+export default function Login() {
+  const { login, errorMsg } = useAuth();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try {
-      await fetchLogin({
-        body: {
-          username: event.currentTarget.username.value,
-          password: event.currentTarget.password.value,
-        },
-      });
-      console.debug("Logged in");
-      setErrorMsg("");
-      navigate("/");
-    } catch (error) {
-      setErrorMsg("Wrong username or password!");
-      console.debug("Wrong password");
-    }
+    await login(
+      event.currentTarget.username.value,
+      event.currentTarget.password.value
+    );
   };
   return (
     <Layout>
