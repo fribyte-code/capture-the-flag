@@ -71,21 +71,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     options.Cookie.Domain = builder.Configuration.GetValue<string?>("CookieDomain");
-    options.Events = new CookieAuthenticationEvents
-    {
-        OnRedirectToLogin = redirectContext =>
-        {
-            redirectContext.Response.Clear();
-            redirectContext.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            return Task.CompletedTask;
-        },
-        OnRedirectToAccessDenied = redirectContext =>
-        {
-            redirectContext.Response.Clear();
-            redirectContext.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            return Task.CompletedTask;
-        },
-    };
 });
 
 builder.Services.AddCors(options =>
@@ -121,6 +106,7 @@ app.UseCookiePolicy(new CookiePolicyOptions()
 {
     MinimumSameSitePolicy = SameSiteMode.None,
     Secure = CookieSecurePolicy.Always,
+    
 });
 
 app.UseHttpsRedirection();
