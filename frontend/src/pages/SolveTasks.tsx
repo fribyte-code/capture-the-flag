@@ -25,6 +25,7 @@ export default function SolveTasks() {
       {data != undefined && taskCount != undefined && taskCount != 0 && (
         <>
           <div className="container">
+            <h1 className="font-bold">Tasks</h1>
             <div className="grid grid-cols-3">
               <button onClick={() => safeSetTaskIx(taskIx - 1)}>&larr;</button>
               <TaskComponent task={data[taskIx]} />

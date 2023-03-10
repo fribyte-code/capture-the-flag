@@ -30,69 +30,100 @@ export default function Admin() {
       {isLoading ? (
         <p>Loading</p>
       ) : (
-        <div>
+        <div style={{ maxWidth: "1200px" }}>
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               navigate("/admin/teams");
             }}
-            className="border shaded -m-1.5 p-1.5"
+            className="btn btn-neutral"
           >
             Team management
           </a>
           <br />
           <br />
-          <form
-            className="bg-white shadow-md rounded mb-2"
-            onSubmit={handleAddTask}
-          >
-            <p>Add new task</p>
-            <input
-              value={newTask.name}
-              onChange={(e) => setNewTask({ ...newTask, name: e.target.value })}
-              type="text"
-              name="taskName"
-              placeholder="Name"
-              className="shadow border rounded"
-            />
-            <input
-              value={newTask.points}
-              onChange={(e) =>
-                setNewTask({ ...newTask, points: Number(e.target.value) })
-              }
-              type="number"
-              name="points"
-              placeholder="Points"
-              className="shadow border rounded"
-            />
-            <textarea
-              value={newTask.description}
-              onChange={(e) =>
-                setNewTask({ ...newTask, description: e.target.value })
-              }
-              name="Description"
-              rows={6}
-              cols={20}
-              className="shadow border rounded"
-            />
-            <input
-              value={newTask.flag}
-              onChange={(e) => setNewTask({ ...newTask, flag: e.target.value })}
-              type="text"
-              name="flag"
-              placeholder="Flag{the-flag}"
-              className="shadow border rounded"
-            />
-            <input type="submit" className="shadow border rounded" />
+          <h1>Task management</h1>
+          <br />
+          <br />
+          <form onSubmit={handleAddTask}>
+            <h2>Add new task</h2>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">TaskName</span>
+              </label>
+              <input
+                value={newTask.name}
+                onChange={(e) =>
+                  setNewTask({ ...newTask, name: e.target.value })
+                }
+                type="text"
+                name="taskName"
+                placeholder="Name"
+                className="input input-bordered"
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Points</span>
+              </label>
+              <input
+                value={newTask.points}
+                onChange={(e) =>
+                  setNewTask({ ...newTask, points: Number(e.target.value) })
+                }
+                type="number"
+                name="points"
+                placeholder="Points"
+                className="input input-bordered"
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Description</span>
+              </label>
+              <textarea
+                value={newTask.description}
+                onChange={(e) =>
+                  setNewTask({ ...newTask, description: e.target.value })
+                }
+                name="Description"
+                rows={6}
+                cols={20}
+                className="textarea textarea-bordered"
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Flag</span>
+              </label>
+              <input
+                value={newTask.flag}
+                onChange={(e) =>
+                  setNewTask({ ...newTask, flag: e.target.value })
+                }
+                type="text"
+                name="flag"
+                placeholder="Flag{the-flag}"
+                className="input input-bordered"
+              />
+            </div>
+            <input type="submit" className="btn btn-primary" />
+            <br />
+            <br />
           </form>
-          <button
-            onClick={(e) => setShowFlag(!showFlag)}
-            className="rounded shaded border"
-          >
-            Toggle Show flag
-          </button>
-          <table className="table-auto">
+          <div className="form-control w-64">
+            <label className="label cursor-pointer">
+              <span className="label-text">Toggle Show flag</span>
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={showFlag}
+                onClick={(e) => setShowFlag(!showFlag)}
+              />
+            </label>
+          </div>
+          <table className="table table-zebra">
             <thead>
               <tr>
                 <th>Name</th>
@@ -106,7 +137,7 @@ export default function Admin() {
                 ? `${error.status} ${error.payload}`
                 : tasks
                 ? tasks.map((t) => (
-                    <tr key={t.id}>
+                    <tr key={t.id} className="hover">
                       <td>{t.name}</td>
                       <td>{t.points}</td>
                       <td>{t.description}</td>
