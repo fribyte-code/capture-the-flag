@@ -1,8 +1,13 @@
 import Layout from "./layout";
-import { fetchAdminAddTask, useAdminAllTasks } from "../api/backendComponents";
+import {
+  fetchAdminAddTask,
+  fetchAdminDeleteTask,
+  useAdminAllTasks,
+} from "../api/backendComponents";
 import { useState } from "react";
 import { CtfTaskWriteModel } from "../api/backendSchemas";
 import { useNavigate } from "react-router-dom";
+import AdminTask from "../components/adminTask";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -119,7 +124,7 @@ export default function Admin() {
                 type="checkbox"
                 className="toggle"
                 checked={showFlag}
-                onClick={(e) => setShowFlag(!showFlag)}
+                onChange={(e) => setShowFlag(!showFlag)}
               />
             </label>
           </div>
@@ -130,6 +135,7 @@ export default function Admin() {
                 <th>Points</th>
                 <th>Description</th>
                 <th>Flag</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -137,12 +143,11 @@ export default function Admin() {
                 ? `${error.status} ${error.payload}`
                 : tasks
                 ? tasks.map((t) => (
-                    <tr key={t.id} className="hover">
-                      <td>{t.name}</td>
-                      <td>{t.points}</td>
-                      <td>{t.description}</td>
-                      <td>{showFlag ? t.flag : "***"}</td>
-                    </tr>
+                    <AdminTask
+                      showFlag={showFlag}
+                      task={t}
+                      key={t.id}
+                    ></AdminTask>
                   ))
                 : ""}
             </tbody>

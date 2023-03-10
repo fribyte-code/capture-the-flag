@@ -31,7 +31,9 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
       <h1>{props.task.name}</h1>
       <p>
         <b>Description: </b>
-        {props.task.description}
+        <span
+          dangerouslySetInnerHTML={{ __html: props.task.description ?? "" }}
+        ></span>
       </p>
       <p>
         <b>Points: </b>
