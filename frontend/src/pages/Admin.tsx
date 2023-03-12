@@ -1,10 +1,11 @@
 import Layout from "./layout";
 import {
+  AdminAllTasksResponse,
   fetchAdminAddTask,
   fetchAdminDeleteTask,
   useAdminAllTasks,
 } from "../api/backendComponents";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CtfTaskWriteModel } from "../api/backendSchemas";
 import { useNavigate } from "react-router-dom";
 import AdminTask from "../components/adminTask";
@@ -29,6 +30,27 @@ export default function Admin() {
 
     await refetch();
   }
+
+  const [sortProp, setSortProp] = useState("");
+  const [sortAsc, setSortAsc] = useState(true);
+  function handleClickSortProp(prop: string) {
+    setSortAsc(sortProp == prop ? !sortAsc : sortAsc);
+    setSortProp(prop);
+  }
+
+  const [sortedTasks, setSortedTasks] = useState<
+    AdminAllTasksResponse | undefined
+  >();
+
+  useEffect(() => {
+    setSortedTasks(
+      tasks
+        ? [...tasks].sort((a: any, b: any) =>
+            a[sortProp] > b[sortProp] ? (sortAsc ? 1 : -1) : sortAsc ? -1 : 1
+          )
+        : []
+    );
+  }, [tasks, sortProp, sortAsc]);
 
   return (
     <Layout>
@@ -131,18 +153,38 @@ export default function Admin() {
           <table className="table table-zebra">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Points</th>
-                <th>Description</th>
-                <th>Flag</th>
+                <th
+                  className="cursor-pointer"
+                  onClick={(e) => handleClickSortProp("Name")}
+                >
+                  Name
+                </th>
+                <th
+                  className="cursor-pointer"
+                  onClick={(e) => handleClickSortProp("Points")}
+                >
+                  Points
+                </th>
+                <th
+                  className="cursor-pointer"
+                  onClick={(e) => handleClickSortProp("Description")}
+                >
+                  Description
+                </th>
+                <th
+                  className="cursor-pointer"
+                  onClick={(e) => handleClickSortProp("Flag")}
+                >
+                  Flag
+                </th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {error
                 ? `${error.status} ${error.payload}`
-                : tasks
-                ? tasks.map((t) => (
+                : sortedTasks
+                ? sortedTasks.map((t) => (
                     <AdminTask
                       showFlag={showFlag}
                       task={t}
