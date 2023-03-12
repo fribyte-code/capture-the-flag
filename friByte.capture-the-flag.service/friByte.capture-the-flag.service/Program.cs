@@ -63,6 +63,7 @@ builder.Services.AddAuthentication()
         opt.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         opt.Cookie.HttpOnly = true;
         opt.Cookie.Domain = builder.Configuration.GetValue<string?>("CookieDomain");
+        opt.ExpireTimeSpan = TimeSpan.FromHours(12);
     });
 builder.Services.AddAuthorization();
 
@@ -71,6 +72,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     options.Cookie.Domain = builder.Configuration.GetValue<string?>("CookieDomain");
+    options.ExpireTimeSpan = TimeSpan.FromHours(12);
 });
 
 builder.Services.AddCors(options =>
