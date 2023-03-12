@@ -2,7 +2,6 @@ import Layout from "./layout";
 import {
   AdminAllTasksResponse,
   fetchAdminAddTask,
-  fetchAdminDeleteTask,
   useAdminAllTasks,
 } from "../api/backendComponents";
 import { useEffect, useState } from "react";
@@ -51,6 +50,57 @@ export default function Admin() {
         : []
     );
   }, [tasks, sortProp, sortAsc]);
+
+  /**
+   * Hacky method for importing tasks from markdown format
+   * @example batchImportTasks(`
+   * # TaskA
+   * some textA
+   * ### Flag{Flag2}
+   *
+   * =task=
+   * # TaskB
+   * some textB
+   * ### Flag{Flag2}
+   *
+   * =task=
+   * `)
+   */
+  async function batchImportTasks(tasksString: string) {
+    let addedTasks = 0;
+    const tasksAsString = tasksString.split("\n=task=\n");
+    const newTasks: CtfTaskWriteModel[] = [];
+    tasksAsString.forEach(async (taskString) => {
+      if (taskString.trim()) {
+        console.debug(taskString);
+        const regexMatch =
+          /# (?<name>.+)(?<description>(.|\n)*)^### (?<flag>.+)/gm;
+        for (const match of taskString.matchAll(regexMatch)) {
+          const t = {
+            name: ((match.groups as any).name as string).trim(),
+            description: ((match.groups as any).description as string).trim(),
+            flag: ((match.groups as any).flag as string).trim(),
+            points: 0,
+          };
+          console.debug(t);
+          newTasks.push(t);
+        }
+      }
+    });
+
+    await Promise.all(
+      newTasks.map(async (t) => {
+        await fetchAdminAddTask({
+          body: t,
+        });
+        addedTasks++;
+      })
+    );
+
+    console.debug(`Added ${addedTasks} tasks`);
+    await refetch();
+  }
+  (window as any).batchImportTasks = batchImportTasks;
 
   return (
     <Layout>
