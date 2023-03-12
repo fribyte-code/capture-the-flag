@@ -107,7 +107,9 @@ export default function Admin() {
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Description</span>
+                <span className="label-text">
+                  Description (Rendered as HTML)
+                </span>
               </label>
               <textarea
                 value={newTask.description}
