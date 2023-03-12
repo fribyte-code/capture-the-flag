@@ -52,7 +52,7 @@ export default function Example() {
             onClick={logout}
             className="btn btn-ghost"
           >
-            Logg ut
+            Logut
           </button>
         </div>
       </nav>

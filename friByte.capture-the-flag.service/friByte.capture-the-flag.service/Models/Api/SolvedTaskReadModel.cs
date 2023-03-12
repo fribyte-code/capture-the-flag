@@ -16,7 +16,6 @@ public class SolvedTaskReadModel : DbBaseEntity
         Task = task;
     }
     
-    // TODO: Include TeamName
     public string TeamId { get; }
     public CtfTaskReadModel Task { get; }
 }

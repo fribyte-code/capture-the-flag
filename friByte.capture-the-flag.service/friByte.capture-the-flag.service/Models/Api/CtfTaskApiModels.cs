@@ -8,18 +8,21 @@ namespace friByte.capture_the_flag.service.Models.Api;
 /// </summary>
 public class CtfTaskReadModel
 {
-    public CtfTaskReadModel(CtfTask dbModel)
+    public CtfTaskReadModel() { }
+    public CtfTaskReadModel(CtfTask dbModel, bool? isSolved = null)
     {
         Id = dbModel.Id;
         Name = dbModel.Name;
         Points = dbModel.Points;
         Description = dbModel.Description;
+        IsSolved = isSolved;
     }
 
-    public Guid Id { get; }
-    public string Name { get; }
-    public int Points { get; }
-    public string Description { get;  }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public int Points { get; set; }
+    public string Description { get; set; }
+    public bool? IsSolved { get; set; }
 }
 
 /// <summary>

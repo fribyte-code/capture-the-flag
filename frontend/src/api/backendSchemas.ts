@@ -44,6 +44,7 @@ export type CtfTask = {
    */
   points?: number;
   description?: string;
+  successfullSolveAttempts?: SolvedTask[];
 };
 
 export type CtfTaskReadModel = {
@@ -57,6 +58,7 @@ export type CtfTaskReadModel = {
    */
   points?: number;
   description?: string;
+  isSolved?: boolean | null;
 };
 
 export type CtfTaskWriteModel = {
@@ -93,6 +95,23 @@ export type SolveTaskRequest = {
 export type SolveTaskResponse = {
   success?: boolean;
   isBruteForceDetected?: boolean;
+};
+
+export type SolvedTask = {
+  /**
+   * @format uuid
+   */
+  id?: string;
+  /**
+   * @format date-time
+   */
+  createdAt: string;
+  teamId?: string;
+  task?: CtfTask;
+  /**
+   * @format uuid
+   */
+  taskId?: string;
 };
 
 export type SolvedTaskReadModel = {

@@ -23,6 +23,12 @@ public interface ICtfTaskService
     public Task<bool> AttemptToSolveAsync(string teamName, Guid taskId, string flag);
     /// <returns>A list of all "solved flag"-events</returns>
     public Task<List<SolvedTaskReadModel>> GetSolveHistoryAsync();
+
+    /// <summary>
+    /// Returns the same list of tasks as <see cref="GetSolveHistoryAsync"/>
+    /// But mapped to the readModel including whether or not the task is solved or not.
+    /// </summary>
+    Task<List<CtfTaskReadModel>> GetAllTasksIncludingIsSolvedOrNot(string teamName);
 }
 
 public class CtfTaskService : ICtfTaskService
@@ -51,6 +57,21 @@ public class CtfTaskService : ICtfTaskService
     public Task<List<CtfTask>> GetAllAsync()
     {
         return _ctfContext.CtfTasks.OrderBy(t => t.CreatedAt).ToListAsync();
+    }
+
+    public Task<List<CtfTaskReadModel>> GetAllTasksIncludingIsSolvedOrNot(string teamName)
+    {
+        return _ctfContext.CtfTasks
+            .Select(t => new CtfTaskReadModel()
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Points = t.Points,
+                Description = t.Description,
+                IsSolved = t.SuccessfullSolveAttempts.Any(st => st.TeamId == teamName)
+            })
+            .OrderBy(t => t.Name)
+            .ToListAsync();
     }
 
     public async Task<CtfTask> AddAsync(CtfTaskWriteModel newTask)

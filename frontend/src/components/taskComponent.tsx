@@ -27,37 +27,50 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
     }
   }
   return (
-    <div>
-      <h1>{props.task.name}</h1>
-      <p>
-        <b>Description: </b>
-        <span
-          dangerouslySetInnerHTML={{ __html: props.task.description ?? "" }}
-        ></span>
-      </p>
-      <p>
-        <b>Points: </b>
-        {props.task.points}
-      </p>
-      <form onSubmit={handleSolveTask}>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Flag:</span>
-          </label>
-          <input
-            type="text"
-            name="flag"
-            placeholder="Flag{the-flag}"
-            className="input input-bordered"
-          />
-        </div>
-        <input
-          type="submit"
-          value="Solve"
-          className="btn btn-outline btn-primary"
-        />
-      </form>
-      {solveTaskFeedback ? <p>{solveTaskFeedback}</p> : ""}
+    <div
+      tabIndex={0}
+      className="collapse border rounded-box border-base-300 bg-base-100 collapse-arrow"
+    >
+      <input type="checkbox" />
+      <div className="collapse-title text-md font-medium">
+        <h1>
+          {props.task.isSolved ? <span>✅</span> : <span>❌</span>} -{" "}
+          {props.task.name}
+        </h1>
+      </div>
+      <div className="collapse-content">
+        <p>
+          <b>Description: </b>
+          <span
+            dangerouslySetInnerHTML={{ __html: props.task.description ?? "" }}
+          ></span>
+        </p>
+        <p>
+          <b>Points: </b>
+          {props.task.points}
+        </p>
+        {props.task.isSolved ? (
+          <p>Solved</p>
+        ) : (
+          <form
+            onSubmit={handleSolveTask}
+            className="flex flex-row items-center"
+          >
+            <input
+              type="text"
+              name="flag"
+              placeholder="Flag{the-flag}"
+              className="input input-bordered"
+            />
+            <input
+              type="submit"
+              value="Solve"
+              className="btn btn-outline btn-primary"
+            />
+          </form>
+        )}
+        {solveTaskFeedback ? <p>{solveTaskFeedback}</p> : ""}
+      </div>
     </div>
   );
 };

@@ -23,4 +23,5 @@ public class CtfTask : DbBaseEntity
     public string Flag { get; set; }
     public int Points { get; set; }
     public string Description { get; set; }
+    public List<SolvedTask> SuccessfullSolveAttempts { get; set; }
 }

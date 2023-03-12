@@ -31,9 +31,11 @@ public class TasksController : ControllerBase {
     [HttpGet(Name = "Tasks")]
     public async Task<List<CtfTaskReadModel>> Get()
     {
-        var tasks = await _ctfTaskService.GetAllAsync();
+        var teamName = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-        return tasks.Select(t => new CtfTaskReadModel(t)).ToList();
+        var tasks = await _ctfTaskService.GetAllTasksIncludingIsSolvedOrNot(teamName);
+
+        return tasks;
     }
 
     /// <summary>
