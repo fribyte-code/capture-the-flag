@@ -69,19 +69,21 @@ public class
     /// </summary>
     public static string GenerateTeamPassword()
     {
-        const int length = 4;
-        var passwordParts = new[]
+        var adjectives = new[]
         {
-            "team", "awesome", "penguin", "anaconda", "friByte", "coding", "hacker", "password", "turtle", "apple",
-            "sad", "happy", "angry", "excited", "horse", "tesla", "big", "small", "huge", "tiny", "singing", "31", "69", "l33t"
+            "awesome", "sad", "happy", "angry", "excited", "big", "small", "huge", "tiny", "singing", "hacking",
+        };
+        var nouns = new[]
+        {
+            "team", "penguin", "anaconda", "friByte", "hacker", "password", "turtle", "apple", "horse", "tesla",
         };
         
         var rnd = new Random();
-        var passPhrase = new List<string>();
-        for (var i = 0; i < length; i++)
+        var passPhrase = new List<string>
         {
-            passPhrase.Add(passwordParts[rnd.Next(passwordParts.Length)]);
-        }
+            adjectives[rnd.Next(adjectives.Length)],
+            nouns[rnd.Next(nouns.Length)],
+        };
 
         return string.Join("-", passPhrase);
     }

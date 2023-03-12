@@ -6,6 +6,7 @@ export default function AdminTeamManagement() {
   const { data: teams, isLoading, refetch } = useAllTeams({});
   const [showPassword, setShowPassword] = useState(false);
   const [newTeams, setNewTeams] = useState("");
+  const [teamPasswordToShow, setTeamPasswordToShow] = useState("");
 
   async function handleAddNewTeam(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,7 +42,7 @@ export default function AdminTeamManagement() {
                 name="usernames"
                 placeholder="Usernames, one per line"
                 className="textarea textarea-bordered"
-                rows={15}
+                rows={8}
                 cols={10}
               />
             </div>
@@ -62,14 +63,25 @@ export default function AdminTeamManagement() {
             <thead>
               <tr>
                 <th>Username</th>
-                <th>Password</th>
+                <th>Password (Click to show)</th>
               </tr>
             </thead>
             <tbody>
               {teams?.map((t) => (
                 <tr key={t.id} className="hover">
                   <td>{t.userName}</td>
-                  <td>{showPassword ? t.teamPassword : "***"}</td>
+                  <td
+                    className="cursor-pointer"
+                    onClick={(e) =>
+                      setTeamPasswordToShow(
+                        teamPasswordToShow == t.userName ? "" : t.userName!
+                      )
+                    }
+                  >
+                    {teamPasswordToShow == t.userName || showPassword
+                      ? t.teamPassword
+                      : "***"}
+                  </td>
                 </tr>
               ))}
             </tbody>
