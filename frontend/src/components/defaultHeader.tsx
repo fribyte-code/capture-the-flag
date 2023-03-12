@@ -7,7 +7,7 @@ export default function Example() {
 
   return (
     <header>
-      <nav className="navbar" aria-label="Global">
+      <nav className="navbar container mx-auto" aria-label="Global">
         <div className="navbar-start">
           <a
             href="#"

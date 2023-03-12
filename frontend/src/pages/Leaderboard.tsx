@@ -8,7 +8,7 @@ export default function Leaderboard() {
 
   return (
     <Layout>
-      <div className="w-screen flex flex-col align-center">
+      <div className="flex flex-col align-center">
         <h1 className="self-center font-bold">Live leaderboard</h1>
         {isLoading ? (
           <p>Loading</p>

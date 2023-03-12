@@ -5,7 +5,7 @@ const Layout: React.FC<React.PropsWithChildren> = (props) => {
   return (
     <>
       <Header />
-      {props.children}
+      <div className="container mx-auto">{props.children}</div>
     </>
   );
 };
