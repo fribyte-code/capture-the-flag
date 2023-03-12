@@ -207,25 +207,25 @@ export default function Admin() {
               <tr>
                 <th
                   className="cursor-pointer"
-                  onClick={(e) => handleClickSortProp("Name")}
+                  onClick={(e) => handleClickSortProp("name")}
                 >
                   Name
                 </th>
                 <th
                   className="cursor-pointer"
-                  onClick={(e) => handleClickSortProp("Points")}
+                  onClick={(e) => handleClickSortProp("points")}
                 >
                   Points
                 </th>
                 <th
                   className="cursor-pointer"
-                  onClick={(e) => handleClickSortProp("Description")}
+                  onClick={(e) => handleClickSortProp("description")}
                 >
                   Description
                 </th>
                 <th
                   className="cursor-pointer"
-                  onClick={(e) => handleClickSortProp("Flag")}
+                  onClick={(e) => handleClickSortProp("flag")}
                 >
                   Flag
                 </th>
