@@ -1,4 +1,7 @@
 import React, { FormEvent, useState } from "react";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import remarkGfm from "remark-gfm";
 import { fetchSolve } from "../api/backendComponents";
 import { CtfTaskReadModel } from "../api/backendSchemas";
 
@@ -39,12 +42,13 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
         </h1>
       </div>
       <div className="collapse-content">
-        <p>
-          <b>Description: </b>
-          <span
-            dangerouslySetInnerHTML={{ __html: props.task.description ?? "" }}
-          ></span>
-        </p>
+        <ReactMarkdown
+          rehypePlugins={[rehypeHighlight]}
+          remarkPlugins={[remarkGfm]}
+          linkTarget="_blank"
+        >
+          {props.task.description ?? ""}
+        </ReactMarkdown>
         <p>
           <b>Points: </b>
           {props.task.points}

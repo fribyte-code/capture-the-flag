@@ -108,7 +108,7 @@ export default function Admin() {
             <div className="form-control">
               <label className="label">
                 <span className="label-text">
-                  Description (Rendered as HTML)
+                  Description (Rendered as markdown)
                 </span>
               </label>
               <textarea
