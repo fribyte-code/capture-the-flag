@@ -15,7 +15,7 @@ namespace friByte.capture_the_flag.service.Services
     /// </summary>
     public class BruteforceCheckerService : IBruteforceCheckerService
     {
-        private readonly TimeSpan _bruteForceTimeout = TimeSpan.FromSeconds(30);
+        private readonly TimeSpan _bruteForceTimeout = TimeSpan.FromSeconds(3);
         private readonly Dictionary<(string, Guid), DateTimeOffset> _taskAttemptDict = new Dictionary<(string, Guid), DateTimeOffset>();
         /// <summary>
         /// The clock is dependency inject in order to enable unit testing without waiting for actual time to pass
