@@ -36,7 +36,7 @@ export default function Tasks() {
                 />
               </label>
             </div>
-            <div className="container">
+            <div className="container mb-24">
               <h1 className="font-bold">Tasks</h1>
               <div className="flex flex-col gap-1">
                 {filteredTasks.map((task) => (

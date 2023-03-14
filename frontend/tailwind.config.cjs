@@ -6,7 +6,15 @@ module.exports = {
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
-    darkTheme: "dracula",
-    lightTheme: "wireframe",
+    themes: [
+      {
+        dracula: {
+          ...require("daisyui/src/colors/themes")["[data-theme=dracula]"],
+          primary: "#00F5C9",
+          secondary: "#000000",
+        },
+      },
+      "light",
+    ],
   },
 };

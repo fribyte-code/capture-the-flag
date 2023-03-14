@@ -35,7 +35,6 @@ export default function Header() {
             <LightIcon className="w-8" />
             <input
               type="checkbox"
-              data-toggle-theme="dracula,light"
               className="toggle m-auto mx-1"
               checked={theme === "dark"}
               onChange={() => toggleTheme()}

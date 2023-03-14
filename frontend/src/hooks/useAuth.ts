@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useRoutes } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { fetchLogin, fetchLogout, fetchMe } from "../api/backendComponents";
-import { ApplicationUser } from "../api/backendSchemas";
+import { LoggedInUserDto } from "../api/backendSchemas";
 
 export function useAuth() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [me, setMe] = useState<ApplicationUser | null>(null);
+  const [me, setMe] = useState<LoggedInUserDto | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   let [errorMsg, setErrorMsg] = useState("");
 

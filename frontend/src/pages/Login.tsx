@@ -37,7 +37,11 @@ export default function Login() {
             className="input input-bordered"
           />
         </div>
-        <input type="submit" value="Login" className="btn btn-primary" />
+        <input
+          type="submit"
+          value="Login"
+          className="btn btn-outline btn-primary mt-4"
+        />
       </form>
       {errorMsg ? <p>{errorMsg}</p> : ""}
     </Layout>

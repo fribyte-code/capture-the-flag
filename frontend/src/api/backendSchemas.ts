@@ -26,7 +26,6 @@ export type ApplicationUser = {
    */
   accessFailedCount?: number;
   teamPassword?: string | null;
-  isAdmin?: boolean | null;
 };
 
 export type CtfTask = {
