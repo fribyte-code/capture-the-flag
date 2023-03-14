@@ -1,10 +1,23 @@
 import Layout from "./layout";
 import { useLeaderboard } from "../hooks/useLeaderboard";
+import { useEffect } from "react";
+import confetti from "canvas-confetti";
 
 export default function Leaderboard() {
   // We need to move useLeaderboard one level up if we want to show teamScore on all pages
   // And potentially push toast messages on every task solved by your team
-  const { leaderboard, isLoading } = useLeaderboard();
+  const { leaderboard, isLoading, lastTaskSolveDate } = useLeaderboard();
+
+  useEffect(() => {
+    if (lastTaskSolveDate) {
+      console.debug("Leaderboard change");
+      confetti({
+        particleCount: 75,
+        spread: 50,
+        origin: { y: 1 },
+      });
+    }
+  }, [lastTaskSolveDate]);
 
   return (
     <Layout>
@@ -20,7 +33,7 @@ export default function Leaderboard() {
                 <th>Points</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody aria-live="polite">
               {leaderboard.map((l) => (
                 <tr key={l.teamId} className="hover">
                   <td>{l.teamId}</td>

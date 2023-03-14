@@ -11,15 +11,17 @@ export default function AdminTeamManagement() {
   async function handleAddNewTeam(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    newTeams.split("\n").forEach(async (teamName) => {
-      if (teamName) {
-        await fetchAddTeam({
-          body: {
-            username: teamName,
-          },
-        });
-      }
-    });
+    await Promise.all(
+      newTeams.split("\n").map(async (teamName) => {
+        if (teamName) {
+          await fetchAddTeam({
+            body: {
+              username: teamName,
+            },
+          });
+        }
+      })
+    );
 
     await refetch();
   }
