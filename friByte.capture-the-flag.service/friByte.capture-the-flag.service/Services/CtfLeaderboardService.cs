@@ -1,5 +1,7 @@
 using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Models.Api;
+using friByte.capture_the_flag.service.Services.Auth;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace friByte.capture_the_flag.service.Services;
@@ -16,12 +18,17 @@ public interface ICtfLeaderboardService
 public class CtfLeaderboardService : ICtfLeaderboardService
 {
     private readonly CtfContext _ctfContext;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly ILogger<CtfLeaderboardService> _logger;
 
-    public CtfLeaderboardService(CtfContext ctfContext, ILogger<CtfLeaderboardService> logger)
+    public CtfLeaderboardService(
+        CtfContext ctfContext,
+        ILogger<CtfLeaderboardService> logger,
+        UserManager<ApplicationUser> userManager)
     {
         _ctfContext = ctfContext;
         _logger = logger;
+        _userManager = userManager;
     }
 
     public async Task<List<LeaderboardEntry>> GetLeaderboard()
@@ -30,9 +37,14 @@ public class CtfLeaderboardService : ICtfLeaderboardService
             .GroupBy(t => t.TeamId)
             .Select(g => new LeaderboardEntry(g.Key, g.Sum(t => t.Task.Points)))
             .ToListAsync();
+
+        var adminUserIds = (await _userManager.GetUsersInRoleAsync(IdentityRoleNames.AdminRoleName)).Select(u => u.Id);
+
+        var filteredLeaderboard = leaderboard.Where(e => adminUserIds.Contains(e.TeamId));
+        
         // It was not possible to run OrderByDescending directly after the .Select statement as it changes the model or something like that...
         // So we need to sort the list in memory instead of in the database
-        return leaderboard.OrderByDescending(e => e.Points)
+        return filteredLeaderboard.OrderByDescending(e => e.Points)
             .ToList();
     }
 
