@@ -73,23 +73,23 @@ export type MeError = Fetcher.ErrorWrapper<undefined>;
 export type MeVariables = BackendContext["fetcherOptions"];
 
 export const fetchMe = (variables: MeVariables, signal?: AbortSignal) =>
-  backendFetch<Schemas.ApplicationUser, MeError, undefined, {}, {}, {}>({
+  backendFetch<Schemas.LoggedInUserDto, MeError, undefined, {}, {}, {}>({
     url: "/Api/Auth/Me",
     method: "get",
     ...variables,
     signal,
   });
 
-export const useMe = <TData = Schemas.ApplicationUser>(
+export const useMe = <TData = Schemas.LoggedInUserDto>(
   variables: MeVariables,
   options?: Omit<
-    reactQuery.UseQueryOptions<Schemas.ApplicationUser, MeError, TData>,
+    reactQuery.UseQueryOptions<Schemas.LoggedInUserDto, MeError, TData>,
     "queryKey" | "queryFn"
   >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
-  return reactQuery.useQuery<Schemas.ApplicationUser, MeError, TData>(
+  return reactQuery.useQuery<Schemas.LoggedInUserDto, MeError, TData>(
     queryKeyFn({ path: "/Api/Auth/Me", operationId: "me", variables }),
     ({ signal }) => fetchMe({ ...fetcherOptions, ...variables }, signal),
     {

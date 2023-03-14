@@ -26,6 +26,7 @@ export type ApplicationUser = {
    */
   accessFailedCount?: number;
   teamPassword?: string | null;
+  isAdmin?: boolean | null;
 };
 
 export type CtfTask = {
@@ -77,6 +78,11 @@ export type LeaderboardEntry = {
    * @format int32
    */
   points?: number;
+};
+
+export type LoggedInUserDto = {
+  teamName?: string;
+  isAdmin?: boolean;
 };
 
 export type LoginCredentials = {

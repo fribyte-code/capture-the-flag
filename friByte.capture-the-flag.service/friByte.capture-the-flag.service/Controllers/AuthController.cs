@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using friByte.capture_the_flag.service.Models;
+using friByte.capture_the_flag.service.Models.Dtos;
 using friByte.capture_the_flag.service.Services.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -76,7 +77,7 @@ public class
     /// </summary>
     /// <response code="401">When cookie is invalid, indicates that user need to login</response>
     [HttpGet(Name = "me")]
-    public async Task<ActionResult<ApplicationUser>> Me()
+    public async Task<ActionResult<LoggedInUserDto>> Me()
     {
         var teamName = HttpContext.User.FindFirstValue(ClaimTypes.Name);
         if (teamName == null)
@@ -91,7 +92,13 @@ public class
             return Unauthorized();
         }
 
-        return Ok(team);
+        var roles = await _userManager.GetRolesAsync(team);
+        var dto = new LoggedInUserDto
+        {
+            TeamName = team.UserName,
+            IsAdmin = roles.Contains(IdentityRoleNames.AdminRoleName)
+        };
+        return Ok(dto);
     }
 }
 

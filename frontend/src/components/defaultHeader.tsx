@@ -1,9 +1,42 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import DarkIcon from "./icons/DarkIcon";
+import LightIcon from "./icons/LightIcon";
 
 export default function Example() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, me } = useAuth();
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  useEffect(() => {
+    const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (darkMode) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  };
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document
+        .getElementsByTagName("html")[0]
+        .setAttribute("data-theme", "dracula");
+    } else {
+      document
+        .getElementsByTagName("html")[0]
+        .setAttribute("data-theme", "light");
+    }
+  }, [theme]);
 
   return (
     <header>
@@ -26,6 +59,18 @@ export default function Example() {
           </a>
         </div>
         <div className="navbar-end">
+          <div className="flex">
+            <LightIcon className="w-8" />
+            <input
+              type="checkbox"
+              data-toggle-theme="dracula,light"
+              className="toggle m-auto mx-1"
+              checked={theme === "dark"}
+              onChange={() => toggleTheme()}
+              aria-label="Toggle color theme"
+            />
+            <DarkIcon className="w-8" />
+          </div>
           <a
             href="/leaderboard"
             onClick={(e) => {
@@ -36,16 +81,18 @@ export default function Example() {
           >
             Leaderboard
           </a>
-          <a
-            href="/admin"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/admin");
-            }}
-            className="btn btn-ghost"
-          >
-            Admin
-          </a>
+          {me && me.isAdmin && (
+            <a
+              href="/admin"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/admin");
+              }}
+              className="btn btn-ghost"
+            >
+              Admin
+            </a>
+          )}
           <button
             role="button"
             aria-label="Logout"

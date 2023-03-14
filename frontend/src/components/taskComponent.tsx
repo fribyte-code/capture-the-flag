@@ -32,7 +32,7 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
   return (
     <div
       tabIndex={0}
-      className="collapse border drop-shadow-md mb-2 rounded-box border-base-300 bg-base-100 collapse-arrow"
+      className="collapse border drop-shadow-md mb-2 rounded-box border-base-300 bg-base-300 collapse-arrow"
     >
       <input type="checkbox" />
       <div className="collapse-title text-md font-medium">
