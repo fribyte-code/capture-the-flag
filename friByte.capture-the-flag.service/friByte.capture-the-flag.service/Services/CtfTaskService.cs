@@ -3,6 +3,8 @@ using friByte.capture_the_flag.service.Models.Api;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.Serialization;
 using friByte.capture_the_flag.service.Hubs;
+using friByte.capture_the_flag.service.Services.Auth;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 
 namespace friByte.capture_the_flag.service.Services;
@@ -38,20 +40,22 @@ public class CtfTaskService : ICtfTaskService
     private readonly IBruteforceCheckerService _bruteforceCheckerService;
     private readonly IHubContext<CtfSignalrHub, ICtfSignalrHubClient> _ctfSignalrHubContext;
     private readonly ICtfLeaderboardService _ctfLeaderboardService;
-
+    private readonly UserManager<ApplicationUser> _userManager;
+    
     public CtfTaskService(
         CtfContext ctfContext,
         ILogger<CtfTaskService> logger,
         IBruteforceCheckerService bruteforceCheckerService,
         IHubContext<CtfSignalrHub, ICtfSignalrHubClient> ctfSignalrHubContext,
-        ICtfLeaderboardService ctfLeaderboardService
-    )
+        ICtfLeaderboardService ctfLeaderboardService,
+        UserManager<ApplicationUser> userManager)
     {
         _ctfContext = ctfContext;
         _logger = logger;
         _bruteforceCheckerService = bruteforceCheckerService;
         _ctfSignalrHubContext = ctfSignalrHubContext;
         _ctfLeaderboardService = ctfLeaderboardService;
+        _userManager = userManager;
     }
 
     public Task<List<CtfTask>> GetAllAsync()
@@ -172,10 +176,16 @@ public class CtfTaskService : ICtfTaskService
     /// <summary>
     /// Sends live signalR events to frontend to let the scoreboard update live without page refresh
     /// </summary>
-    private Task SendSolvedTaskEventToClients(SolvedTask solvedTask)
+    private async Task SendSolvedTaskEventToClients(SolvedTask solvedTask)
     {
+        var adminIds = (await _userManager.GetUsersInRoleAsync(IdentityRoleNames.AdminRoleName)).Select(u => u.UserName);
+        if (adminIds.Contains(solvedTask.TeamId))
+        {
+            return;
+        }
+        
         // Runs both calls in parallel
-        return Task.WhenAll(
+        await Task.WhenAll(
             _ctfSignalrHubContext.Clients.All.ReceiveSolvedTask(new SolvedTaskReadModel(solvedTask)),
             _ctfSignalrHubContext.Clients.All.ReceiveLeaderboardEntryChange(
                 _ctfLeaderboardService.GetScoreForTeamId(solvedTask.TeamId).Result)
