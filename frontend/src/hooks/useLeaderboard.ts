@@ -46,7 +46,7 @@ export function useLeaderboard() {
     }
     newLeaderboard.sort((a, b) => b.points! - a.points!);
     setLeaderboard(newLeaderboard);
-    setLastTaskSolveDate(Date.now);
+    setLastTaskSolveDate(new Date());
   });
 
   async function fetchLeaderboardFromApi() {
