@@ -1,42 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../App";
 import { useAuth } from "../hooks/useAuth";
 import DarkIcon from "./icons/DarkIcon";
 import LightIcon from "./icons/LightIcon";
 
-export default function Example() {
+export default function Header() {
   const navigate = useNavigate();
   const { logout, me } = useAuth();
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    const darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (darkMode) {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (theme === "light") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  };
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document
-        .getElementsByTagName("html")[0]
-        .setAttribute("data-theme", "dracula");
-    } else {
-      document
-        .getElementsByTagName("html")[0]
-        .setAttribute("data-theme", "light");
-    }
-  }, [theme]);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <header>
