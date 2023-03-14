@@ -37,10 +37,10 @@ public class CtfLeaderboardService : ICtfLeaderboardService
             .GroupBy(t => t.TeamId)
             .Select(g => new LeaderboardEntry(g.Key, g.Sum(t => t.Task.Points)))
             .ToListAsync();
+        
+        var adminUserIds = (await _userManager.GetUsersInRoleAsync(IdentityRoleNames.AdminRoleName)).Select(u => u.UserName);
 
-        var adminUserIds = (await _userManager.GetUsersInRoleAsync(IdentityRoleNames.AdminRoleName)).Select(u => u.Id);
-
-        var filteredLeaderboard = leaderboard.Where(e => adminUserIds.Contains(e.TeamId));
+        var filteredLeaderboard = leaderboard.Where(e => !adminUserIds.Contains(e.TeamId)).ToList();
         
         // It was not possible to run OrderByDescending directly after the .Select statement as it changes the model or something like that...
         // So we need to sort the list in memory instead of in the database
