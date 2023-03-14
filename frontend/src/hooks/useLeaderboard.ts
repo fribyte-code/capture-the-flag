@@ -16,7 +16,9 @@ export function useLeaderboard() {
     fetchLeaderboardFromApi();
   }, []);
 
-  const signalRSocket = new SignalRSocketHandler("/Api/signalr");
+  const apiUrl = window.env?.APP_API_URL ?? "";
+  const signalRUrl = apiUrl + "/Api/signalr";
+  const signalRSocket = new SignalRSocketHandler(signalRUrl);
 
   signalRSocket.subscribeToEvent(SignalRSocketEvent.reconnect, () => {
     // To ensure we do not lose any events; always re-download data
