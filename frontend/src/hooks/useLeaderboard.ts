@@ -11,6 +11,7 @@ export function useLeaderboard() {
   // to avoid multiple signalR subscriptions if hook is used multiple places.
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [lastTaskSolveDate, setLastTaskSolveDate] = useState<null | Date>(null);
 
   useEffect(() => {
     fetchLeaderboardFromApi();
@@ -43,7 +44,9 @@ export function useLeaderboard() {
     if (!existedInLeaderboard) {
       newLeaderboard.push(leaderBoardEntry);
     }
+    newLeaderboard.sort((a, b) => b.points! - a.points!);
     setLeaderboard(newLeaderboard);
+    setLastTaskSolveDate(Date.now);
   });
 
   async function fetchLeaderboardFromApi() {
@@ -53,5 +56,5 @@ export function useLeaderboard() {
     setIsLoading(false);
   }
 
-  return { leaderboard, isLoading };
+  return { leaderboard, isLoading, lastTaskSolveDate };
 }
