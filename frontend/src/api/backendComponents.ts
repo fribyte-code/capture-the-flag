@@ -27,14 +27,14 @@ export const useLogin = (
   options?: Omit<
     reactQuery.UseMutationOptions<undefined, LoginError, LoginVariables>,
     "mutationFn"
-  >
+  >,
 ) => {
   const { fetcherOptions } = useBackendContext();
-  return reactQuery.useMutation<undefined, LoginError, LoginVariables>(
-    (variables: LoginVariables) =>
+  return reactQuery.useMutation<undefined, LoginError, LoginVariables>({
+    mutationFn: (variables: LoginVariables) =>
       fetchLogin({ ...fetcherOptions, ...variables }),
-    options
-  );
+    ...options,
+  });
 };
 
 export type LogoutError = Fetcher.ErrorWrapper<undefined>;
@@ -53,19 +53,22 @@ export const useLogout = <TData = undefined>(
   variables: LogoutVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<undefined, LogoutError, TData>,
-    "queryKey" | "queryFn"
-  >
+    "queryKey" | "queryFn" | "initialData"
+  >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
-  return reactQuery.useQuery<undefined, LogoutError, TData>(
-    queryKeyFn({ path: "/Api/Auth/Logout", operationId: "logout", variables }),
-    ({ signal }) => fetchLogout({ ...fetcherOptions, ...variables }, signal),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
+  return reactQuery.useQuery<undefined, LogoutError, TData>({
+    queryKey: queryKeyFn({
+      path: "/Api/Auth/Logout",
+      operationId: "logout",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchLogout({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
 };
 
 export type MeError = Fetcher.ErrorWrapper<undefined>;
@@ -84,19 +87,22 @@ export const useMe = <TData = Schemas.LoggedInUserDto>(
   variables: MeVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<Schemas.LoggedInUserDto, MeError, TData>,
-    "queryKey" | "queryFn"
-  >
+    "queryKey" | "queryFn" | "initialData"
+  >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
-  return reactQuery.useQuery<Schemas.LoggedInUserDto, MeError, TData>(
-    queryKeyFn({ path: "/Api/Auth/Me", operationId: "me", variables }),
-    ({ signal }) => fetchMe({ ...fetcherOptions, ...variables }, signal),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
+  return reactQuery.useQuery<Schemas.LoggedInUserDto, MeError, TData>({
+    queryKey: queryKeyFn({
+      path: "/Api/Auth/Me",
+      operationId: "me",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchMe({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
 };
 
 export type LeaderboardError = Fetcher.ErrorWrapper<undefined>;
@@ -107,7 +113,7 @@ export type LeaderboardVariables = BackendContext["fetcherOptions"];
 
 export const fetchLeaderboard = (
   variables: LeaderboardVariables,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) =>
   backendFetch<LeaderboardResponse, LeaderboardError, undefined, {}, {}, {}>({
     url: "/Api/Leaderboard",
@@ -120,24 +126,22 @@ export const useLeaderboard = <TData = LeaderboardResponse>(
   variables: LeaderboardVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<LeaderboardResponse, LeaderboardError, TData>,
-    "queryKey" | "queryFn"
-  >
+    "queryKey" | "queryFn" | "initialData"
+  >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
-  return reactQuery.useQuery<LeaderboardResponse, LeaderboardError, TData>(
-    queryKeyFn({
+  return reactQuery.useQuery<LeaderboardResponse, LeaderboardError, TData>({
+    queryKey: queryKeyFn({
       path: "/Api/Leaderboard",
       operationId: "leaderboard",
       variables,
     }),
-    ({ signal }) =>
+    queryFn: ({ signal }) =>
       fetchLeaderboard({ ...fetcherOptions, ...variables }, signal),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
+    ...options,
+    ...queryOptions,
+  });
 };
 
 export type AdminAllTasksError = Fetcher.ErrorWrapper<undefined>;
@@ -148,7 +152,7 @@ export type AdminAllTasksVariables = BackendContext["fetcherOptions"];
 
 export const fetchAdminAllTasks = (
   variables: AdminAllTasksVariables,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) =>
   backendFetch<
     AdminAllTasksResponse,
@@ -167,24 +171,22 @@ export const useAdminAllTasks = <TData = AdminAllTasksResponse>(
       AdminAllTasksError,
       TData
     >,
-    "queryKey" | "queryFn"
-  >
+    "queryKey" | "queryFn" | "initialData"
+  >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
-  return reactQuery.useQuery<AdminAllTasksResponse, AdminAllTasksError, TData>(
-    queryKeyFn({
+  return reactQuery.useQuery<AdminAllTasksResponse, AdminAllTasksError, TData>({
+    queryKey: queryKeyFn({
       path: "/Api/TaskAdmin",
       operationId: "adminAllTasks",
       variables,
     }),
-    ({ signal }) =>
+    queryFn: ({ signal }) =>
       fetchAdminAllTasks({ ...fetcherOptions, ...variables }, signal),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
+    ...options,
+    ...queryOptions,
+  });
 };
 
 export type AdminAddTaskError = Fetcher.ErrorWrapper<undefined>;
@@ -195,7 +197,7 @@ export type AdminAddTaskVariables = {
 
 export const fetchAdminAddTask = (
   variables: AdminAddTaskVariables,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) =>
   backendFetch<
     Schemas.CtfTask,
@@ -214,18 +216,18 @@ export const useAdminAddTask = (
       AdminAddTaskVariables
     >,
     "mutationFn"
-  >
+  >,
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
     Schemas.CtfTask,
     AdminAddTaskError,
     AdminAddTaskVariables
-  >(
-    (variables: AdminAddTaskVariables) =>
+  >({
+    mutationFn: (variables: AdminAddTaskVariables) =>
       fetchAdminAddTask({ ...fetcherOptions, ...variables }),
-    options
-  );
+    ...options,
+  });
 };
 
 export type AdminUpdateTaskPathParams = {
@@ -244,7 +246,7 @@ export type AdminUpdateTaskVariables = {
 
 export const fetchAdminUpdateTask = (
   variables: AdminUpdateTaskVariables,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) =>
   backendFetch<
     Schemas.CtfTask,
@@ -263,18 +265,18 @@ export const useAdminUpdateTask = (
       AdminUpdateTaskVariables
     >,
     "mutationFn"
-  >
+  >,
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
     Schemas.CtfTask,
     AdminUpdateTaskError,
     AdminUpdateTaskVariables
-  >(
-    (variables: AdminUpdateTaskVariables) =>
+  >({
+    mutationFn: (variables: AdminUpdateTaskVariables) =>
       fetchAdminUpdateTask({ ...fetcherOptions, ...variables }),
-    options
-  );
+    ...options,
+  });
 };
 
 export type AdminDeleteTaskPathParams = {
@@ -292,7 +294,7 @@ export type AdminDeleteTaskVariables = {
 
 export const fetchAdminDeleteTask = (
   variables: AdminDeleteTaskVariables,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) =>
   backendFetch<
     undefined,
@@ -311,18 +313,18 @@ export const useAdminDeleteTask = (
       AdminDeleteTaskVariables
     >,
     "mutationFn"
-  >
+  >,
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
     undefined,
     AdminDeleteTaskError,
     AdminDeleteTaskVariables
-  >(
-    (variables: AdminDeleteTaskVariables) =>
+  >({
+    mutationFn: (variables: AdminDeleteTaskVariables) =>
       fetchAdminDeleteTask({ ...fetcherOptions, ...variables }),
-    options
-  );
+    ...options,
+  });
 };
 
 export type TasksError = Fetcher.ErrorWrapper<undefined>;
@@ -343,19 +345,22 @@ export const useTasks = <TData = TasksResponse>(
   variables: TasksVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<TasksResponse, TasksError, TData>,
-    "queryKey" | "queryFn"
-  >
+    "queryKey" | "queryFn" | "initialData"
+  >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
-  return reactQuery.useQuery<TasksResponse, TasksError, TData>(
-    queryKeyFn({ path: "/Api/Tasks", operationId: "tasks", variables }),
-    ({ signal }) => fetchTasks({ ...fetcherOptions, ...variables }, signal),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
+  return reactQuery.useQuery<TasksResponse, TasksError, TData>({
+    queryKey: queryKeyFn({
+      path: "/Api/Tasks",
+      operationId: "tasks",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchTasks({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
 };
 
 export type SolvePathParams = {
@@ -390,18 +395,18 @@ export const useSolve = (
       SolveVariables
     >,
     "mutationFn"
-  >
+  >,
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
     Schemas.SolveTaskResponse,
     SolveError,
     SolveVariables
-  >(
-    (variables: SolveVariables) =>
+  >({
+    mutationFn: (variables: SolveVariables) =>
       fetchSolve({ ...fetcherOptions, ...variables }),
-    options
-  );
+    ...options,
+  });
 };
 
 export type SolveHistoryError = Fetcher.ErrorWrapper<undefined>;
@@ -412,7 +417,7 @@ export type SolveHistoryVariables = BackendContext["fetcherOptions"];
 
 export const fetchSolveHistory = (
   variables: SolveHistoryVariables,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) =>
   backendFetch<SolveHistoryResponse, SolveHistoryError, undefined, {}, {}, {}>({
     url: "/Api/Tasks/solve/history",
@@ -425,24 +430,22 @@ export const useSolveHistory = <TData = SolveHistoryResponse>(
   variables: SolveHistoryVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<SolveHistoryResponse, SolveHistoryError, TData>,
-    "queryKey" | "queryFn"
-  >
+    "queryKey" | "queryFn" | "initialData"
+  >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
-  return reactQuery.useQuery<SolveHistoryResponse, SolveHistoryError, TData>(
-    queryKeyFn({
+  return reactQuery.useQuery<SolveHistoryResponse, SolveHistoryError, TData>({
+    queryKey: queryKeyFn({
       path: "/Api/Tasks/solve/history",
       operationId: "solveHistory",
       variables,
     }),
-    ({ signal }) =>
+    queryFn: ({ signal }) =>
       fetchSolveHistory({ ...fetcherOptions, ...variables }, signal),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
+    ...options,
+    ...queryOptions,
+  });
 };
 
 export type AllTeamsError = Fetcher.ErrorWrapper<undefined>;
@@ -453,7 +456,7 @@ export type AllTeamsVariables = BackendContext["fetcherOptions"];
 
 export const fetchAllTeams = (
   variables: AllTeamsVariables,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) =>
   backendFetch<AllTeamsResponse, AllTeamsError, undefined, {}, {}, {}>({
     url: "/Api/Team",
@@ -466,19 +469,22 @@ export const useAllTeams = <TData = AllTeamsResponse>(
   variables: AllTeamsVariables,
   options?: Omit<
     reactQuery.UseQueryOptions<AllTeamsResponse, AllTeamsError, TData>,
-    "queryKey" | "queryFn"
-  >
+    "queryKey" | "queryFn" | "initialData"
+  >,
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
-  return reactQuery.useQuery<AllTeamsResponse, AllTeamsError, TData>(
-    queryKeyFn({ path: "/Api/Team", operationId: "allTeams", variables }),
-    ({ signal }) => fetchAllTeams({ ...fetcherOptions, ...variables }, signal),
-    {
-      ...options,
-      ...queryOptions,
-    }
-  );
+  return reactQuery.useQuery<AllTeamsResponse, AllTeamsError, TData>({
+    queryKey: queryKeyFn({
+      path: "/Api/Team",
+      operationId: "allTeams",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchAllTeams({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
 };
 
 export type AddTeamError = Fetcher.ErrorWrapper<undefined>;
@@ -489,7 +495,7 @@ export type AddTeamVariables = {
 
 export const fetchAddTeam = (
   variables: AddTeamVariables,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) =>
   backendFetch<undefined, AddTeamError, Schemas.NewTeam, {}, {}, {}>({
     url: "/Api/Team",
@@ -502,14 +508,14 @@ export const useAddTeam = (
   options?: Omit<
     reactQuery.UseMutationOptions<undefined, AddTeamError, AddTeamVariables>,
     "mutationFn"
-  >
+  >,
 ) => {
   const { fetcherOptions } = useBackendContext();
-  return reactQuery.useMutation<undefined, AddTeamError, AddTeamVariables>(
-    (variables: AddTeamVariables) =>
+  return reactQuery.useMutation<undefined, AddTeamError, AddTeamVariables>({
+    mutationFn: (variables: AddTeamVariables) =>
       fetchAddTeam({ ...fetcherOptions, ...variables }),
-    options
-  );
+    ...options,
+  });
 };
 
 export type QueryOperation =

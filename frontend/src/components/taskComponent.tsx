@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 import { fetchSolve } from "../api/backendComponents";
@@ -23,7 +23,7 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
       setSolveTaskFeedback("Correct!");
     } else if (result.isBruteForceDetected) {
       setSolveTaskFeedback(
-        "Error when solving task, are you bruteforcing it? Wait 30 seconds."
+        "Error when solving task, are you bruteforcing it? Wait 30 seconds.",
       );
     } else {
       setSolveTaskFeedback("Wrong flag!");
@@ -46,7 +46,6 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
           rehypePlugins={[rehypeHighlight]}
           remarkPlugins={[remarkGfm]}
           className="markdown mb-2"
-          linkTarget="_blank"
         >
           {props.task.description ?? ""}
         </ReactMarkdown>
