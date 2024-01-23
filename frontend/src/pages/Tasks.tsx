@@ -14,7 +14,7 @@ export default function Tasks() {
 
   useEffect(() => {
     setFilteredTasks(
-      data?.filter((t) => (!showSolvedTasks ? !t.isSolved : true))
+      data?.filter((t) => (!showSolvedTasks ? !t.isSolved : true)),
     );
   }, [data, showSolvedTasks]);
 
