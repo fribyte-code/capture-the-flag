@@ -70,7 +70,7 @@ export default function Header() {
             onClick={logout}
             className="btn btn-ghost"
           >
-            Logut
+            Logout
           </button>
         </div>
       </nav>
