@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ms-dotnettools.csdevkit",
+    "dbaeumer.vscode-eslint",
+    "nhoizey.gremlins",
+    "xabikos.javascriptsnippets",
+    "codeandstuff.package-json-upgrade",
+    "esbenp.prettier-vscode"
+  ]
+}

@@ -80,6 +80,7 @@ To make sessions acquired from logging in with swagger persist to the frontend, 
 2. `npm install`
 3. `npm run dev`
 4. Open http://localhost:5173/ in browser
+5. login with username: `friByte` and password: `super-duper-secret-password` (password is defined in `friByte.capture-the-flag.service/friByte.capture-the-flag.service/appsettings.json`)
 
 #### Regenerating react query hooks
 
