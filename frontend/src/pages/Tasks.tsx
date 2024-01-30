@@ -13,10 +13,14 @@ export default function Tasks() {
   const [showSolvedTasks, setShowSolvedTasks] = useState(true);
 
   useEffect(() => {
+    if (error) {
+      console.error(error);
+      return;
+    }
     setFilteredTasks(
       data?.filter((t) => (!showSolvedTasks ? !t.isSolved : true)),
     );
-  }, [data, showSolvedTasks]);
+  }, [data, error, showSolvedTasks]);
 
   return (
     <Layout>
