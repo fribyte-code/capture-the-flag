@@ -1,6 +1,7 @@
+import config from "../config";
 import { BackendContext } from "./backendContext";
 
-const baseUrl = window.env?.APP_API_URL ?? "";
+const baseUrl = config.APP_API_URL ?? "";
 
 export type ErrorWrapper<TError> =
   | TError
@@ -23,7 +24,7 @@ export async function backendFetch<
   TBody extends {} | FormData | undefined | null,
   THeaders extends {},
   TQueryParams extends {},
-  TPathParams extends {}
+  TPathParams extends {},
 >({
   url,
   method,
@@ -70,7 +71,7 @@ export async function backendFetch<
           : undefined,
         headers: requestHeaders,
         credentials: "include", // Required to include cookies when sending requests to cross site
-      }
+      },
     );
     if (!response.ok) {
       let error: ErrorWrapper<TError>;
@@ -109,7 +110,7 @@ export async function backendFetch<
 const resolveUrl = (
   url: string,
   queryParams: Record<string, string> = {},
-  pathParams: Record<string, string> = {}
+  pathParams: Record<string, string> = {},
 ) => {
   let query = new URLSearchParams(queryParams).toString();
   if (query) query = `?${query}`;
