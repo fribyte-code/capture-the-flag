@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { CtfTaskWriteModel } from "../api/backendSchemas";
 import { useNavigate } from "react-router-dom";
 import AdminTask from "../components/adminTask";
-
+import DateSelector from "../components/DateSelector";
 export default function Admin() {
   const navigate = useNavigate();
   const { data: tasks, isLoading, refetch, error } = useAdminAllTasks({});
@@ -18,6 +18,7 @@ export default function Admin() {
     points: 0,
     description: "",
     flag: "Flag{the-flag}",
+    releaseDateTime: null,
   });
 
   async function handleAddTask(e: React.FormEvent<HTMLFormElement>) {
@@ -45,9 +46,9 @@ export default function Admin() {
     setSortedTasks(
       tasks
         ? [...tasks].sort((a: any, b: any) =>
-            a[sortProp] > b[sortProp] ? (sortAsc ? 1 : -1) : sortAsc ? -1 : 1
+            a[sortProp] > b[sortProp] ? (sortAsc ? 1 : -1) : sortAsc ? -1 : 1,
           )
-        : []
+        : [],
     );
   }, [tasks, sortProp, sortAsc]);
 
@@ -94,7 +95,7 @@ export default function Admin() {
           body: t,
         });
         addedTasks++;
-      })
+      }),
     );
 
     console.debug(`Added ${addedTasks} tasks`);
@@ -174,6 +175,22 @@ export default function Admin() {
             </div>
             <div className="form-control">
               <label className="label">
+                <span className="label-text">
+                  Release Date Time (Empty for release now)
+                </span>
+              </label>
+              <DateSelector
+                onChange={(value) => {
+                  setNewTask({
+                    ...newTask,
+                    releaseDateTime: value.toISOString(),
+                  });
+                }}
+                defaultDate={newTask.releaseDateTime}
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
                 <span className="label-text">Flag</span>
               </label>
               <input
@@ -225,6 +242,12 @@ export default function Admin() {
                 </th>
                 <th
                   className="cursor-pointer"
+                  onClick={(e) => handleClickSortProp("releaseTime")}
+                >
+                  Release Time
+                </th>
+                <th
+                  className="cursor-pointer"
                   onClick={(e) => handleClickSortProp("flag")}
                 >
                   Flag
@@ -236,14 +259,14 @@ export default function Admin() {
               {error
                 ? `${error.status} ${error.payload}`
                 : sortedTasks
-                ? sortedTasks.map((t) => (
-                    <AdminTask
-                      showFlag={showFlag}
-                      task={t}
-                      key={t.id}
-                    ></AdminTask>
-                  ))
-                : ""}
+                  ? sortedTasks.map((t) => (
+                      <AdminTask
+                        showFlag={showFlag}
+                        task={t}
+                        key={t.id}
+                      ></AdminTask>
+                    ))
+                  : ""}
             </tbody>
           </table>
         </div>
