@@ -183,13 +183,50 @@ public class CtfTaskService : ICtfTaskService
         {
             return;
         }
+
+        bool isFirstBlood = await IsFirstBlood(solvedTask.TaskId, solvedTask.TeamId);
+        //bool isOnlyTeamSolved = await IsOnlyTeamSolved(solvedTask.TaskId, solvedTask.TeamId);
         
+
         // Runs both calls in parallel
         await Task.WhenAll(
             _ctfSignalrHubContext.Clients.All.ReceiveSolvedTask(new SolvedTaskReadModel(solvedTask)),
             _ctfSignalrHubContext.Clients.All.ReceiveLeaderboardEntryChange(
-                _ctfLeaderboardService.GetScoreForTeamId(solvedTask.TeamId).Result)
+                _ctfLeaderboardService.GetScoreForTeamId(solvedTask.TeamId).Result),
+            NotifyFirstBlood(solvedTask.TaskId, solvedTask.TeamId, isFirstBlood)
         );
+    }
+
+//    private async Task<bool> IsOnlyTeamSolved(Guid taskId, string teamId)
+//    {
+//        var solvedTasks = await _ctfContext.SolvedTasks
+//            .Where(t => t.TaskId == taskId && t.TeamId != teamId)
+//            .ToListAsync();
+//
+//        return !solvedTasks.Any();
+//    }
+
+    private async Task<bool> IsFirstBlood(Guid taskId, string teamId)
+    {
+        var solvedTasks = await _ctfContext.SolvedTasks
+            .Where(t => t.TaskId == taskId && t.TeamId != teamId)
+            .ToListAsync();
+
+        return !solvedTasks.Any();
+    }
+
+    private async Task NotifyFirstBlood(Guid taskId, string teamId, bool isFirstBlood)
+    {
+        if (isFirstBlood)
+        {
+            var task = await _ctfContext.CtfTasks.FindAsync(taskId);
+            string message = $"First blood: Task {task.Name} was solved by team {teamId}!";
+            var solvedTaskReadModel = new SolvedTaskReadModel(new SolvedTask(teamId, task));
+            
+            await _ctfSignalrHubContext.Clients.All.ReceiveFirstBloodNotification(solvedTaskReadModel);
+
+            _logger.LogInformation(message);
+        }
     }
 }
 

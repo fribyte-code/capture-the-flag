@@ -3,9 +3,15 @@ import { useTasks } from "../api/backendComponents";
 import Layout from "./layout";
 import TaskComponent from "../components/taskComponent";
 import { CtfTaskReadModel } from "../api/backendSchemas";
+import { useFirstBloodNotification } from "../hooks/useFirstBloodNotification";
+
+//import React from 'react';
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Tasks() {
   const { data, isLoading, error } = useTasks({});
+  const firstBloodNotification = useFirstBloodNotification();
 
   const [filteredTasks, setFilteredTasks] = useState<
     CtfTaskReadModel[] | undefined
@@ -21,6 +27,47 @@ export default function Tasks() {
       data?.filter((t) => (!showSolvedTasks ? !t.isSolved : true)),
     );
   }, [data, error, showSolvedTasks]);
+
+  function App() {
+    const notify = () => {
+      toast.success("🩸First Blood!🩸", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    };
+
+    useEffect(() => {
+      if (firstBloodNotification) {
+        notify();
+      }
+    }, [firstBloodNotification]);
+
+    return (
+      <div>
+        <button onClick={notify}>Notify!</button>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
+      </div>
+    );
+  }
 
   return (
     <Layout>
@@ -51,6 +98,7 @@ export default function Tasks() {
           </>
         )
       )}
+      <App />
     </Layout>
   );
 }
