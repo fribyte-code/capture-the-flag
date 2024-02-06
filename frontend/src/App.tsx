@@ -21,7 +21,10 @@ export const ThemeContext = createContext<{
 
 const App = () => {
   const { theme, setTheme, toggleTheme } = useTheme();
-  useDocumentTitle(config.brand_title ?? "friByte CTF");
+  useDocumentTitle(
+    config.brand_title ?? "friByte CTF",
+    config.brand_favicon ?? "images/favicon.ico",
+  );
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
