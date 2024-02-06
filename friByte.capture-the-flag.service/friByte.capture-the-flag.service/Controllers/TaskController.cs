@@ -14,7 +14,8 @@ namespace friByte.capture_the_flag.service.Controllers;
 [ApiController]
 [Produces("application/json")]
 [Route("Api/[controller]")]
-public class TasksController : ControllerBase {
+public class TasksController : ControllerBase
+{
 
     private readonly ILogger<TasksController> _logger;
     private readonly ICtfTaskService _ctfTaskService;
@@ -33,7 +34,7 @@ public class TasksController : ControllerBase {
     {
         var teamName = HttpContext.User.FindFirstValue(ClaimTypes.Name);
 
-        var tasks = await _ctfTaskService.GetAllTasksIncludingIsSolvedOrNot(teamName);
+        var tasks = await _ctfTaskService.GetAllReleasedTasksIncludingIsSolvedOrNot(teamName);
 
         return tasks;
     }
@@ -56,7 +57,7 @@ public class TasksController : ControllerBase {
 
             return Ok(new SolveTaskResponse { Success = success, });
         }
-        catch (BruteForceException )
+        catch (BruteForceException)
         {
             _logger.LogInformation("Bruteforce detected from team {TeamName}", HttpContext.User.FindFirstValue(ClaimTypes.Name));
             return Ok(new SolveTaskResponse { Success = false, IsBruteForceDetected = true, });

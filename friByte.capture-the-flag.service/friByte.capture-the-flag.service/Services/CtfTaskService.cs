@@ -30,7 +30,7 @@ public interface ICtfTaskService
     /// Returns the same list of tasks as <see cref="GetSolveHistoryAsync"/>
     /// But mapped to the readModel including whether or not the task is solved or not.
     /// </summary>
-    Task<List<CtfTaskReadModel>> GetAllTasksIncludingIsSolvedOrNot(string teamName);
+    Task<List<CtfTaskReadModel>> GetAllReleasedTasksIncludingIsSolvedOrNot(string teamName);
 }
 
 public class CtfTaskService : ICtfTaskService
@@ -41,7 +41,7 @@ public class CtfTaskService : ICtfTaskService
     private readonly IHubContext<CtfSignalrHub, ICtfSignalrHubClient> _ctfSignalrHubContext;
     private readonly ICtfLeaderboardService _ctfLeaderboardService;
     private readonly UserManager<ApplicationUser> _userManager;
-    
+
     public CtfTaskService(
         CtfContext ctfContext,
         ILogger<CtfTaskService> logger,
@@ -63,16 +63,19 @@ public class CtfTaskService : ICtfTaskService
         return _ctfContext.CtfTasks.OrderBy(t => t.CreatedAt).ToListAsync();
     }
 
-    public Task<List<CtfTaskReadModel>> GetAllTasksIncludingIsSolvedOrNot(string teamName)
+    public Task<List<CtfTaskReadModel>> GetAllReleasedTasksIncludingIsSolvedOrNot(string teamName)
     {
         return _ctfContext.CtfTasks
+            .Where(t => t.ReleaseDateTime == null || t.ReleaseDateTime < DateTimeOffset.UtcNow)
             .Select(t => new CtfTaskReadModel()
             {
                 Id = t.Id,
                 Name = t.Name,
                 Points = t.Points,
                 Description = t.Description,
-                IsSolved = t.SuccessfullSolveAttempts.Any(st => st.TeamId == teamName)
+                IsSolved = t.SuccessfullSolveAttempts.Any(st => st.TeamId == teamName),
+                ReleaseDateTime = t.ReleaseDateTime,
+                Category = t.Category
             })
             .OrderBy(t => t.Name)
             .ToListAsync();
@@ -80,7 +83,14 @@ public class CtfTaskService : ICtfTaskService
 
     public async Task<CtfTask> AddAsync(CtfTaskWriteModel newTask)
     {
-        var newDbEntity = new CtfTask(newTask.Name, newTask.Flag, newTask.Points, newTask.Description);
+        var newDbEntity = new CtfTask(
+            newTask.Name,
+            newTask.Flag,
+            newTask.Points,
+            newTask.Description,
+            newTask.ReleaseDateTime,
+            newTask.Category
+        );
         await _ctfContext.CtfTasks.AddAsync(newDbEntity);
         await _ctfContext.SaveChangesAsync();
 
@@ -99,6 +109,8 @@ public class CtfTaskService : ICtfTaskService
         existingTask.Flag = updatedTask.Flag;
         existingTask.Points = updatedTask.Points;
         existingTask.Description = updatedTask.Description;
+        existingTask.ReleaseDateTime = updatedTask.ReleaseDateTime;
+        existingTask.Category = updatedTask.Category;
 
         await _ctfContext.SaveChangesAsync();
 
@@ -141,8 +153,8 @@ public class CtfTaskService : ICtfTaskService
             // Maybe send an event to frontend clients with bruteforce attempts as well?
             throw new BruteForceException();
         }
-        
-        if (task.Flag.ToLower() == flag.ToLower())
+
+        if (string.Equals(task.Flag, flag, StringComparison.CurrentCultureIgnoreCase))
         {
             // Correct answer
             _logger.LogInformation("Team {TeamName} solved task: {TaskName} and received {Points} points", teamName, task.Name,
@@ -153,7 +165,7 @@ public class CtfTaskService : ICtfTaskService
 
             // Notify all clients of the newly solved task
             await SendSolvedTaskEventToClients(solvedTask);
-            
+
             return true;
         }
 
@@ -163,7 +175,7 @@ public class CtfTaskService : ICtfTaskService
         // Maybe send an event to frontend clients with failed attempt as well?
         return false;
     }
-    
+
     public Task<List<SolvedTaskReadModel>> GetSolveHistoryAsync()
     {
         return _ctfContext.SolvedTasks
@@ -183,7 +195,7 @@ public class CtfTaskService : ICtfTaskService
         {
             return;
         }
-        
+
         // Runs both calls in parallel
         await Task.WhenAll(
             _ctfSignalrHubContext.Clients.All.ReceiveSolvedTask(new SolvedTaskReadModel(solvedTask)),

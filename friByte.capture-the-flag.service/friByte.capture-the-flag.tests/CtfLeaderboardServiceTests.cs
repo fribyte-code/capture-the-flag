@@ -5,6 +5,7 @@ using friByte.capture_the_flag.service.Hubs;
 using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Models.Api;
 using friByte.capture_the_flag.service.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,7 +31,11 @@ public class CtfLeaderboardServiceTests
 
     private static ICtfLeaderboardService GetService()
     {
-        return new CtfLeaderboardService(GetContext(), new Mock<ILogger<CtfLeaderboardService>>().Object);
+        return new CtfLeaderboardService(
+            GetContext(),
+            new Mock<ILogger<CtfLeaderboardService>>().Object,
+            new Mock<UserManager<ApplicationUser>>().Object
+        );
     }
 
     private ICtfTaskService GetCtfTaskService()
@@ -40,7 +45,8 @@ public class CtfLeaderboardServiceTests
             new Mock<ILogger<CtfTaskService>>().Object,
             new Mock<IBruteforceCheckerService>().Object,
             _ctfSignalrHubMock.Object,
-            new Mock<ICtfLeaderboardService>().Object
+            new Mock<ICtfLeaderboardService>().Object,
+            new Mock<UserManager<ApplicationUser>>().Object
         );
     }
 

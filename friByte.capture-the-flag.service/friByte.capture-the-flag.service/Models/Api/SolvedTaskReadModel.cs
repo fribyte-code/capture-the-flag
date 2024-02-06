@@ -15,7 +15,7 @@ public class SolvedTaskReadModel : DbBaseEntity
         TeamId = teamId;
         Task = task;
     }
-    
+
     public string TeamId { get; }
     public CtfTaskReadModel Task { get; }
 }
