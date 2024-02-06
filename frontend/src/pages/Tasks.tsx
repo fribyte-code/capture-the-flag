@@ -4,12 +4,14 @@ import Layout from "./layout";
 import { CtfTaskReadModel } from "../api/backendSchemas";
 import TaskGroupComponent from "../components/taskGroupComponent";
 
+type GroupedTasks = {
+  [categoryName: string]: CtfTaskReadModel[];
+};
+
 export default function Tasks() {
   const { data, isLoading, error } = useTasks({});
 
-  const [groupedTasks, setGroupedTasks] = useState<{
-    [key: string]: CtfTaskReadModel[];
-  }>({});
+  const [groupedTasks, setGroupedTasks] = useState<GroupedTasks>({});
   const [showSolvedTasks, setShowSolvedTasks] = useState(true);
 
   useEffect(() => {
@@ -23,15 +25,15 @@ export default function Tasks() {
     );
 
     setGroupedTasks(() => {
-      let temp: { [key: string]: CtfTaskReadModel[] } = {};
+      let groupedTasks: GroupedTasks = {};
       filteredTasks?.forEach((task) => {
         let categoryTitle = task.category ?? "Other";
-        if (!temp[categoryTitle]) {
-          temp[categoryTitle] = [];
+        if (!groupedTasks[categoryTitle]) {
+          groupedTasks[categoryTitle] = [];
         }
-        temp[categoryTitle].push(task);
+        groupedTasks[categoryTitle].push(task);
       });
-      return temp;
+      return groupedTasks;
     });
   }, [data, error, showSolvedTasks]);
 
