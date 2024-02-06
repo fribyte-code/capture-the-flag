@@ -6,6 +6,8 @@ import Leaderboard from "./pages/Leaderboard";
 import Admin from "./pages/Admin";
 import AdminTeamManagement from "./pages/AdminTeamManagement";
 import useTheme from "./hooks/useTheme";
+import config from "./config";
+import useDocumentTitle from "./utils/useDocumentTitle";
 
 export const ThemeContext = createContext<{
   theme: "light" | "dark";
@@ -19,6 +21,7 @@ export const ThemeContext = createContext<{
 
 const App = () => {
   const { theme, setTheme, toggleTheme } = useTheme();
+  useDocumentTitle(config.brand_title ?? "friByte CTF");
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
