@@ -7,7 +7,7 @@ import Admin from "./pages/Admin";
 import AdminTeamManagement from "./pages/AdminTeamManagement";
 import useTheme from "./hooks/useTheme";
 import config from "./config";
-import useDocumentTitle from "./utils/useDocumentTitle";
+import useDynamicHead from "./utils/useDynamicHead";
 
 export const ThemeContext = createContext<{
   theme: "light" | "dark";
@@ -21,7 +21,11 @@ export const ThemeContext = createContext<{
 
 const App = () => {
   const { theme, setTheme, toggleTheme } = useTheme();
-  useDocumentTitle(config.brand_title ?? "friByte CTF");
+
+  useDynamicHead(
+    config.BRAND_TITLE ?? "friByte CTF",
+    config.BRAND_FAVICON ?? "images/favicon.ico",
+  );
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
