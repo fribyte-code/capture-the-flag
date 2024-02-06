@@ -10,7 +10,7 @@ public class SolvedTask : DbBaseEntity
         TeamId = teamId;
         Task = task;
     }
-    
+
     /// <summary>
     /// Only to be used by Entity Framework
     /// </summary>
@@ -28,6 +28,6 @@ public class SolvedTask : DbBaseEntity
     /// TaskId is added to create a Fully defined Relationship https://learn.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#fully-defined-relationships
     /// </summary>
     public Guid TaskId { get; set; }
-    
+
     // TODO: Connect SolvedTask to an event, such that we can use the same application over multiple events.
 }

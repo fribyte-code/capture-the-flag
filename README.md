@@ -55,8 +55,8 @@ Basic guide from Microsoft: https://learn.microsoft.com/en-us/ef/core/get-starte
 
 Essentially:
 
-1. Update models in the `models` folder
-2. Run `dotnet ef migrations add <NAME-OF-MIGRATION>` ex: `dotnet ef migrations add CtfFlag-AddHint`
+1. `cd friByte.capture-the-flag.service`
+2. Run `dotnet ef migrations add <NAME-OF-MIGRATION> --context CtfContext` ex: `dotnet ef migrations add CtfFlag-AddHint --context CtfContext`
 3. The migration will automatically be applied when you run the application either by clicking run in the IDE or by `dotnet run`.
 
 ### Frontend
