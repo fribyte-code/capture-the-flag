@@ -4,8 +4,6 @@ import Layout from "./layout";
 import TaskComponent from "../components/taskComponent";
 import { CtfTaskReadModel } from "../api/backendSchemas";
 import { useFirstBloodNotification } from "../hooks/useFirstBloodNotification";
-
-//import React from 'react';
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
