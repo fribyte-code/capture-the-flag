@@ -71,10 +71,33 @@ public static class DbContextSeeder
         if (!ctfContext.CtfTasks.Any())
         {
             // No tasks in database, populate some demo tasks
-            var taskA = new CtfTask("Lets start easy", "Flag{2002}", 1, "What year was friByte started?");
-            var taskB = new CtfTask("What is my name?", "Flag{friByte}", 1, "What is the name of friByte?");
+            var taskA = new CtfTask(
+                "Lets start easy",
+                "Flag{2002}",
+                1,
+                "What year was friByte started?",
+                null,
+                "Category A"
+            );
+            var taskB = new CtfTask(
+                "What is my name?",
+                "Flag{friByte}",
+                1,
+                "What is the name of friByte?",
+                null,
+                "Category B"
+            );
+            var taskC = new CtfTask(
+                "What is my name with releaseDate?",
+                "Flag{friByte}",
+                1,
+                "What is the name of friByte?",
+                new DateTimeOffset(2024, 2, 6, 0, 0, 0, TimeSpan.Zero),
+                "Category C"
+            );
             ctfContext.CtfTasks.Add(taskA);
             ctfContext.CtfTasks.Add(taskB);
+            ctfContext.CtfTasks.Add(taskC);
             await ctfContext.SaveChangesAsync();
             Console.WriteLine("Seeded 2 tasks into the database");
 

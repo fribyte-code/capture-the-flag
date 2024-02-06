@@ -14,7 +14,7 @@ namespace friByte.capture_the_flag.service.Controllers;
 [Authorize(Roles = $"{IdentityRoleNames.AdminRoleName}")]
 [Produces("application/json")]
 [Route("Api/[controller]")]
-public class 
+public class
     TeamController : ControllerBase
 {
     private readonly ILogger<TeamController> _logger;
@@ -28,13 +28,13 @@ public class
         _userManager = userManager;
     }
 
-    [HttpGet("", Name="AllTeams")]
+    [HttpGet("", Name = "AllTeams")]
     public async Task<ActionResult<IList<ApplicationUser>>> GetAll()
     {
         var teams = await _userManager.GetUsersInRoleAsync(IdentityRoleNames.TeamRoleName);
         return Ok(teams);
     }
-    
+
     /// <summary>
     /// Add a new team
     /// </summary>
@@ -44,7 +44,7 @@ public class
         var password = GenerateTeamPassword();
         // password for teams are stored in clear text
         var teamAccount = new ApplicationUser { UserName = newTeam.Username, TeamPassword = password };
-        
+
         var createResult = await _userManager.CreateAsync(teamAccount, password);
         if (createResult.Succeeded)
         {
@@ -77,7 +77,7 @@ public class
         {
             "team", "penguin", "anaconda", "friByte", "hacker", "password", "turtle", "apple", "horse", "tesla",
         };
-        
+
         var rnd = new Random();
         var passPhrase = new List<string>
         {

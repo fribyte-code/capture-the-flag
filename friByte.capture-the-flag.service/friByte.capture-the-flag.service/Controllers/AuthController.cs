@@ -15,7 +15,7 @@ namespace friByte.capture_the_flag.service.Controllers;
 [ApiController]
 [Produces("application/json")]
 [Route("Api/[controller]/[action]")]
-public class 
+public class
     AuthController : ControllerBase
 {
     private readonly ILogger<AuthController> _logger;
@@ -31,7 +31,7 @@ public class
         _signInManager = signInManager;
         _userManager = userManager;
     }
-    
+
     /// <summary>
     /// Login and receive a cookie
     /// </summary>
@@ -60,7 +60,7 @@ public class
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
             new ClaimsPrincipal(claimsIdentity));
-        
+
         return Ok(new { Message = "Logged in" });
     }
 
