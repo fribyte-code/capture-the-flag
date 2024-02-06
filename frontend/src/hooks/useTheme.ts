@@ -26,7 +26,7 @@ const useTheme = () => {
     if (theme === "dark") {
       document
         .getElementsByTagName("html")[0]
-        .setAttribute("data-theme", "dracula");
+        .setAttribute("data-theme", "dark");
     } else {
       document
         .getElementsByTagName("html")[0]

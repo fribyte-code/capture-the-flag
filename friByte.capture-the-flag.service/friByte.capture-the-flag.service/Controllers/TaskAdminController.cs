@@ -15,7 +15,8 @@ namespace friByte.capture_the_flag.service.Controllers;
 [ApiController]
 [Produces("application/json")]
 [Route("Api/[controller]")]
-public class TaskAdminController : ControllerBase {
+public class TaskAdminController : ControllerBase
+{
 
     private readonly ILogger<TaskAdminController> _logger;
     private readonly ICtfTaskService _ctfTaskService;

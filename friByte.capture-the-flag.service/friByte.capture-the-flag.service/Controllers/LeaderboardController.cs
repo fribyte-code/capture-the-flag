@@ -12,7 +12,8 @@ namespace friByte.capture_the_flag.service.Controllers;
 [ApiController]
 [Produces("application/json")]
 [Route("Api/[controller]")]
-public class LeaderboardController : ControllerBase {
+public class LeaderboardController : ControllerBase
+{
 
     private readonly ILogger<LeaderboardController> _logger;
     private readonly ICtfLeaderboardService _ctfLeaderboardService;

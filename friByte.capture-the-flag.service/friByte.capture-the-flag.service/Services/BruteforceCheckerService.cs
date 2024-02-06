@@ -31,13 +31,14 @@ namespace friByte.capture_the_flag.service.Services
         {
             var hasBeenAttempted = _taskAttemptDict.TryGetValue((teamName, taskId), out var lastAttempt);
 
-            if (hasBeenAttempted && (_clock.UtcNow - lastAttempt) < _bruteForceTimeout) {
+            if (hasBeenAttempted && (_clock.UtcNow - lastAttempt) < _bruteForceTimeout)
+            {
                 // Is bruteforce
                 return true;
             }
             // Only set last attempt when not bruteforce to avoid setting off yet another timeout period if they attempt again after _bruteForceTimeout - 1s
             _taskAttemptDict[(teamName, taskId)] = _clock.UtcNow;
-            
+
             return false;
         }
     }

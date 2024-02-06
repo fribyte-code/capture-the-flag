@@ -105,7 +105,7 @@ app.UseCookiePolicy(new CookiePolicyOptions()
 {
     MinimumSameSitePolicy = SameSiteMode.None,
     Secure = CookieSecurePolicy.Always,
-    
+
 });
 
 app.UseHttpsRedirection();
@@ -135,7 +135,7 @@ async Task MigrateAndSeedData()
     var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var initialAdminPassword = builder.Configuration.GetValue<string>("InitialAdminPassword");
     await DbContextSeeder.SeedIdentityContextAsync(userManager, roleManager, initialAdminPassword);
-    
+
     // Add initial ctfTasks
     var ctfContext = serviceScope.ServiceProvider.GetRequiredService<CtfContext>();
     await DbContextSeeder.SeedTasks(ctfContext);
