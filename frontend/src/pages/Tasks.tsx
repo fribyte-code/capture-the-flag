@@ -25,10 +25,11 @@ export default function Tasks() {
     setGroupedTasks(() => {
       let temp: { [key: string]: CtfTaskReadModel[] } = {};
       filteredTasks?.forEach((task) => {
-        if (!temp[task.category]) {
-          temp[task.category] = [];
+        let categoryTitle = task.category ?? "Other";
+        if (!temp[categoryTitle]) {
+          temp[categoryTitle] = [];
         }
-        temp[task.category].push(task);
+        temp[categoryTitle].push(task);
       });
       return temp;
     });
