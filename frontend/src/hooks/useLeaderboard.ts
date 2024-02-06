@@ -5,6 +5,7 @@ import {
   SignalRSocketEvent,
   SignalRSocketHandler,
 } from "../utils/SignalRSocket";
+import config from "../config";
 
 export function useLeaderboard() {
   // We would benefit from converting this to a singleton
@@ -17,7 +18,7 @@ export function useLeaderboard() {
     fetchLeaderboardFromApi();
   }, []);
 
-  const apiUrl = window.env?.APP_API_URL ?? "";
+  const apiUrl = config.APP_API_URL ?? "";
   const signalRUrl = apiUrl + "/Api/signalr";
   const signalRSocket = new SignalRSocketHandler(signalRUrl);
 

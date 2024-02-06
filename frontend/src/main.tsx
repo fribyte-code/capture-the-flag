@@ -10,16 +10,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <App />
     </QueryClientProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
-
-declare global {
-  interface Window {
-    env?: {
-      APP_API_URL?: string;
-      APP_BUILD?: string;
-      APP_BUILD_DATE?: string;
-      [key: string]: string | undefined | number | boolean;
-    };
-  }
-}

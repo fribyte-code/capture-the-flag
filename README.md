@@ -55,8 +55,8 @@ Basic guide from Microsoft: https://learn.microsoft.com/en-us/ef/core/get-starte
 
 Essentially:
 
-1. Update models in the `models` folder
-2. Run `dotnet ef migrations add <NAME-OF-MIGRATION>` ex: `dotnet ef migrations add CtfFlag-AddHint`
+1. `cd friByte.capture-the-flag.service`
+2. Run `dotnet ef migrations add <NAME-OF-MIGRATION> --context CtfContext` ex: `dotnet ef migrations add CtfFlag-AddHint --context CtfContext`
 3. The migration will automatically be applied when you run the application either by clicking run in the IDE or by `dotnet run`.
 
 ### Frontend
@@ -64,13 +64,13 @@ Essentially:
 #### Requirements:
 
 - NodeJS LTS https://nodejs.org/en/
-- Yarn / npm
+- npm / yarn
 
 #### Development
 
-Install dependencies: `yarn` or `npm i`
+Install dependencies: `npm i` or `yarn`
 
-Start the application: `yarn run dev` or `npm run dev`
+Start the application: `npm run dev` or `yarn run dev`
 
 To make sessions acquired from logging in with swagger persist to the frontend, make sure you access them using the same hostname (either 127.0.0.1 or localhost, as long as you use the same both places)
 
@@ -82,10 +82,20 @@ To make sessions acquired from logging in with swagger persist to the frontend, 
 4. Open http://localhost:5173/ in browser
 5. login with username: `friByte` and password: `super-duper-secret-password` (password is defined in `friByte.capture-the-flag.service/friByte.capture-the-flag.service/appsettings.json`)
 
+#### Run frontend without backend:
+
+1. `cd frontend`
+2. `npm install`
+3. `npm run dev:prod-api` -> And frontend will target the production backend https://ctf-api.fribyte.no/swagger
+4. Open http://localhost:5173/ in browser
+5. login with username: `friByte` and password would probably be the usual
+
 #### Regenerating react query hooks
 
 This is done to update the frontend's knowledge about routes the backend exposes.
 
 `yarn run gen-backend-hooks` or `npm run gen-backend-hooks`
+
+NOTE: I've (Johannes Skivdal) experienced an error "Bindings not found" when running this command using npm. Works fine with yarn.
 
 Make sure the backend is running on your machine on :5072 when running this command.
