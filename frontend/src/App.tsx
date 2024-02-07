@@ -6,6 +6,8 @@ import Leaderboard from "./pages/Leaderboard";
 import Admin from "./pages/Admin";
 import AdminTeamManagement from "./pages/AdminTeamManagement";
 import useTheme from "./hooks/useTheme";
+import config from "./config";
+import useDynamicHead from "./utils/useDynamicHead";
 
 export const ThemeContext = createContext<{
   theme: "light" | "dark";
@@ -19,6 +21,11 @@ export const ThemeContext = createContext<{
 
 const App = () => {
   const { theme, setTheme, toggleTheme } = useTheme();
+
+  useDynamicHead(
+    config.BRAND_TITLE ?? "friByte CTF",
+    config.BRAND_FAVICON ?? "images/favicon.ico",
+  );
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>

@@ -4,6 +4,7 @@ import { ThemeContext } from "../App";
 import { useAuth } from "../hooks/useAuth";
 import DarkIcon from "./icons/DarkIcon";
 import LightIcon from "./icons/LightIcon";
+import config from "../config";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -20,14 +21,16 @@ export default function Header() {
               e.preventDefault();
               navigate("/");
             }}
-            className="-m-1.5 p-1.5"
+            className="flex items-center gap-2 -m-1.5 p-8"
           >
             <img
-              className="h-8 w-auto float-left"
-              src="/images/fribyte-logo.png"
+              className="h-16 w-auto float-left"
+              src={config.BRAND_LOGO ?? "images/fribyte-logo.png"}
               alt=""
             />
-            <span>friByte CTF</span>
+            <span className="ml-2 text-2xl">
+              {config.BRAND_NAME ?? "friByte"}
+            </span>
           </a>
         </div>
         <div className="navbar-end">

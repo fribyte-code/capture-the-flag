@@ -96,4 +96,6 @@ This is done to update the frontend's knowledge about routes the backend exposes
 
 `yarn run gen-backend-hooks` or `npm run gen-backend-hooks`
 
+NOTE: I've (Johannes Skivdal) experienced an error "Bindings not found" when running this command using npm. Works fine with yarn.
+
 Make sure the backend is running on your machine on :5072 when running this command.
