@@ -119,12 +119,14 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
           }}
         >
           <option value="">Select category</option>;
-          {allTaskCategories?.map((category) => <option>{category}</option>)}
+          {allTaskCategories?.map((category) => (
+            <option key={category}>{category}</option>
+          ))}
         </select>
         <input
           type="text"
           placeholder="New category"
-          value={updatedTask.category || undefined}
+          value={updatedTask.category ?? undefined}
           className="input input-bordered input-sm"
           onChange={(e) => {
             setUpdatedtask({

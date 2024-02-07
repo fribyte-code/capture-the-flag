@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SignalRSocketHandler } from "../utils/SignalRSocket";
 import { SolvedTaskReadModel } from "../api/backendSchemas";
+import config from "../config";
 
 export function useFirstBloodNotification() {
   const [firstBlood, setFirstBlood] = useState<SolvedTaskReadModel | null>(
@@ -8,7 +9,7 @@ export function useFirstBloodNotification() {
   );
 
   useEffect(() => {
-    const apiUrl = window.env?.APP_API_URL ?? "";
+    const apiUrl = config.APP_API_URL ?? "";
     const signalRUrl = apiUrl + "/Api/signalr";
     const signalRSocket = new SignalRSocketHandler(signalRUrl);
 
