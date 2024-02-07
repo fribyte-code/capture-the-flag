@@ -327,6 +327,55 @@ export const useAdminDeleteTask = (
   });
 };
 
+export type AdminAllCategoriesError = Fetcher.ErrorWrapper<undefined>;
+
+export type AdminAllCategoriesResponse = string[];
+
+export type AdminAllCategoriesVariables = BackendContext["fetcherOptions"];
+
+export const fetchAdminAllCategories = (
+  variables: AdminAllCategoriesVariables,
+  signal?: AbortSignal,
+) =>
+  backendFetch<
+    AdminAllCategoriesResponse,
+    AdminAllCategoriesError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/Api/TaskAdmin/categories", method: "get", ...variables, signal });
+
+export const useAdminAllCategories = <TData = AdminAllCategoriesResponse>(
+  variables: AdminAllCategoriesVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      AdminAllCategoriesResponse,
+      AdminAllCategoriesError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >,
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useBackendContext(options);
+  return reactQuery.useQuery<
+    AdminAllCategoriesResponse,
+    AdminAllCategoriesError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/Api/TaskAdmin/categories",
+      operationId: "adminAllCategories",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchAdminAllCategories({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type TasksError = Fetcher.ErrorWrapper<undefined>;
 
 export type TasksResponse = Schemas.CtfTaskReadModel[];
@@ -538,6 +587,11 @@ export type QueryOperation =
       path: "/Api/TaskAdmin";
       operationId: "adminAllTasks";
       variables: AdminAllTasksVariables;
+    }
+  | {
+      path: "/Api/TaskAdmin/categories";
+      operationId: "adminAllCategories";
+      variables: AdminAllCategoriesVariables;
     }
   | {
       path: "/Api/Tasks";

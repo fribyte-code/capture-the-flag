@@ -25,11 +25,11 @@ export default function Header() {
           >
             <img
               className="h-16 w-auto float-left"
-              src={config.brand_logo ?? "images/fribyte-logo.png"}
+              src={config.BRAND_LOGO ?? "/images/fribyte-logo.png"}
               alt=""
             />
             <span className="ml-2 text-2xl">
-              {config.brand_name ?? "friByte"}
+              {config.BRAND_NAME ?? "friByte"}
             </span>
           </a>
         </div>

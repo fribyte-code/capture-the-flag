@@ -45,6 +45,11 @@ export type CtfTask = {
   points?: number;
   description?: string;
   successfullSolveAttempts?: SolvedTask[];
+  /**
+   * @format date-time
+   */
+  releaseDateTime?: string | null;
+  category?: string | null;
 };
 
 export type CtfTaskReadModel = {
@@ -59,6 +64,11 @@ export type CtfTaskReadModel = {
   points?: number;
   description?: string;
   isSolved?: boolean | null;
+  /**
+   * @format date-time
+   */
+  releaseDateTime?: string | null;
+  category?: string | null;
 };
 
 export type CtfTaskWriteModel = {
@@ -69,6 +79,11 @@ export type CtfTaskWriteModel = {
    */
   points?: number;
   description?: string;
+  /**
+   * @format date-time
+   */
+  releaseDateTime?: string | null;
+  category?: string | null;
 };
 
 export type LeaderboardEntry = {
