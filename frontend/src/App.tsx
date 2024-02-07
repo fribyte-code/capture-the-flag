@@ -24,7 +24,7 @@ const App = () => {
 
   useDynamicHead(
     config.BRAND_TITLE ?? "friByte CTF",
-    config.BRAND_FAVICON ?? "images/favicon.ico",
+    config.BRAND_FAVICON ?? "/images/favicon.ico",
   );
 
   return (
