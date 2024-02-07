@@ -26,30 +26,28 @@ export default function Tasks() {
     );
   }, [data, error, showSolvedTasks]);
 
-  function App() {
-    const notify = () => {
-      toast.success("🩸First Blood!🩸", {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-    };
-
+  function ToasterSection() {
     useEffect(() => {
-      if (firstBloodNotification) {
-        notify();
+      if (firstBloodNotification && firstBloodNotification.task) {
+        toast.success(
+          `🩸First Blood: ${firstBloodNotification.task.name} solved by ${firstBloodNotification.teamId}🩸`,
+          {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          },
+        );
       }
     }, [firstBloodNotification]);
 
     return (
       <div>
-        <button onClick={notify}>Notify!</button>
         <ToastContainer
           position="bottom-right"
           autoClose={5000}
@@ -96,7 +94,7 @@ export default function Tasks() {
           </>
         )
       )}
-      <App />
+      <ToasterSection />
     </Layout>
   );
 }
