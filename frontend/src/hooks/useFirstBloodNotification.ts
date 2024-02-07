@@ -14,9 +14,7 @@ export function useFirstBloodNotification() {
 
     signalRSocket.on("ReceiveFirstBloodNotification", (data) => {
       const solvedTask = data as SolvedTaskReadModel;
-      console.debug("First blood!", solvedTask);
       setFirstBlood(solvedTask);
-      console.debug("First blood event received!");
     });
   }, []);
 
