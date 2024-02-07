@@ -119,9 +119,7 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
           }}
         >
           <option value="">Select category</option>;
-          {allTaskCategories?.map((category) => {
-            return <option>{category}</option>;
-          })}
+          {allTaskCategories?.map((category) => <option>{category}</option>)}
         </select>
         <input
           type="text"

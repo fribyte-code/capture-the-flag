@@ -108,6 +108,7 @@ export default function Admin() {
 
     console.debug(`Added ${addedTasks} tasks`);
     await refetchAllTasks();
+    await refetchCategories();
   }
   (window as any).batchImportTasks = batchImportTasks;
 
@@ -208,9 +209,9 @@ export default function Admin() {
                 }}
               >
                 <option value="">Select category</option>;
-                {allTaskCategories?.map((category) => {
-                  return <option key={category}>{category}</option>;
-                })}
+                {allTaskCategories?.map((category) => (
+                  <option key={category}>{category}</option>
+                ))}
               </select>
               <input
                 value={newTask.category || undefined}

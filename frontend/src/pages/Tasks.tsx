@@ -58,9 +58,11 @@ export default function Tasks() {
             <div className="container mb-24">
               <h1 className="font-bold">Tasks</h1>
               <div className="flex flex-col gap-1">
-                {Object.entries(groupedTasks).map((category) => (
-                  <TaskGroupComponent title={category[0]} tasks={category[1]} />
-                ))}
+                {Object.entries(groupedTasks).map(
+                  ([category, tasksInGroup]) => (
+                    <TaskGroupComponent title={category} tasks={tasksInGroup} />
+                  ),
+                )}
               </div>
             </div>
           </>
