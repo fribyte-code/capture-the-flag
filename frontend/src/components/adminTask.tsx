@@ -5,7 +5,7 @@ import {
   useAdminAllTasks,
 } from "../api/backendComponents";
 import { CtfTask } from "../api/backendSchemas";
-import DateSelector from "./DateSelector";
+import DateSelector from "./dateSelector";
 
 export interface AdminTaskProps {
   task: CtfTask;

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { CtfTaskWriteModel } from "../api/backendSchemas";
 import { useNavigate } from "react-router-dom";
 import AdminTask from "../components/adminTask";
-import DateSelector from "../components/DateSelector";
+import DateSelector from "../components/dateSelector";
 export default function Admin() {
   const navigate = useNavigate();
   const { data: tasks, isLoading, refetch, error } = useAdminAllTasks({});

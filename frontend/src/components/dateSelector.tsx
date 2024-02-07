@@ -13,12 +13,6 @@ const DateSelector: React.FC<DateSelectorProps> = ({
     new Date(),
   );
 
-  useEffect(() => {
-    if (releaseDateTime) {
-      onChange(releaseDateTime);
-    }
-  }, [releaseDateTime]);
-
   //This is absolutely vile and cursed, but i honestly cannot look at dates again wihtout going absolutely apeshit
   //Besides, it only shows it to the user :)
   const defaultDateAsDate =
@@ -44,6 +38,9 @@ const DateSelector: React.FC<DateSelectorProps> = ({
         value={defDate}
         onChange={(event) => {
           setReleaseDateTime(new Date(event.target.value));
+          if (releaseDateTime) {
+            onChange(releaseDateTime);
+          }
         }}
         className="input input-bordered"
       />
