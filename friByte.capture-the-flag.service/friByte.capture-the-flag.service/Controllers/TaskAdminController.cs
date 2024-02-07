@@ -3,7 +3,6 @@ using friByte.capture_the_flag.service.Models.Api;
 using friByte.capture_the_flag.service.Services;
 using friByte.capture_the_flag.service.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace friByte.capture_the_flag.service.Controllers;
@@ -31,29 +30,27 @@ public class TaskAdminController : ControllerBase
     /// Get all tasks in database
     /// </summary>
     [HttpGet("", Name = "AdminAllTasks")]
-    public async Task<List<CtfTask>> Get()
+    public Task<List<CtfTask>> Get()
     {
-        return await _ctfTaskService.GetAllAsync();
+        return _ctfTaskService.GetAllAsync();
     }
 
     /// <summary>
     /// Add new task
     /// </summary>
     [HttpPost("", Name = "AdminAddTask")]
-    public async Task<CtfTask> Post(CtfTaskWriteModel updatedTask)
+    public Task<CtfTask> Post(CtfTaskWriteModel updatedTask)
     {
-        var updatedDbTask = await _ctfTaskService.AddAsync(updatedTask);
-        return updatedDbTask;
+        return _ctfTaskService.AddAsync(updatedTask);
     }
 
     /// <summary>
     /// Update existing task
     /// </summary>
     [HttpPut("{id:Guid}", Name = "AdminUpdateTask")]
-    public async Task<CtfTask> Put(Guid id, CtfTaskWriteModel updatedTask)
+    public Task<CtfTask> Put(Guid id, CtfTaskWriteModel updatedTask)
     {
-        var updatedDbTask = await _ctfTaskService.UpdateAsync(id, updatedTask);
-        return updatedDbTask;
+        return _ctfTaskService.UpdateAsync(id, updatedTask);
     }
 
     /// <summary>
@@ -65,5 +62,15 @@ public class TaskAdminController : ControllerBase
         await _ctfTaskService.DeleteAsync(id);
         _logger.LogInformation("Deleted task: {Id}", id);
         return NoContent();
+    }
+
+    /// <summary>
+    /// Get all categories previously used for tasks.
+    /// Useful for prefilling list of categories in frontend when adding/updating tasks.
+    /// </summary>
+    [HttpGet("categories", Name = "AdminAllCategories")]
+    public Task<List<string>> GetAllCategories()
+    {
+        return _ctfTaskService.GetAllCategories();
     }
 }
