@@ -569,7 +569,7 @@
   resolved "https://registry.npmjs.org/@types/ms/-/ms-0.7.34.tgz"
   integrity sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==
 
-"@types/node@^18.0.0 || >=20.0.0", "@types/node@^20.11.10":
+"@types/node@^18.0.0 || >=20.0.0":
   version "20.11.10"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.11.10.tgz"
   integrity sha512-rZEfe/hJSGYmdfX9tvcPMYeYPW2sNl50nsw4jZmRcaG0HIAb0WYEpsB05GOb53vjqpyE9GUhlDQ4jLSoB5q9kg==
