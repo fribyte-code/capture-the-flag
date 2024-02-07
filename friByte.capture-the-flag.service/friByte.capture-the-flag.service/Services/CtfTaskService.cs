@@ -196,31 +196,32 @@ public class CtfTaskService : ICtfTaskService
             return;
         }
 
-        bool isFirstBlood = await IsFirstBlood(solvedTask.TaskId, solvedTask.TeamId);
-
         // Runs both calls in parallel
         await Task.WhenAll(
             _ctfSignalrHubContext.Clients.All.ReceiveSolvedTask(new SolvedTaskReadModel(solvedTask)),
             _ctfSignalrHubContext.Clients.All.ReceiveLeaderboardEntryChange(
                 _ctfLeaderboardService.GetScoreForTeamId(solvedTask.TeamId).Result),
-            NotifyFirstBlood(solvedTask.TaskId, solvedTask.TeamId, isFirstBlood)
+            MaybeNotifyFirstBlood(solvedTask.TaskId, solvedTask.TeamId)
         );
     }
 
     private async Task<bool> IsFirstBlood(Guid taskId, string teamId)
     {
-        var solvedTasks = await _ctfContext.SolvedTasks
+        var isAlreadySolved = await _ctfContext.SolvedTasks
             .Where(t => t.TaskId == taskId && t.TeamId != teamId)
-            .ToListAsync();
-
-        return !solvedTasks.Any();
+            .AnyAsync();
+        return !isAlreadySolved;
     }
 
-    private async Task NotifyFirstBlood(Guid taskId, string teamId, bool isFirstBlood)
+    private async Task MaybeNotifyFirstBlood(Guid taskId, string teamId)
     {
+        bool isFirstBlood = await IsFirstBlood(taskId, teamId);
         if (isFirstBlood)
         {
             var task = await _ctfContext.CtfTasks.FindAsync(taskId);
+            if (task == null){
+                return;
+            } 
             string message = $"First blood: Task {task.Name} was solved by team {teamId}!";
             var solvedTaskReadModel = new SolvedTaskReadModel(new SolvedTask(teamId, task));
             await _ctfSignalrHubContext.Clients.All.ReceiveFirstBloodNotification(solvedTaskReadModel);
