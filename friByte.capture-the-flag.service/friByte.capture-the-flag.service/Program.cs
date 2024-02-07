@@ -1,16 +1,9 @@
-using System.Threading.Tasks;
 using friByte.capture_the_flag.service.Hubs;
 using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Services;
 using friByte.capture_the_flag.service.Services.Auth;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
