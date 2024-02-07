@@ -2,6 +2,7 @@ import Layout from "./layout";
 import {
   AdminAllTasksResponse,
   fetchAdminAddTask,
+  useAdminAllCategories,
   useAdminAllTasks,
 } from "../api/backendComponents";
 import { useEffect, useState } from "react";
@@ -11,7 +12,14 @@ import AdminTask from "../components/adminTask";
 
 export default function Admin() {
   const navigate = useNavigate();
-  const { data: tasks, isLoading, refetch, error } = useAdminAllTasks({});
+  const {
+    data: tasks,
+    isLoading,
+    refetch: refetchAllTasks,
+    error,
+  } = useAdminAllTasks({});
+  const { data: allTaskCategories, refetch: refetchCategories } =
+    useAdminAllCategories({});
   const [showFlag, setShowFlag] = useState(false);
   const [newTask, setNewTask] = useState<CtfTaskWriteModel>({
     name: "",
@@ -27,7 +35,8 @@ export default function Admin() {
       body: newTask,
     });
 
-    await refetch();
+    await refetchAllTasks();
+    await refetchCategories();
   }
 
   const [sortProp, setSortProp] = useState("");
@@ -45,9 +54,9 @@ export default function Admin() {
     setSortedTasks(
       tasks
         ? [...tasks].sort((a: any, b: any) =>
-            a[sortProp] > b[sortProp] ? (sortAsc ? 1 : -1) : sortAsc ? -1 : 1
+            a[sortProp] > b[sortProp] ? (sortAsc ? 1 : -1) : sortAsc ? -1 : 1,
           )
-        : []
+        : [],
     );
   }, [tasks, sortProp, sortAsc]);
 
@@ -94,11 +103,12 @@ export default function Admin() {
           body: t,
         });
         addedTasks++;
-      })
+      }),
     );
 
     console.debug(`Added ${addedTasks} tasks`);
-    await refetch();
+    await refetchAllTasks();
+    await refetchCategories();
   }
   (window as any).batchImportTasks = batchImportTasks;
 
@@ -187,7 +197,39 @@ export default function Admin() {
                 className="input input-bordered"
               />
             </div>
-            <input type="submit" className="btn btn-primary" />
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Category</span>
+              </label>
+              <select
+                className="select select-bordered"
+                defaultValue=""
+                onChange={(e) => {
+                  setNewTask({ ...newTask, category: e.target.value });
+                }}
+              >
+                <option value="">Select category</option>;
+                {allTaskCategories?.map((category) => (
+                  <option key={category}>{category}</option>
+                ))}
+              </select>
+              <input
+                value={newTask.category || undefined}
+                onChange={(e) =>
+                  setNewTask({ ...newTask, category: e.target.value })
+                }
+                type="text"
+                name="category"
+                placeholder="New category"
+                className="input input-bordered"
+              />
+            </div>
+            <br />
+            <input
+              type="submit"
+              className="btn btn-primary"
+              value="Create task"
+            />
             <br />
             <br />
           </form>
@@ -202,7 +244,7 @@ export default function Admin() {
               />
             </label>
           </div>
-          <table className="table table-zebra">
+          <table className="table table-zebra table-pin-rows">
             <thead>
               <tr>
                 <th
@@ -229,6 +271,7 @@ export default function Admin() {
                 >
                   Flag
                 </th>
+                <th>Category</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -236,14 +279,14 @@ export default function Admin() {
               {error
                 ? `${error.status} ${error.payload}`
                 : sortedTasks
-                ? sortedTasks.map((t) => (
-                    <AdminTask
-                      showFlag={showFlag}
-                      task={t}
-                      key={t.id}
-                    ></AdminTask>
-                  ))
-                : ""}
+                  ? sortedTasks.map((t) => (
+                      <AdminTask
+                        showFlag={showFlag}
+                        task={t}
+                        key={t.id}
+                      ></AdminTask>
+                    ))
+                  : ""}
             </tbody>
           </table>
         </div>
