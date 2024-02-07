@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useTasks } from "../api/backendComponents";
 import Layout from "./layout";
 import { CtfTaskReadModel } from "../api/backendSchemas";
+import { useFirstBloodNotification } from "../hooks/useFirstBloodNotification";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import TaskGroupComponent from "../components/taskGroupComponent";
 
 type GroupedTasks = {
@@ -10,6 +13,7 @@ type GroupedTasks = {
 
 export default function Tasks() {
   const { data, isLoading, error } = useTasks({});
+  const firstBloodNotification = useFirstBloodNotification();
 
   const [groupedTasks, setGroupedTasks] = useState<GroupedTasks>({});
   const [showSolvedTasks, setShowSolvedTasks] = useState(true);
@@ -37,6 +41,45 @@ export default function Tasks() {
     });
   }, [data, error, showSolvedTasks]);
 
+  function ToasterSection() {
+    useEffect(() => {
+      if (firstBloodNotification && firstBloodNotification.task) {
+        toast.success(
+          `🩸First Blood: ${firstBloodNotification.task.name} solved by ${firstBloodNotification.teamId}🩸`,
+          {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          },
+        );
+      }
+    }, [firstBloodNotification]);
+
+    return (
+      <div>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
+      </div>
+    );
+  }
+
   return (
     <Layout>
       {isLoading ? (
@@ -60,7 +103,11 @@ export default function Tasks() {
               <div className="flex flex-col gap-1">
                 {Object.entries(groupedTasks).map(
                   ([category, tasksInGroup]) => (
-                    <TaskGroupComponent title={category} tasks={tasksInGroup} />
+                    <TaskGroupComponent
+                      title={category}
+                      tasks={tasksInGroup}
+                      key={category}
+                    />
                   ),
                 )}
               </div>
@@ -68,6 +115,7 @@ export default function Tasks() {
           </>
         )
       )}
+      <ToasterSection />
     </Layout>
   );
 }

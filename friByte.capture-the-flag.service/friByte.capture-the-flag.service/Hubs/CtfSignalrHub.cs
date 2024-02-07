@@ -60,4 +60,11 @@ public interface ICtfSignalrHubClient
     /// <param name="solvedTask"></param>
     /// <returns></returns>
     Task ReceiveSolvedTask(SolvedTaskReadModel solvedTask);
+    
+    /// <summary>
+    /// Triggered when a team solves a task and is the first team to solve it
+    /// </summary>
+    /// <param name="solvedTask"></param>
+    /// <returns></returns>
+    Task ReceiveFirstBloodNotification(SolvedTaskReadModel solvedTask);
 }
