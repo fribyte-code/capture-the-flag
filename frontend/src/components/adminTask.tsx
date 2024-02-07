@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   fetchAdminDeleteTask,
   fetchAdminUpdateTask,
+  useAdminAllCategories,
   useAdminAllTasks,
 } from "../api/backendComponents";
 import { CtfTask } from "../api/backendSchemas";
@@ -12,7 +13,9 @@ export interface AdminTaskProps {
 }
 
 const AdminTask: React.FC<AdminTaskProps> = (props) => {
-  const { refetch } = useAdminAllTasks({});
+  const { refetch: refetchTasks } = useAdminAllTasks({});
+  const { data: allTaskCategories, refetch: refetchCategories } =
+    useAdminAllCategories({});
   async function deleteTask() {
     if (updatedTask.id) {
       await fetchAdminDeleteTask({
@@ -21,7 +24,8 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
         },
       });
 
-      await refetch();
+      await refetchTasks();
+      await refetchCategories();
     }
   }
   async function updateTask() {
@@ -33,7 +37,8 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
         body: updatedTask,
       });
 
-      await refetch();
+      await refetchTasks();
+      await refetchCategories();
       setIsModified(false);
     }
   }
@@ -63,7 +68,7 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
         <input
           type="number"
           value={updatedTask.points}
-          className="input input-bordered input-sm"
+          className="input input-bordered input-sm w-20"
           onChange={(e) =>
             setUpdatedtask({
               ...updatedTask,
@@ -103,12 +108,42 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
         />
       </td>
       <td>
+        <select
+          className="select select-bordered"
+          defaultValue=""
+          onChange={(e) => {
+            setUpdatedtask({
+              ...updatedTask,
+              category: e.currentTarget.value,
+            });
+          }}
+        >
+          <option value="">Select category</option>;
+          {allTaskCategories?.map((category) => {
+            return <option>{category}</option>;
+          })}
+        </select>
+        <input
+          type="text"
+          placeholder="New category"
+          value={updatedTask.category || undefined}
+          className="input input-bordered input-sm"
+          onChange={(e) => {
+            setUpdatedtask({
+              ...updatedTask,
+              category: e.currentTarget.value,
+            });
+          }}
+        />
+      </td>
+      <td>
         <button
           className="btn btn-error btn-outline btn-xs"
           onClick={deleteTask}
         >
           Delete
         </button>
+        <br />
         <br />
         <button
           disabled={!isModified}
