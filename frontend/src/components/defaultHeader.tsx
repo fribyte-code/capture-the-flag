@@ -25,7 +25,7 @@ export default function Header() {
           >
             <img
               className="h-16 w-auto float-left"
-              src={config.BRAND_LOGO ?? "images/fribyte-logo.png"}
+              src={config.BRAND_LOGO ?? "/images/fribyte-logo.png"}
               alt=""
             />
             <span className="ml-2 text-2xl">
