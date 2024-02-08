@@ -4,6 +4,7 @@ import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 import { fetchSolve } from "../api/backendComponents";
 import { CtfTaskReadModel } from "../api/backendSchemas";
+import style from "./taskComponent.module.scss";
 
 export interface TaskComponentProps {
   task: CtfTaskReadModel;
@@ -30,18 +31,19 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
     }
   }
   return (
-    <div
-      tabIndex={0}
-      className="collapse border drop-shadow-md mb-2 rounded-box border-base-300 bg-base-300 collapse-arrow"
-    >
-      <input type="checkbox" />
-      <div className="collapse-title text-md font-medium">
-        <h1>
+    <details className={style.container}>
+      <summary className={style.taskHeading}>
+        <h3>
           {props.task.isSolved ? <span>✅</span> : <span>❌</span>} -{" "}
           {props.task.name}
-        </h1>
-      </div>
-      <div className="collapse-content">
+          <span className={style.points}>{props.task.points} points</span>
+        </h3>
+
+        <span className={`${style.arrow} material-symbols-outlined`}>
+          expand_more
+        </span>
+      </summary>
+      <div className={style.content}>
         <ReactMarkdown
           rehypePlugins={[rehypeHighlight]}
           remarkPlugins={[remarkGfm]}
@@ -56,26 +58,14 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
         {props.task.isSolved ? (
           <p>Solved</p>
         ) : (
-          <form
-            onSubmit={handleSolveTask}
-            className="flex flex-row items-center"
-          >
-            <input
-              type="text"
-              name="flag"
-              placeholder="Flag{the-flag}"
-              className="input input-bordered"
-            />
-            <input
-              type="submit"
-              value="Solve"
-              className="btn btn-outline btn-primary ml-3"
-            />
+          <form onSubmit={handleSolveTask} className={style.submitForm}>
+            <input type="text" name="flag" placeholder="Flag{the-flag}" />
+            <input type="submit" value="Solve" className="button solid" />
           </form>
         )}
         {solveTaskFeedback ? <p>{solveTaskFeedback}</p> : ""}
       </div>
-    </div>
+    </details>
   );
 };
 

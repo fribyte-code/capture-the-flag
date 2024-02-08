@@ -1,0 +1,9 @@
+.container {
+  margin: auto;
+  padding: 0 1rem;
+  max-width: var(--maxWidth);
+
+  &.wide {
+    max-width: 1600px;
+  }
+}

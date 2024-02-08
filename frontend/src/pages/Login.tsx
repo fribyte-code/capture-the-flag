@@ -8,42 +8,44 @@ export default function Login() {
     event.preventDefault();
     await login(
       event.currentTarget.username.value,
-      event.currentTarget.password.value
+      event.currentTarget.password.value,
     );
   };
   return (
     <Layout>
-      <form onSubmit={handleSubmit}>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">TeamName:</span>
-          </label>
-          <input
-            type="text"
-            placeholder="TeamName"
-            name="username"
-            className="input input-bordered"
-          />
-        </div>
+      <div className="w-[30rem] container mx-auto">
+        <form onSubmit={handleSubmit}>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">TeamName:</span>
+            </label>
+            <input
+              type="text"
+              placeholder="TeamName"
+              name="username"
+              className="input input-bordered"
+            />
+          </div>
 
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Password:</span>
-          </label>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Password:</span>
+            </label>
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              className="input input-bordered"
+            />
+          </div>
           <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            className="input input-bordered"
+            type="submit"
+            value="Login"
+            className="btn btn-outline btn-primary mt-4"
           />
-        </div>
-        <input
-          type="submit"
-          value="Login"
-          className="btn btn-outline btn-primary mt-4"
-        />
-      </form>
-      {errorMsg ? <p>{errorMsg}</p> : ""}
+        </form>
+        {errorMsg ? <p>{errorMsg}</p> : ""}
+      </div>
     </Layout>
   );
 }

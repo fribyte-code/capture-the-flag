@@ -1,6 +1,7 @@
 import React from "react";
 import { CtfTaskReadModel } from "../api/backendSchemas";
 import TaskComponent from "./taskComponent";
+import style from "./taskGroup.module.scss";
 
 export interface TaskGroupComponentProps {
   title: string;
@@ -12,7 +13,9 @@ const TaskGroupComponent: React.FC<TaskGroupComponentProps> = (props) => {
     <>
       <h2>Category: {props.title}</h2>
       {props.tasks.map((task) => (
-        <TaskComponent task={task} key={task.id} />
+        <div className={style.task}>
+          <TaskComponent task={task} key={task.id} />
+        </div>
       ))}
     </>
   );

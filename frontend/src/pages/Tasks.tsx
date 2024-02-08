@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTasks } from "../api/backendComponents";
 import Layout from "./layout";
 import { CtfTaskReadModel } from "../api/backendSchemas";
@@ -6,6 +6,8 @@ import { useFirstBloodNotification } from "../hooks/useFirstBloodNotification";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TaskGroupComponent from "../components/taskGroupComponent";
+import Toggle from "../components/toggle";
+import style from "./tasks.module.scss";
 
 type GroupedTasks = {
   [categoryName: string]: CtfTaskReadModel[];
@@ -15,31 +17,26 @@ export default function Tasks() {
   const { data, isLoading, error } = useTasks({});
   const firstBloodNotification = useFirstBloodNotification();
 
-  const [groupedTasks, setGroupedTasks] = useState<GroupedTasks>({});
   const [showSolvedTasks, setShowSolvedTasks] = useState(true);
 
   useEffect(() => {
     if (error) {
       console.error(error);
-      return;
     }
+  }, [error]);
 
-    const filteredTasks = data?.filter((t) =>
-      !showSolvedTasks ? !t.isSolved : true,
-    );
-
-    setGroupedTasks(() => {
-      let groupedTasks: GroupedTasks = {};
-      filteredTasks?.forEach((task) => {
-        let categoryTitle = task.category ?? "Other";
-        if (!groupedTasks[categoryTitle]) {
-          groupedTasks[categoryTitle] = [];
-        }
-        groupedTasks[categoryTitle].push(task);
-      });
-      return groupedTasks;
+  const filteredTaskGroups = useMemo(() => {
+    const tasks = data?.filter((t) => (!showSolvedTasks ? !t.isSolved : true));
+    let groupedTasks: GroupedTasks = {};
+    tasks?.forEach((task) => {
+      let categoryTitle = task.category ?? "Other";
+      if (!groupedTasks[categoryTitle]) {
+        groupedTasks[categoryTitle] = [];
+      }
+      groupedTasks[categoryTitle].push(task);
     });
-  }, [data, error, showSolvedTasks]);
+    return groupedTasks;
+  }, [data, showSolvedTasks]);
 
   function ToasterSection() {
     useEffect(() => {
@@ -85,23 +82,21 @@ export default function Tasks() {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        groupedTasks && (
+        filteredTaskGroups && (
           <>
-            <div className="form-control w-52">
-              <label className="label cursor-pointer">
-                <span className="label-text">Show solved tasks</span>
-                <input
-                  type="checkbox"
-                  className="toggle"
+            <div>
+              <label className={style.showSolvedLabel}>
+                <span>Show solved tasks</span>
+                <Toggle
                   checked={showSolvedTasks}
-                  onChange={(e) => setShowSolvedTasks(!showSolvedTasks)}
+                  onChange={() => setShowSolvedTasks(!showSolvedTasks)}
                 />
               </label>
             </div>
-            <div className="container mb-24">
-              <h1 className="font-bold">Tasks</h1>
+            <div className={style.tasksContainer}>
+              <h1>Tasks</h1>
               <div className="flex flex-col gap-1">
-                {Object.entries(groupedTasks).map(
+                {Object.entries(filteredTaskGroups).map(
                   ([category, tasksInGroup]) => (
                     <TaskGroupComponent
                       title={category}

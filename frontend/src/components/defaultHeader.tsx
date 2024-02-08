@@ -1,82 +1,111 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../App";
 import { useAuth } from "../hooks/useAuth";
 import DarkIcon from "./icons/DarkIcon";
 import LightIcon from "./icons/LightIcon";
 import config from "../config";
+import style from "./header.module.scss";
+import Toggle from "./toggle";
+import classNames from "classnames";
 
 export default function Header() {
   const navigate = useNavigate();
   const { logout, me } = useAuth();
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [sideMenuVisible, setSideMenuVisible] = useState(false);
+
+  const toggleSideMenu = () => {
+    setSideMenuVisible(!sideMenuVisible);
+  };
+
+  const menuItems = (
+    <>
+      <div className={`${style.navItem} ${style.toggle}`}>
+        <LightIcon />
+        <Toggle
+          checked={theme === "dark"}
+          onChange={() => toggleTheme()}
+          label="Toggle color theme"
+        />
+        <DarkIcon />
+      </div>
+      <a
+        href="/leaderboard"
+        onClick={(e) => {
+          e.preventDefault();
+          navigate("/leaderboard");
+        }}
+        className={style.navItem}
+      >
+        Leaderboard
+      </a>
+      {me && me.isAdmin && (
+        <a
+          href="/admin"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/admin");
+          }}
+          className={style.navItem}
+        >
+          Admin
+        </a>
+      )}
+      <hr className={style.divider} />
+      <button
+        role="button"
+        aria-label="Logout"
+        onClick={logout}
+        className={classNames(style.logout, "button")}
+        title="Logout"
+      >
+        <span className="material-symbols-outlined">logout</span>
+      </button>
+    </>
+  );
 
   return (
     <header>
-      <nav className="navbar container mx-auto" aria-label="Global">
-        <div className="navbar-start">
+      <nav className={style.header} aria-label="Global">
+        <div className={style.burger}>
+          <button className={style.burgerButton} onClick={toggleSideMenu}>
+            <span className="material-symbols-outlined">menu</span>
+          </button>
+        </div>
+        <div className={style.logo}>
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               navigate("/");
             }}
-            className="flex items-center gap-2 -m-1.5 p-8"
           >
-            <img
-              className="h-16 w-auto float-left"
-              src={config.BRAND_LOGO ?? "/images/fribyte-logo.png"}
-              alt=""
-            />
-            <span className="ml-2 text-2xl">
+            <img src={config.BRAND_LOGO ?? "/images/fribyte-logo.png"} alt="" />
+            <span className={style.brandName}>
               {config.BRAND_NAME ?? "friByte"}
             </span>
           </a>
         </div>
-        <div className="navbar-end">
-          <div className="flex">
-            <LightIcon className="w-8" />
-            <input
-              type="checkbox"
-              className="toggle m-auto mx-1"
-              checked={theme === "dark"}
-              onChange={() => toggleTheme()}
-              aria-label="Toggle color theme"
-            />
-            <DarkIcon className="w-8" />
-          </div>
-          <a
-            href="/leaderboard"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/leaderboard");
-            }}
-            className="btn btn-ghost"
-          >
-            Leaderboard
-          </a>
-          {me && me.isAdmin && (
-            <a
-              href="/admin"
-              onClick={(e) => {
-                e.preventDefault();
-                navigate("/admin");
-              }}
-              className="btn btn-ghost"
-            >
-              Admin
-            </a>
-          )}
-          <button
-            role="button"
-            aria-label="Logout"
-            onClick={logout}
-            className="btn btn-ghost"
-          >
-            Logout
-          </button>
-        </div>
+        <div className={style.navItems}>{menuItems}</div>
       </nav>
+
+      <div
+        className={classNames(style.sideMenu, {
+          [style.sideMenuOpen]: sideMenuVisible,
+        })}
+      >
+        <button className={style.burgerButton} onClick={toggleSideMenu}>
+          <span className="material-symbols-outlined">menu</span>
+        </button>
+        {menuItems}
+      </div>
+      <div
+        className={classNames(style.menuBackground, {
+          [style.sideMenuOpen]: sideMenuVisible,
+        })}
+        onClick={toggleSideMenu}
+      ></div>
     </header>
   );
 }

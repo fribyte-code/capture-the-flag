@@ -1,3 +1,4 @@
+import "./styles/index.scss";
 import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Tasks from "./pages/Tasks";

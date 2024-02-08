@@ -1,4 +1,4 @@
-const DarkIcon = ({ className }: { className: string | undefined }) => {
+const DarkIcon = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 256 256"

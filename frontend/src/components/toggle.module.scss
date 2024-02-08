@@ -1,0 +1,30 @@
+.element {
+  $width: 3rem;
+  $innerMargin: 5px;
+  $ballSize: 1rem;
+
+  cursor: pointer;
+
+  position: relative;
+  height: 1.63rem;
+  width: $width;
+  border: 1px solid var(--borderColor);
+  border-radius: 5rem;
+  appearance: none;
+
+  &::before {
+    position: absolute;
+    content: "";
+    width: $ballSize;
+    height: $ballSize;
+    border-radius: 5rem;
+    background-color: var(--textColor);
+    left: $innerMargin;
+    top: calc(calc(100% - $ballSize) / 2);
+    transition: transform 100ms;
+  }
+
+  &:checked::before {
+    transform: translateX(calc(($width / 2) - ($innerMargin)));
+  }
+}
