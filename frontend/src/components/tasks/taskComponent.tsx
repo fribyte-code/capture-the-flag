@@ -2,8 +2,8 @@ import React, { FormEvent, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
-import { fetchSolve } from "../api/backendComponents";
-import { CtfTaskReadModel } from "../api/backendSchemas";
+import { fetchSolve } from "../../api/backendComponents";
+import { CtfTaskReadModel } from "../../api/backendSchemas";
 import style from "./taskComponent.module.scss";
 
 export interface TaskComponentProps {
@@ -34,8 +34,7 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
     <details className={style.container}>
       <summary className={style.taskHeading}>
         <h3>
-          {props.task.isSolved ? <span>✅</span> : <span>❌</span>} -{" "}
-          {props.task.name}
+          {props.task.isSolved && <span>✅</span>} {props.task.name}
           <span className={style.points}>{props.task.points} points</span>
         </h3>
 

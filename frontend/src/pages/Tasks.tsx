@@ -5,19 +5,22 @@ import { CtfTaskReadModel } from "../api/backendSchemas";
 import { useFirstBloodNotification } from "../hooks/useFirstBloodNotification";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import TaskGroupComponent from "../components/taskGroupComponent";
+import TaskGroupComponent from "../components/tasks/taskGroupComponent";
 import Toggle from "../components/toggle";
 import style from "./tasks.module.scss";
+import GroupList from "../components/tasks/groupList";
+import classNames from "classnames";
 
-type GroupedTasks = {
-  [categoryName: string]: CtfTaskReadModel[];
-};
+export type GroupedTasks = Record<string, CtfTaskReadModel[]>;
 
 export default function Tasks() {
   const { data, isLoading, error } = useTasks({});
   const firstBloodNotification = useFirstBloodNotification();
 
   const [showSolvedTasks, setShowSolvedTasks] = useState(true);
+  const [currentGroup, setCurrentGroup] = useState<keyof GroupedTasks | null>(
+    null,
+  );
 
   useEffect(() => {
     if (error) {
@@ -26,15 +29,16 @@ export default function Tasks() {
   }, [error]);
 
   const filteredTaskGroups = useMemo(() => {
-    const tasks = data?.filter((t) => (!showSolvedTasks ? !t.isSolved : true));
     let groupedTasks: GroupedTasks = {};
-    tasks?.forEach((task) => {
+    for (const task of data || []) {
       let categoryTitle = task.category ?? "Other";
       if (!groupedTasks[categoryTitle]) {
         groupedTasks[categoryTitle] = [];
       }
-      groupedTasks[categoryTitle].push(task);
-    });
+      if (showSolvedTasks || (!showSolvedTasks && !task.isSolved)) {
+        groupedTasks[categoryTitle].push(task);
+      }
+    }
     return groupedTasks;
   }, [data, showSolvedTasks]);
 
@@ -77,6 +81,9 @@ export default function Tasks() {
     );
   }
 
+  const handleGroupChange = (group: keyof GroupedTasks) =>
+    setCurrentGroup(group);
+
   return (
     <Layout>
       {isLoading ? (
@@ -95,17 +102,16 @@ export default function Tasks() {
             </div>
             <div className={style.tasksContainer}>
               <h1>Tasks</h1>
-              <div className="flex flex-col gap-1">
-                {Object.entries(filteredTaskGroups).map(
-                  ([category, tasksInGroup]) => (
-                    <TaskGroupComponent
-                      title={category}
-                      tasks={tasksInGroup}
-                      key={category}
-                    />
-                  ),
-                )}
-              </div>
+              <GroupList
+                onChange={handleGroupChange}
+                groups={Object.keys(filteredTaskGroups)}
+              />
+              {currentGroup && filteredTaskGroups?.[currentGroup]?.length && (
+                <TaskGroupComponent
+                  title={currentGroup}
+                  tasks={filteredTaskGroups[currentGroup]}
+                />
+              )}
             </div>
           </>
         )
