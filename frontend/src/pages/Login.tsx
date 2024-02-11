@@ -1,6 +1,6 @@
 import Layout from "./layout";
 import { useAuth } from "../hooks/useAuth";
-import style from "./login.module.scss";
+import style from "./login.module.css";
 
 export default function Login() {
   const { login, errorMsg } = useAuth();

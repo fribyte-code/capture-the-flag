@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import Header from "../components/defaultHeader";
-import style from "./layout.module.scss";
+import style from "./layout.module.css";
 import classNames from "classnames";
 
 interface LayoutProps extends PropsWithChildren {

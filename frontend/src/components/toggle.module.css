@@ -1,13 +1,13 @@
 .element {
-  $width: 3rem;
-  $innerMargin: 5px;
-  $ballSize: 1rem;
+  --width: 3rem;
+  --innerMargin: 5px;
+  --ballSize: 1rem;
 
   cursor: pointer;
 
   position: relative;
   height: 1.63rem;
-  width: $width;
+  width: var(--width);
   border: 1px solid var(--borderColor);
   border-radius: 5rem;
   appearance: none;
@@ -15,16 +15,16 @@
   &::before {
     position: absolute;
     content: "";
-    width: $ballSize;
-    height: $ballSize;
+    width: var(--ballSize);
+    height: var(--ballSize);
     border-radius: 5rem;
     background-color: var(--textColor);
-    left: $innerMargin;
-    top: calc(calc(100% - $ballSize) / 2);
+    left: var(--innerMargin);
+    top: calc(calc(100% - var(--ballSize)) / 2);
     transition: transform 100ms;
   }
 
   &:checked::before {
-    transform: translateX(calc(($width / 2) - ($innerMargin)));
+    transform: translateX(calc((var(--width) / 2) - (var(--innerMargin))));
   }
 }

@@ -2,7 +2,7 @@ import Layout from "./layout";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
-import style from "./leaderboard.module.scss";
+import style from "./leaderboard.module.css";
 
 export default function Leaderboard() {
   // We need to move useLeaderboard one level up if we want to show teamScore on all pages

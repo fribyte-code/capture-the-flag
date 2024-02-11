@@ -7,7 +7,7 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TaskGroupComponent from "../components/tasks/taskGroupComponent";
 import Toggle from "../components/toggle";
-import style from "./tasks.module.scss";
+import style from "./tasks.module.css";
 import GroupList from "../components/tasks/groupList";
 import classNames from "classnames";
 

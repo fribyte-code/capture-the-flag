@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import type { GroupedTasks } from "../../pages/Tasks";
-import style from "./groupList.module.scss";
+import style from "./groupList.module.css";
 import { useEffect, useState } from "react";
 import { onChange } from "react-toastify/dist/core/store";
 

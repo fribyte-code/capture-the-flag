@@ -4,7 +4,7 @@ import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 import { fetchSolve } from "../../api/backendComponents";
 import { CtfTaskReadModel } from "../../api/backendSchemas";
-import style from "./taskComponent.module.scss";
+import style from "./taskComponent.module.css";
 
 export interface TaskComponentProps {
   task: CtfTaskReadModel;

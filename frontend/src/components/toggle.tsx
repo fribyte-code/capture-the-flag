@@ -1,4 +1,4 @@
-import style from "./toggle.module.scss";
+import style from "./toggle.module.css";
 
 interface ToggleProps {
   checked: boolean;

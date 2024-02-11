@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import DarkIcon from "./icons/DarkIcon";
 import LightIcon from "./icons/LightIcon";
 import config from "../config";
-import style from "./header.module.scss";
+import style from "./header.module.css";
 import Toggle from "./toggle";
 import classNames from "classnames";
 

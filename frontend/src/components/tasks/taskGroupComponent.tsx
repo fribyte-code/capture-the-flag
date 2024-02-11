@@ -1,7 +1,7 @@
 import React from "react";
 import { CtfTaskReadModel } from "../../api/backendSchemas";
 import TaskComponent from "./taskComponent";
-import style from "./taskGroup.module.scss";
+import style from "./taskGroup.module.css";
 
 export interface TaskGroupComponentProps {
   title: string;
