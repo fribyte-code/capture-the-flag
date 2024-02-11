@@ -30,38 +30,54 @@ export default function Header() {
         />
         <DarkIcon />
       </div>
-      <a
-        href="/leaderboard"
-        onClick={(e) => {
-          e.preventDefault();
-          navigate("/leaderboard");
-        }}
-        className={style.navItem}
-      >
-        Leaderboard
-      </a>
-      {me && me.isAdmin && (
-        <a
-          href="/admin"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate("/admin");
-          }}
-          className={style.navItem}
-        >
-          Admin
-        </a>
+      {me && (
+        <>
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+            className={classNames(style.navItem, style.tasksLink)}
+          >
+            Tasks
+          </a>
+          <a
+            href="/leaderboard"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/leaderboard");
+            }}
+            className={classNames(style.navItem, style.leaderboardLink)}
+          >
+            Leaderboard
+          </a>
+          {me && me.isAdmin && (
+            <a
+              href="/admin"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/admin");
+              }}
+              className={classNames(style.navItem, style.adminLink)}
+            >
+              Admin
+            </a>
+          )}
+          {/* <hr className={style.divider} /> */}
+          <button
+            role="button"
+            aria-label="Logout"
+            onClick={logout}
+            className={classNames(style.logout, "button")}
+            title="Logout"
+          >
+            <span className="material-symbols-outlined">logout</span>
+            <span className={style.logoutButtonText}>Logout</span>
+          </button>
+          <div className={style.spacing}></div>
+        </>
       )}
-      <hr className={style.divider} />
-      <button
-        role="button"
-        aria-label="Logout"
-        onClick={logout}
-        className={classNames(style.logout, "button")}
-        title="Logout"
-      >
-        <span className="material-symbols-outlined">logout</span>
-      </button>
     </>
   );
 
@@ -92,18 +108,21 @@ export default function Header() {
             </span>
           </a>
         </div>
-        <div className={style.navItems}>{menuItems}</div>
+        <div className={style.navbarItems}>{menuItems}</div>
       </nav>
 
-      <div
+      <div // mobile sidemen
         className={classNames(style.sideMenu, {
           [style.sideMenuOpen]: sideMenuVisible,
         })}
       >
-        <button className="button" onClick={toggleSideMenu}>
+        <button
+          className={classNames("button", style.closeButton)}
+          onClick={toggleSideMenu}
+        >
           <span className="material-symbols-outlined">menu</span>
         </button>
-        {menuItems}
+        <div className={style.sideMenuItems}>{menuItems}</div>
       </div>
       <div
         className={classNames(style.menuBackground, {
