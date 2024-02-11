@@ -74,7 +74,7 @@ builder.Services.AddCors(options =>
     {
         string[] allowedOrigins = {"http://localhost:5173"};
         
-        var configLocations = builder.Configuration.GetValue<string[]?>("CorsLocations");
+        var configLocations = builder.Configuration.GetSection("CorsLocations").Get<string[]?>();
         if (configLocations is not null)
         {
             allowedOrigins = allowedOrigins.Concat(configLocations).ToArray();
