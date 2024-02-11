@@ -69,7 +69,7 @@ export default function Header() {
     <header>
       <nav className={style.header} aria-label="Global">
         <div className={style.burger}>
-          <button className={style.burgerButton} onClick={toggleSideMenu}>
+          <button className="button" onClick={toggleSideMenu}>
             <span className="material-symbols-outlined">menu</span>
           </button>
         </div>
@@ -95,7 +95,7 @@ export default function Header() {
           [style.sideMenuOpen]: sideMenuVisible,
         })}
       >
-        <button className={style.burgerButton} onClick={toggleSideMenu}>
+        <button className="button" onClick={toggleSideMenu}>
           <span className="material-symbols-outlined">menu</span>
         </button>
         {menuItems}

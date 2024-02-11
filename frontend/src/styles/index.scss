@@ -109,6 +109,7 @@ textarea {
   border-radius: 0.4rem;
   padding: 0.6rem 1rem;
   color: var(--textColor);
+  box-sizing: border-box;
 
   &:focus {
     outline: 2px solid var(--borderColor);
