@@ -1,3 +1,4 @@
+import "./styles/index.css";
 import { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Tasks from "./pages/Tasks";

@@ -113,7 +113,7 @@ export default function Admin() {
   (window as any).batchImportTasks = batchImportTasks;
 
   return (
-    <Layout>
+    <Layout wide>
       {isLoading ? (
         <p>Loading</p>
       ) : (
@@ -202,7 +202,7 @@ export default function Admin() {
                 <span className="label-text">Category</span>
               </label>
               <select
-                className="select select-bordered"
+                className="input"
                 defaultValue=""
                 onChange={(e) => {
                   setNewTask({ ...newTask, category: e.target.value });
@@ -225,11 +225,7 @@ export default function Admin() {
               />
             </div>
             <br />
-            <input
-              type="submit"
-              className="btn btn-primary"
-              value="Create task"
-            />
+            <input type="submit" className="button solid" value="Create task" />
             <br />
             <br />
           </form>

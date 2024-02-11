@@ -1,0 +1,33 @@
+.categoryList {
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+
+  .chip {
+    background: none;
+    border: none;
+
+    background-color: var(--bgColorSecondary);
+    color: var(--textColor);
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--borderColorFaint);
+    border-radius: 5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+
+    &.selected {
+      background-color: var(--buttonSolidColor);
+      border-color: transparent;
+      color: var(--buttonSolidTextColor);
+    }
+
+    &:hover {
+      background-color: var(--buttonSolidColorHover);
+      color: var(--buttonSolidTextColor);
+    }
+    &:active {
+      background-color: var(--buttonColorPressed);
+      color: var(--buttonSolidTextColor);
+    }
+  }
+}

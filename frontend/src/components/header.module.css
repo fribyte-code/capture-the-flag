@@ -1,0 +1,118 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+
+  max-width: var(--maxWidth);
+  margin: 0 auto;
+}
+.burger,
+.menuBackground {
+  display: none;
+}
+.logo {
+  a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+
+    img {
+      height: 4rem;
+    }
+
+    .brandName {
+      margin-left: 0.3rem;
+      font-size: 1.7rem;
+      font-family: monospace;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+.icon {
+  width: 2rem;
+}
+.navItems {
+  display: flex;
+}
+.navItem {
+  margin: auto 1rem;
+  text-decoration: none;
+  font-weight: bold;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.divider {
+  margin: 0.4rem 0;
+  margin-right: 0.8rem;
+  color: transparent;
+}
+.logout {
+  margin: auto 0;
+  cursor: pointer;
+  display: flex;
+}
+
+.toggle {
+  display: flex;
+  svg {
+    width: 2rem;
+  }
+}
+
+.sideMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--bgColor);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 15rem;
+  z-index: 100;
+  transform: translateX(-15rem);
+  transition: transform 200ms;
+}
+.sideMenuOpen {
+  transform: translateX(0);
+}
+
+.menuBackground {
+  position: absolute;
+  display: none;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 90;
+  &.sideMenuOpen {
+    display: unset;
+  }
+}
+.burgerButton {
+  background: none;
+  span {
+    font-size: 2rem;
+  }
+  &:hover {
+    background: none;
+  }
+}
+
+@media (width < 700px) {
+  .navItems {
+    display: none;
+  }
+  .burger {
+    display: unset;
+  }
+  .logo {
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,48 @@
+.container {
+  background-color: var(--bgColorSecondary);
+  display: inline-block;
+  width: 100%;
+  border-radius: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+  .taskHeading {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+
+    cursor: pointer;
+
+    .points {
+      margin-left: 1rem;
+      font-weight: lighter;
+      color: var(--textColorSecondary);
+    }
+
+    .arrow {
+      margin: auto 0;
+      transition: transform 150ms;
+    }
+  }
+
+  &[open] {
+    .arrow {
+      transform: rotate(180deg);
+    }
+  }
+
+  .content {
+    padding: 0 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .submitForm {
+    input[type="submit"] {
+      margin-left: 1rem;
+    }
+  }
+}
+
+[data-theme="light"] .container[open] .taskHeading {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}

@@ -55,7 +55,6 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
         <input
           type="text"
           value={updatedTask.name}
-          className="input input-bordered input-sm"
           onChange={(e) =>
             setUpdatedtask({
               ...updatedTask,
@@ -68,7 +67,6 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
         <input
           type="number"
           value={updatedTask.points}
-          className="input input-bordered input-sm w-20"
           onChange={(e) =>
             setUpdatedtask({
               ...updatedTask,
@@ -81,7 +79,6 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
         <textarea
           cols={70}
           rows={10}
-          className="textarea textarea-bordered textarea-xs"
           onChange={(e) =>
             setUpdatedtask({
               ...updatedTask,
@@ -96,7 +93,6 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
           type="text"
           value={props.showFlag ? updatedTask.flag : "***"}
           disabled={!props.showFlag}
-          className="input input-bordered input-sm"
           onChange={(e) =>
             props.showFlag
               ? setUpdatedtask({
@@ -109,7 +105,7 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
       </td>
       <td>
         <select
-          className="select select-bordered"
+          className="input"
           defaultValue=""
           onChange={(e) => {
             setUpdatedtask({
@@ -127,7 +123,6 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
           type="text"
           placeholder="New category"
           value={updatedTask.category ?? undefined}
-          className="input input-bordered input-sm"
           onChange={(e) => {
             setUpdatedtask({
               ...updatedTask,
@@ -137,19 +132,14 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
         />
       </td>
       <td>
-        <button
-          className="btn btn-error btn-outline btn-xs"
-          onClick={deleteTask}
-        >
+        <button className="button" onClick={deleteTask}>
           Delete
         </button>
         <br />
         <br />
         <button
           disabled={!isModified}
-          className={`btn btn-warning ${
-            isModified ? "" : "btn-outline"
-          } btn-xs`}
+          className={`button ${isModified ? "solid" : ""}`}
           onClick={updateTask}
         >
           Update

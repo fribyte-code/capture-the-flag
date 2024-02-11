@@ -2,6 +2,7 @@ import Layout from "./layout";
 import { useLeaderboard } from "../hooks/useLeaderboard";
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
+import style from "./leaderboard.module.css";
 
 export default function Leaderboard() {
   // We need to move useLeaderboard one level up if we want to show teamScore on all pages
@@ -52,25 +53,22 @@ export default function Leaderboard() {
 
   return (
     <Layout>
-      <div className="flex flex-col align-center">
-        <h1 className="self-center font-bold text-xl">Live leaderboard</h1>
+      <div>
+        <h1>Live leaderboard</h1>
         <br />
-        <div
-          id="podium"
-          className="flex flex-row gap-x-24 items-end self-center"
-        >
+        <div className={style.podium}>
           {podium.map((entry, idx) => (
-            <div className="flex flex-col items-center gap-y-1" key={idx}>
-              <p className="text-xl items flex justify-center">
+            <div className={style.podiumTeam} key={idx}>
+              <p className={style.podiumTeamName}>
                 {entry.emoji}
                 {entry.teamId}
                 {entry.emoji}
               </p>
               <div
-                className="rounded bg-neutral px-12 flex items-center text-warning text-xl"
+                className={style.podiumStep}
                 style={{ height: `${48 * (3 - entry.place)}px` }}
               >
-                {entry.points}
+                <span>{entry.points}</span>
               </div>
             </div>
           ))}

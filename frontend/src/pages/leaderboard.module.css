@@ -1,0 +1,23 @@
+.container {
+}
+.podium {
+  width: min-content;
+  display: flex;
+  align-items: flex-end;
+  margin: 0 auto;
+}
+.podiumTeam {
+  width: 12rem;
+  text-align: center;
+}
+.podiumStep {
+  width: 8rem;
+  background-color: var(--bgColorSecondary);
+  margin: 0 auto;
+  display: flex;
+  border-radius: 0.5rem;
+
+  span {
+    margin: auto;
+  }
+}
