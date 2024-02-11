@@ -72,7 +72,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("DefaultCorsPolicy", policy =>
     {
-        policy.WithOrigins("https://ctf.fribyte.no", "http://localhost:5173");
+        string[] allowedOrigins = {"http://localhost:5173"};
+        
+        var configLocations = builder.Configuration.GetValue<string[]?>("CorsLocations");
+        if (configLocations is not null)
+        {
+            allowedOrigins = allowedOrigins.Concat(configLocations).ToArray();
+        }
+        
+        policy.WithOrigins(allowedOrigins);
         policy.AllowAnyMethod();
         policy.AllowAnyHeader();
         policy.AllowCredentials();
