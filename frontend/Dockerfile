@@ -13,7 +13,7 @@ COPY . .
 RUN yarn build
 
 # ----- Web Server ----
-FROM nginx:stable-alpine as production-stage
+FROM nginx:stable-alpine AS production-stage
 COPY --from=build-stage /app/nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=build-stage /app/dist /app
@@ -21,7 +21,7 @@ RUN sha256sum /app/index.html | cut -d ' ' -f 1  > /app/index.html.sha256sum
 
 EXPOSE 80
 
-RUN apk add jq
+RUN apk add --no-cache jq
 
 ARG APP_BUILD=next
 ARG APP_BUILD_DATE=2023-02-28

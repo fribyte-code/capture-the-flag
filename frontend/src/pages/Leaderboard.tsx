@@ -59,8 +59,8 @@ export default function Leaderboard() {
           id="podium"
           className="flex flex-row gap-x-24 items-end self-center"
         >
-          {podium.map((entry) => (
-            <div className="flex flex-col items-center gap-y-1">
+          {podium.map((entry, idx) => (
+            <div className="flex flex-col items-center gap-y-1" key={idx}>
               <p className="text-xl items flex justify-center">
                 {entry.emoji}
                 {entry.teamId}
@@ -79,24 +79,22 @@ export default function Leaderboard() {
         {isLoading ? (
           <p>Loading</p>
         ) : (
-          <>
-            <table className="table table-zebra table-auto">
-              <thead>
-                <tr>
-                  <th>TeamName</th>
-                  <th>Points</th>
+          <table className="table table-zebra table-auto">
+            <thead>
+              <tr>
+                <th>TeamName</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody aria-live="polite">
+              {leaderboard.map((l) => (
+                <tr key={l.teamId} className="hover">
+                  <td>{l.teamId}</td>
+                  <td>{l.points}</td>
                 </tr>
-              </thead>
-              <tbody aria-live="polite">
-                {leaderboard.map((l) => (
-                  <tr key={l.teamId} className="hover">
-                    <td>{l.teamId}</td>
-                    <td>{l.points}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
     </Layout>

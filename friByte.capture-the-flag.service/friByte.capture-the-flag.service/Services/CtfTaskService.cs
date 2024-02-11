@@ -1,7 +1,6 @@
 using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Models.Api;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.Serialization;
 using friByte.capture_the_flag.service.Hubs;
 using friByte.capture_the_flag.service.Services.Auth;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +30,12 @@ public interface ICtfTaskService
     /// But mapped to the readModel including whether or not the task is solved or not.
     /// </summary>
     Task<List<CtfTaskReadModel>> GetAllReleasedTasksIncludingIsSolvedOrNot(string teamName);
+
+    /// <summary>
+    /// Returns all categories used on existing tasks.
+    /// </summary>
+    /// <returns></returns>
+    Task<List<string>> GetAllCategories();
 }
 
 public class CtfTaskService : ICtfTaskService
@@ -75,10 +80,19 @@ public class CtfTaskService : ICtfTaskService
                 Description = t.Description,
                 IsSolved = t.SuccessfullSolveAttempts.Any(st => st.TeamId == teamName),
                 ReleaseDateTime = t.ReleaseDateTime,
-                Category = t.Category
+                Category = t.Category,
             })
             .OrderBy(t => t.Name)
             .ToListAsync();
+    }
+
+    public Task<List<string>> GetAllCategories()
+    {
+        return _ctfContext.CtfTasks
+            .Where(t => t.Category != null && t.Category != "")
+            .Select(t => t.Category)
+            .Distinct()
+            .ToListAsync()!;
     }
 
     public async Task<CtfTask> AddAsync(CtfTaskWriteModel newTask)
@@ -200,8 +214,33 @@ public class CtfTaskService : ICtfTaskService
         await Task.WhenAll(
             _ctfSignalrHubContext.Clients.All.ReceiveSolvedTask(new SolvedTaskReadModel(solvedTask)),
             _ctfSignalrHubContext.Clients.All.ReceiveLeaderboardEntryChange(
-                _ctfLeaderboardService.GetScoreForTeamId(solvedTask.TeamId).Result)
+                _ctfLeaderboardService.GetScoreForTeamId(solvedTask.TeamId).Result),
+            MaybeNotifyFirstBlood(solvedTask.TaskId, solvedTask.TeamId)
         );
+    }
+
+    private async Task<bool> IsFirstBlood(Guid taskId, string teamId)
+    {
+        var isAlreadySolved = await _ctfContext.SolvedTasks
+            .Where(t => t.TaskId == taskId && t.TeamId != teamId)
+            .AnyAsync();
+        return !isAlreadySolved;
+    }
+
+    private async Task MaybeNotifyFirstBlood(Guid taskId, string teamId)
+    {
+        bool isFirstBlood = await IsFirstBlood(taskId, teamId);
+        if (isFirstBlood)
+        {
+            var task = await _ctfContext.CtfTasks.FindAsync(taskId);
+            if (task == null){
+                return;
+            } 
+            string message = $"First blood: Task {task.Name} was solved by team {teamId}!";
+            var solvedTaskReadModel = new SolvedTaskReadModel(new SolvedTask(teamId, task));
+            await _ctfSignalrHubContext.Clients.All.ReceiveFirstBloodNotification(solvedTaskReadModel);
+            _logger.LogInformation(message);
+        }
     }
 }
 
