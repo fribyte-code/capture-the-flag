@@ -13,8 +13,6 @@ import {
 import config from "../config";
 
 export function useTasksWithRefresh() {
-  // We would benefit from converting this to a singleton
-  // to avoid multiple signalR subscriptions if hook is used multiple places.
   const { data, isLoading, error } = useTasks({});
   const [tasks, setTasks] = useState<TasksResponse>([]);
 
