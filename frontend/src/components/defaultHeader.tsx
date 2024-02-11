@@ -11,6 +11,11 @@ export default function Header() {
   const { logout, me } = useAuth();
   const { theme, toggleTheme } = useContext(ThemeContext);
 
+  const lightBrandLogo = config.APP_BRAND_LOGO ?? "/images/fribyte-logo.png";
+  const darkBrandLogo =
+    config.APP_BRAND_LOGO_DARK ?? "/images/fribyte-logo.png";
+  const brandLogoLink = theme === "light" ? lightBrandLogo : darkBrandLogo;
+
   return (
     <header>
       <nav className="navbar container mx-auto" aria-label="Global">
@@ -25,11 +30,11 @@ export default function Header() {
           >
             <img
               className="h-16 w-auto float-left"
-              src={config.BRAND_LOGO ?? "/images/fribyte-logo.png"}
+              src={brandLogoLink}
               alt=""
             />
             <span className="ml-2 text-2xl">
-              {config.BRAND_NAME ?? "friByte"}
+              {config.APP_BRAND_NAME ?? "friByte"}
             </span>
           </a>
         </div>
