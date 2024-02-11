@@ -105,6 +105,7 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
       </td>
       <td>
         <select
+          className="input"
           defaultValue=""
           onChange={(e) => {
             setUpdatedtask({

@@ -58,7 +58,12 @@ const TaskComponent: React.FC<TaskComponentProps> = (props) => {
           <p>Solved</p>
         ) : (
           <form onSubmit={handleSolveTask} className={style.submitForm}>
-            <input type="text" name="flag" placeholder="Flag{the-flag}" />
+            <input
+              className="input filled"
+              type="text"
+              name="flag"
+              placeholder="Flag{the-flag}"
+            />
             <input type="submit" value="Solve" className="button solid" />
           </form>
         )}

@@ -79,6 +79,8 @@ h2,
 h3,
 button,
 a,
+li,
+pre,
 svg {
   color: var(--textColor);
 }
@@ -97,27 +99,36 @@ svg {
  *    Common element styles
  */
 
+.input,
 input[type="text"],
 input[type="password"],
 input[type="number"],
-textarea,
-select {
-  background-color: var(--bgColorTetriary);
-  border: 1px solid transparent;
-  border-top-color: #70747960;
+textarea {
+  background-color: transparent;
+  border: 1px solid var(--borderColor);
   border-radius: 0.4rem;
   padding: 0.6rem 1rem;
   color: var(--textColor);
 
   &:focus {
-    border-top-color: transparent;
     outline: 2px solid var(--borderColor);
-    background-color: transparent;
   }
 
   &[disabled] {
     background-color: var(--inputDisabledColor);
     cursor: not-allowed;
+  }
+
+  &.filled {
+    background-color: var(--bgColorTetriary);
+    border: 1px solid transparent;
+    border-top-color: #70747960;
+
+    &:focus {
+      border-top-color: transparent;
+      outline: 2px solid var(--borderColor);
+      background-color: transparent;
+    }
   }
 
   [data-theme="light"] & {
@@ -126,6 +137,10 @@ select {
 
     &[disabled] {
       background-color: var(--inputDisabledColor);
+    }
+
+    &:focus {
+      border: 1px solid var(--borderColor);
     }
   }
 }

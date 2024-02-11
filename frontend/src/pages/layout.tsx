@@ -5,6 +5,7 @@ import classNames from "classnames";
 
 interface LayoutProps extends PropsWithChildren {
   wide?: boolean;
+  narrow?: boolean;
 }
 
 const Layout: React.FC<LayoutProps> = (props) => {
@@ -12,7 +13,10 @@ const Layout: React.FC<LayoutProps> = (props) => {
     <>
       <Header />
       <div
-        className={classNames(style.container, { [style.wide]: props.wide })}
+        className={classNames(style.container, {
+          [style.wide]: props.wide,
+          [style.narrow]: props.narrow,
+        })}
       >
         {props.children}
       </div>

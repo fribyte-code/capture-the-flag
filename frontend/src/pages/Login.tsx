@@ -1,5 +1,6 @@
 import Layout from "./layout";
 import { useAuth } from "../hooks/useAuth";
+import style from "./login.module.scss";
 
 export default function Login() {
   const { login, errorMsg } = useAuth();
@@ -12,8 +13,9 @@ export default function Login() {
     );
   };
   return (
-    <Layout>
-      <div className="w-[30rem] container mx-auto">
+    <Layout narrow>
+      <div className={style.container}>
+        <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-control">
             <label className="label">
@@ -23,7 +25,7 @@ export default function Login() {
               type="text"
               placeholder="TeamName"
               name="username"
-              className="input input-bordered"
+              className="input"
             />
           </div>
 
@@ -35,14 +37,10 @@ export default function Login() {
               type="password"
               placeholder="Password"
               name="password"
-              className="input input-bordered"
+              className="input"
             />
           </div>
-          <input
-            type="submit"
-            value="Login"
-            className="btn btn-outline btn-primary mt-4"
-          />
+          <input type="submit" value="Login" className="button solid" />
         </form>
         {errorMsg ? <p>{errorMsg}</p> : ""}
       </div>

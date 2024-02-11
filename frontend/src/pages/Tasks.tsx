@@ -106,12 +106,12 @@ export default function Tasks() {
                 onChange={handleGroupChange}
                 groups={Object.keys(filteredTaskGroups)}
               />
-              {currentGroup && filteredTaskGroups?.[currentGroup]?.length && (
+              {(currentGroup && filteredTaskGroups?.[currentGroup]?.length && (
                 <TaskGroupComponent
                   title={currentGroup}
                   tasks={filteredTaskGroups[currentGroup]}
                 />
-              )}
+              )) || <p>No tasks.</p>}
             </div>
           </>
         )

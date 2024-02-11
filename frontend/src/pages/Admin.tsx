@@ -202,7 +202,7 @@ export default function Admin() {
                 <span className="label-text">Category</span>
               </label>
               <select
-                className="select select-bordered"
+                className="input"
                 defaultValue=""
                 onChange={(e) => {
                   setNewTask({ ...newTask, category: e.target.value });

@@ -11,7 +11,6 @@ export interface TaskGroupComponentProps {
 const TaskGroupComponent: React.FC<TaskGroupComponentProps> = (props) => {
   return (
     <>
-      <h2>Category: {props.title}</h2>
       {props.tasks.map((task) => (
         <div className={style.task} key={task.id}>
           <TaskComponent task={task} />
