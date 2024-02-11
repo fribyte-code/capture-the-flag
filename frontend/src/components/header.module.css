@@ -37,7 +37,7 @@
 }
 .navbarItems {
   display: grid;
-  grid-template-areas: "tasks-link toggle-theme leaderboard-link admin-link logout";
+  grid-template-areas: "toggle-theme tasks-link leaderboard-link admin-link logout";
 }
 .navItem {
   margin: auto 1rem;
