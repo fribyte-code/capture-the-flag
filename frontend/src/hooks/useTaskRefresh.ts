@@ -27,9 +27,8 @@ export function useTasksWithRefresh() {
   const signalRUrl = apiUrl + "/Api/signalr";
   const signalRSocket = new SignalRSocketHandler(signalRUrl);
 
-  signalRSocket.subscribeToEvent(SignalRSocketEvent.reconnect, () => {
-    // To ensure we do not lose any events; always re-download data
-    // from api after signalR disconnect
+  signalRSocket.subscribeToEvent(SignalRSocketEvent.reconnect, (data) => {
+    refetchTasks();
     console.debug("Reconnected");
   });
 
