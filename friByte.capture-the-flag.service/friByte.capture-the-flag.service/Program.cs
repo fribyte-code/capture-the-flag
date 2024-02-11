@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using friByte.capture_the_flag.service.Hubs;
+using friByte.capture_the_flag.service.Jobs;
 using friByte.capture_the_flag.service.Models;
 using friByte.capture_the_flag.service.Services;
 using friByte.capture_the_flag.service.Services.Auth;
@@ -90,6 +91,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => { options.SupportNonNullableReferenceTypes(); });
+
+//Register background Jobs
+builder.Services.AddHostedService<TaskReleaseBackgroundJob>();
 
 var app = builder.Build();
 

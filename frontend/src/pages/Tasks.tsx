@@ -3,9 +3,10 @@ import { useTasks } from "../api/backendComponents";
 import Layout from "./layout";
 import TaskComponent from "../components/taskComponent";
 import { CtfTaskReadModel } from "../api/backendSchemas";
+import { useTasksWithRefresh } from "../hooks/useTaskRefresh";
 
 export default function Tasks() {
-  const { data, isLoading, error } = useTasks({});
+  const { data, isLoading, error } = useTasksWithRefresh();
 
   const [filteredTasks, setFilteredTasks] = useState<
     CtfTaskReadModel[] | undefined
