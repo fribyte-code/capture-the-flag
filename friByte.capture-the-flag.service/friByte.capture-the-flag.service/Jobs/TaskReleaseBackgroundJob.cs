@@ -37,8 +37,6 @@ public class TaskReleaseBackgroundJob:IHostedService,IDisposable
             CheckTaskReleaseAsync(lastRelease, timeNow);
             
         }
-        _logger.LogInformation(
-            "Started a check HAHAHA");
     }
 
     private async void CheckTaskReleaseAsync(DateTimeOffset lastReleaseTime, DateTimeOffset timeNow)
