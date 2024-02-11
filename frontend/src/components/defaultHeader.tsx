@@ -65,6 +65,11 @@ export default function Header() {
     </>
   );
 
+  const lightBrandLogo = config.APP_BRAND_LOGO ?? "/images/fribyte-logo.png";
+  const darkBrandLogo =
+    config.APP_BRAND_LOGO_DARK ?? "/images/fribyte-logo.png";
+  const brandLogoLink = theme === "light" ? lightBrandLogo : darkBrandLogo;
+
   return (
     <header>
       <nav className={style.header} aria-label="Global">
@@ -81,9 +86,9 @@ export default function Header() {
               navigate("/");
             }}
           >
-            <img src={config.BRAND_LOGO ?? "/images/fribyte-logo.png"} alt="" />
+            <img src={brandLogoLink} alt="" />
             <span className={style.brandName}>
-              {config.BRAND_NAME ?? "friByte"}
+              {config.APP_BRAND_NAME ?? "friByte"}
             </span>
           </a>
         </div>

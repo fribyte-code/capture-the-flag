@@ -72,7 +72,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("DefaultCorsPolicy", policy =>
     {
-        policy.WithOrigins("https://ctf.fribyte.no", "http://localhost:5173");
+        string[] allowedOrigins = {"http://localhost:5173"};
+        
+        var configLocations = builder.Configuration.GetSection("CorsLocations").Get<string[]?>();
+        if (configLocations is not null)
+        {
+            allowedOrigins = allowedOrigins.Concat(configLocations).ToArray();
+        }
+        
+        policy.WithOrigins(allowedOrigins);
         policy.AllowAnyMethod();
         policy.AllowAnyHeader();
         policy.AllowCredentials();
@@ -126,8 +134,9 @@ async Task MigrateAndSeedData()
     // Add initial admin account
     var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var initialAdminUsername = builder.Configuration.GetValue<string>("InitialAdminUsername");
     var initialAdminPassword = builder.Configuration.GetValue<string>("InitialAdminPassword");
-    await DbContextSeeder.SeedIdentityContextAsync(userManager, roleManager, initialAdminPassword);
+    await DbContextSeeder.SeedIdentityContextAsync(userManager, roleManager, initialAdminUsername, initialAdminPassword);
 
     // Add initial ctfTasks
     var ctfContext = serviceScope.ServiceProvider.GetRequiredService<CtfContext>();

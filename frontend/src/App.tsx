@@ -24,8 +24,8 @@ const App = () => {
   const { theme, setTheme, toggleTheme } = useTheme();
 
   useDynamicHead(
-    config.BRAND_TITLE ?? "friByte CTF",
-    config.BRAND_FAVICON ?? "/images/favicon.ico",
+    config.APP_BRAND_TITLE ?? "friByte CTF",
+    config.APP_BRAND_FAVICON ?? "/images/fribyte-favicon.ico",
   );
 
   return (
