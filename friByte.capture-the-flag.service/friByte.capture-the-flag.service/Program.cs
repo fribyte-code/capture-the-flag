@@ -134,8 +134,9 @@ async Task MigrateAndSeedData()
     // Add initial admin account
     var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var initialAdminUsername = builder.Configuration.GetValue<string>("InitialAdminUsername");
     var initialAdminPassword = builder.Configuration.GetValue<string>("InitialAdminPassword");
-    await DbContextSeeder.SeedIdentityContextAsync(userManager, roleManager, initialAdminPassword);
+    await DbContextSeeder.SeedIdentityContextAsync(userManager, roleManager, initialAdminUsername, initialAdminPassword);
 
     // Add initial ctfTasks
     var ctfContext = serviceScope.ServiceProvider.GetRequiredService<CtfContext>();

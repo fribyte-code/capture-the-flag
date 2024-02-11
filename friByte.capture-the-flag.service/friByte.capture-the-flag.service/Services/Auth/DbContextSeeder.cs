@@ -20,11 +20,13 @@ public static class DbContextSeeder
     /// </summary>
     /// <param name="userManager"></param>
     /// <param name="roleManager"></param>
+    /// <param name="initialAdminUsername"></param>
     /// <param name="initialAdminPassword"></param>
     /// <exception cref="Exception"></exception>
     public static async Task SeedIdentityContextAsync(
         UserManager<ApplicationUser> userManager,
         RoleManager<IdentityRole> roleManager,
+        string initialAdminUsername,
         string initialAdminPassword
     )
     {
@@ -48,7 +50,7 @@ public static class DbContextSeeder
         // Only add user if there are no user already in database
         if (!userManager.Users.Any())
         {
-            var adminUser = new ApplicationUser { UserName = "friByte" };
+            var adminUser = new ApplicationUser { UserName = initialAdminUsername };
 
             var createAdminResult = await userManager.CreateAsync(adminUser, initialAdminPassword);
             if (createAdminResult.Succeeded)
