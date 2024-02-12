@@ -12,21 +12,20 @@ import { useTaskRefresher } from "../hooks/useTaskRefresh";
 export type GroupedTasks = Record<string, CtfTaskReadModel[]>;
 
 export default function Tasks() {
-  const { data, isLoading, error, refetch } = useTasks({});
-  const { refresh, setRefresh } = useTaskRefresher();
+  const { data, isLoading, error, refetch: refetchTasks } = useTasks({});
+  const { refresh } = useTaskRefresher();
 
   const [showSolvedTasks, setShowSolvedTasks] = useState(true);
   const [currentGroup, setCurrentGroup] = useState<keyof GroupedTasks | null>(
     null,
   );
 
-  //Refetch on websocket signal
+  //Refetch on websocket signal to refetch tasks
   useEffect(() => {
-    const refetchAndSet = async () => {
-      await refetch();
-      setRefresh(false);
+    const refetchTasksAsync = async () => {
+      await refetchTasks();
     };
-    refetchAndSet();
+    refetchTasksAsync();
   }, [refresh]);
 
   useEffect(() => {
