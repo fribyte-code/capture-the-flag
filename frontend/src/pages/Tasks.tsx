@@ -6,18 +6,27 @@ import { useFirstBloodNotification } from "../hooks/useFirstBloodNotification";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TaskGroupComponent from "../components/taskGroupComponent";
-import { useTasksWithRefresh } from "../hooks/useTaskRefresh";
+import { useTaskRefresher } from "../hooks/useTaskRefresh";
 
 type GroupedTasks = {
   [categoryName: string]: CtfTaskReadModel[];
 };
 
 export default function Tasks() {
-  const { data, isLoading, error } = useTasksWithRefresh();
+  const { data, isLoading, error, refetch } = useTasks({});
+  const { refresh, setRefresh } = useTaskRefresher();
   const firstBloodNotification = useFirstBloodNotification();
-
   const [groupedTasks, setGroupedTasks] = useState<GroupedTasks>({});
   const [showSolvedTasks, setShowSolvedTasks] = useState(true);
+
+  //Refetch on websocket signal
+  useEffect(() => {
+    const refetchAndSet = async () => {
+      await refetch();
+      setRefresh(false);
+    };
+    refetchAndSet();
+  }, [refresh]);
 
   useEffect(() => {
     if (error) {

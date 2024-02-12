@@ -11,33 +11,24 @@ import {
   SignalRSocketHandler,
 } from "../utils/SignalRSocket";
 import config from "../config";
+import { useQueryClient } from "@tanstack/react-query";
 
-export function useTasksWithRefresh() {
-  const { data, isLoading, error } = useTasks({});
-  const [tasks, setTasks] = useState<TasksResponse>([]);
-
-  useEffect(() => {
-    if (!isLoading && data) {
-      setTasks(data);
-    }
-  }, [data]);
+export function useTaskRefresher() {
+  const [refresh, setRefresh] = useState<boolean>(false);
   const apiUrl = config.APP_API_URL ?? "";
   const signalRUrl = apiUrl + "/Api/signalr";
   const signalRSocket = new SignalRSocketHandler(signalRUrl);
 
-  signalRSocket.subscribeToEvent(SignalRSocketEvent.reconnect, (data) => {
-    refetchTasks();
-    console.debug("Reconnected");
-  });
+  useEffect(() => {
+    signalRSocket.subscribeToEvent(SignalRSocketEvent.reconnect, (data) => {
+      console.debug("Reconnected");
+      setRefresh(true);
+    });
 
-  signalRSocket.on("SignalNewTaskRelease", () => {
-    refetchTasks();
-  });
+    signalRSocket.on("SignalNewTaskRelease", () => {
+      setRefresh(true);
+    });
+  }, []);
 
-  async function refetchTasks() {
-    const newlyFetchedTasks = await fetchTasks({});
-    setTasks(newlyFetchedTasks);
-  }
-
-  return { data: tasks, isLoading, error };
+  return { refresh, setRefresh };
 }
