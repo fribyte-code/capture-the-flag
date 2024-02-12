@@ -1,4 +1,4 @@
-const LightIcon = ({ className }: { className: string | undefined }) => {
+const LightIcon = ({ className }: { className?: string }) => {
   return (
     <svg
       viewBox="0 0 256 256"

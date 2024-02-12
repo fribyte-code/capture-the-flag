@@ -20,7 +20,7 @@ export default function AdminTeamManagement() {
             },
           });
         }
-      })
+      }),
     );
 
     await refetch();
@@ -48,7 +48,7 @@ export default function AdminTeamManagement() {
                 cols={10}
               />
             </div>
-            <input type="submit" className="btn btn-primary" />
+            <input type="submit" className="button solid" value="Submit" />
           </form>
           <div className="form-control w-64">
             <label className="label cursor-pointer">
@@ -76,7 +76,7 @@ export default function AdminTeamManagement() {
                     className="cursor-pointer"
                     onClick={(e) =>
                       setTeamPasswordToShow(
-                        teamPasswordToShow == t.userName ? "" : t.userName!
+                        teamPasswordToShow == t.userName ? "" : t.userName!,
                       )
                     }
                   >

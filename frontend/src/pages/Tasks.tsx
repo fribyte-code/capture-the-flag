@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTasks } from "../api/backendComponents";
 import Layout from "./layout";
 import { CtfTaskReadModel } from "../api/backendSchemas";
-import { useFirstBloodNotification } from "../hooks/useFirstBloodNotification";
-import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import TaskGroupComponent from "../components/taskGroupComponent";
+import TaskGroupComponent from "../components/tasks/taskGroupComponent";
+import Toggle from "../components/toggle";
+import style from "./tasks.module.css";
+import GroupList from "../components/tasks/groupList";
 import { useTaskRefresher } from "../hooks/useTaskRefresh";
 
-type GroupedTasks = {
-  [categoryName: string]: CtfTaskReadModel[];
-};
+export type GroupedTasks = Record<string, CtfTaskReadModel[]>;
 
 export default function Tasks() {
   const { data, isLoading, error, refetch } = useTasks({});
   const { refresh, setRefresh } = useTaskRefresher();
-  const firstBloodNotification = useFirstBloodNotification();
-  const [groupedTasks, setGroupedTasks] = useState<GroupedTasks>({});
+
   const [showSolvedTasks, setShowSolvedTasks] = useState(true);
+  const [currentGroup, setCurrentGroup] = useState<keyof GroupedTasks | null>(
+    null,
+  );
 
   //Refetch on websocket signal
   useEffect(() => {
@@ -31,101 +32,58 @@ export default function Tasks() {
   useEffect(() => {
     if (error) {
       console.error(error);
-      return;
     }
+  }, [error]);
 
-    const filteredTasks = data?.filter((t) =>
-      !showSolvedTasks ? !t.isSolved : true,
-    );
-
-    setGroupedTasks(() => {
-      let groupedTasks: GroupedTasks = {};
-      filteredTasks?.forEach((task) => {
-        let categoryTitle = task.category ?? "Other";
-        if (!groupedTasks[categoryTitle]) {
-          groupedTasks[categoryTitle] = [];
-        }
-        groupedTasks[categoryTitle].push(task);
-      });
-      return groupedTasks;
-    });
-  }, [data, error, showSolvedTasks]);
-
-  function ToasterSection() {
-    useEffect(() => {
-      if (firstBloodNotification && firstBloodNotification.task) {
-        toast.success(
-          `🩸First Blood: ${firstBloodNotification.task.name} solved by ${firstBloodNotification.teamId}🩸`,
-          {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          },
-        );
+  const filteredTaskGroups = useMemo(() => {
+    let groupedTasks: GroupedTasks = {};
+    for (const task of data || []) {
+      let categoryTitle = task.category ?? "Other";
+      if (!groupedTasks[categoryTitle]) {
+        groupedTasks[categoryTitle] = [];
       }
-    }, [firstBloodNotification]);
+      if (showSolvedTasks || (!showSolvedTasks && !task.isSolved)) {
+        groupedTasks[categoryTitle].push(task);
+      }
+    }
+    return groupedTasks;
+  }, [data, showSolvedTasks]);
 
-    return (
-      <div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Bounce}
-        />
-      </div>
-    );
-  }
+  const handleGroupChange = (group: keyof GroupedTasks) =>
+    setCurrentGroup(group);
 
   return (
     <Layout>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        groupedTasks && (
+        filteredTaskGroups && (
           <>
-            <div className="form-control w-52">
-              <label className="label cursor-pointer">
-                <span className="label-text">Show solved tasks</span>
-                <input
-                  type="checkbox"
-                  className="toggle"
+            <div>
+              <label className={style.showSolvedLabel}>
+                <span>Show solved tasks</span>
+                <Toggle
                   checked={showSolvedTasks}
-                  onChange={(e) => setShowSolvedTasks(!showSolvedTasks)}
+                  onChange={() => setShowSolvedTasks(!showSolvedTasks)}
                 />
               </label>
             </div>
-            <div className="container mb-24">
-              <h1 className="font-bold">Tasks</h1>
-              <div className="flex flex-col gap-1">
-                {Object.entries(groupedTasks).map(
-                  ([category, tasksInGroup]) => (
-                    <TaskGroupComponent
-                      title={category}
-                      tasks={tasksInGroup}
-                      key={category}
-                    />
-                  ),
-                )}
-              </div>
+            <div className={style.tasksContainer}>
+              <h1>Tasks</h1>
+              <GroupList
+                onChange={handleGroupChange}
+                groups={Object.keys(filteredTaskGroups)}
+              />
+              {(currentGroup && filteredTaskGroups?.[currentGroup]?.length && (
+                <TaskGroupComponent
+                  title={currentGroup}
+                  tasks={filteredTaskGroups[currentGroup]}
+                />
+              )) || <p>No tasks.</p>}
             </div>
           </>
         )
       )}
-      <ToasterSection />
     </Layout>
   );
 }

@@ -1,11 +1,28 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import Header from "../components/defaultHeader";
+import style from "./layout.module.css";
+import classNames from "classnames";
+import ToasterSection from "../components/toasterSection";
 
-const Layout: React.FC<React.PropsWithChildren> = (props) => {
+interface LayoutProps extends PropsWithChildren {
+  wide?: boolean;
+  narrow?: boolean;
+}
+
+const Layout: React.FC<LayoutProps> = (props) => {
   return (
     <>
       <Header />
-      <div className="container mx-auto">{props.children}</div>
+      <div
+        className={classNames(style.container, {
+          [style.wide]: props.wide,
+          [style.narrow]: props.narrow,
+        })}
+      >
+        {props.children}
+      </div>
+
+      <ToasterSection />
     </>
   );
 };

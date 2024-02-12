@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>friByte.capture_the_flag.service</RootNamespace>
+        <RuntimeIdentifier>linux-x64</RuntimeIdentifier><!--  This line is the temp fix  -->
     </PropertyGroup>
 
     <ItemGroup>
