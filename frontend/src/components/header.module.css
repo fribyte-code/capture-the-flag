@@ -35,8 +35,9 @@
 .icon {
   width: 2rem;
 }
-.navItems {
-  display: flex;
+.navbarItems {
+  display: grid;
+  grid-template-areas: "toggle-theme tasks-link leaderboard-link admin-link logout";
 }
 .navItem {
   margin: auto 1rem;
@@ -52,13 +53,34 @@
   margin-right: 0.8rem;
   color: transparent;
 }
+
+.tasksLink {
+  grid-area: tasks-link;
+}
+.leaderBoardLink {
+  grid-area: leaderboard-link;
+}
+.adminLink {
+  grid-area: admin-link;
+}
 .logout {
+  grid-area: logout;
   margin: auto 0;
   cursor: pointer;
   display: flex;
+  align-items: center;
+
+  .logoutButtonText {
+    display: none;
+    padding-left: 0.5rem;
+  }
+}
+.spacing {
+  grid-area: spacing;
 }
 
 .toggle {
+  grid-area: toggle-theme;
   display: flex;
   svg {
     width: 2rem;
@@ -104,9 +126,25 @@
     background: none;
   }
 }
+.closeButton {
+  width: min-content;
+  margin: 1.5rem;
+}
+
+.sideMenuItems {
+  flex: 1;
+  display: grid;
+  grid-template-areas: "tasks-link" "leaderboard-link" "admin-link" "spacing" "logout" "toggle-theme";
+  grid-template-rows: 3.5rem 3.5rem 3.5rem auto 3.5rem 3.5rem;
+  padding: 1rem 1.5rem 3rem;
+  .navItem {
+    display: block;
+    margin: 1rem 0;
+  }
+}
 
 @media (width < 700px) {
-  .navItems {
+  .navbarItems {
     display: none;
   }
   .burger {
@@ -114,5 +152,8 @@
   }
   .logo {
     margin: 0 auto;
+  }
+  .logout .logoutButtonText {
+    display: inline;
   }
 }

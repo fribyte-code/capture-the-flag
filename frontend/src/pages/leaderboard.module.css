@@ -1,14 +1,29 @@
 .container {
 }
 .podium {
-  width: min-content;
-  display: flex;
-  align-items: flex-end;
+  max-width: 40rem;
+  display: grid;
+  grid-template: "third-place first-place second-place" / 1fr 1fr 1fr;
+  align-items: end;
   margin: 0 auto;
 }
 .podiumTeam {
-  width: 12rem;
   text-align: center;
+
+  display: grid;
+
+  &:nth-of-type(1) {
+    grid-area: third-place;
+  }
+  &:nth-of-type(2) {
+    grid-area: first-place;
+  }
+  &:nth-of-type(3) {
+    grid-area: second-place;
+  }
+}
+.podiumTeamName {
+  white-space: nowrap;
 }
 .podiumStep {
   width: 8rem;
@@ -19,5 +34,11 @@
 
   span {
     margin: auto;
+  }
+}
+
+@media (width < 700px) {
+  .podium {
+    grid-template: "first-place first-place" "third-place second-place";
   }
 }
