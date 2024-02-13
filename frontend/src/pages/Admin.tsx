@@ -6,10 +6,11 @@ import {
   useAdminAllTasks,
 } from "../api/backendComponents";
 import { useEffect, useState } from "react";
-import { CtfTaskWriteModel } from "../api/backendSchemas";
+import { CtfTask, CtfTaskWriteModel } from "../api/backendSchemas";
 import { useNavigate } from "react-router-dom";
 import AdminTask from "../components/adminTask";
 import DateSelector from "../components/dateSelector";
+import style from "./Admin.module.css";
 export default function Admin() {
   const navigate = useNavigate();
   const {
@@ -39,6 +40,10 @@ export default function Admin() {
     await refetchAllTasks();
     await refetchCategories();
   }
+
+  const [currentEditingTask, setCurrentEditingTask] = useState<CtfTask | null>(
+    null,
+  );
 
   const [sortProp, setSortProp] = useState("");
   const [sortAsc, setSortAsc] = useState(true);
@@ -114,31 +119,28 @@ export default function Admin() {
   (window as any).batchImportTasks = batchImportTasks;
 
   return (
-    <Layout wide>
+    <Layout>
       {isLoading ? (
         <p>Loading</p>
       ) : (
         <div style={{ maxWidth: "1200px" }}>
-          <a
-            href="#"
+          <h1 style={{ marginBottom: "0" }}>Task management</h1>
+
+          <button
             onClick={(e) => {
               e.preventDefault();
               navigate("/admin/teams");
             }}
-            className="btn btn-neutral"
+            className="button solid"
           >
             Team management
-          </a>
-          <br />
-          <br />
-          <h1>Task management</h1>
-          <br />
-          <br />
+          </button>
+
           <form onSubmit={handleAddTask}>
             <h2>Add new task</h2>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">TaskName</span>
+                <span className="label-text">Task Name</span>
               </label>
               <input
                 value={newTask.name}
@@ -257,39 +259,10 @@ export default function Admin() {
               />
             </label>
           </div>
-          <table className="table table-zebra table-pin-rows">
+          <table className={style.adminTable}>
             <thead>
               <tr>
-                <th
-                  className="cursor-pointer"
-                  onClick={(e) => handleClickSortProp("name")}
-                >
-                  Name
-                </th>
-                <th
-                  className="cursor-pointer"
-                  onClick={(e) => handleClickSortProp("points")}
-                >
-                  Points
-                </th>
-                <th
-                  className="cursor-pointer"
-                  onClick={(e) => handleClickSortProp("description")}
-                >
-                  Description
-                </th>
-                <th
-                  className="cursor-pointer"
-                  onClick={(e) => handleClickSortProp("releaseTime")}
-                >
-                  Release Time
-                </th>
-                <th
-                  className="cursor-pointer"
-                  onClick={(e) => handleClickSortProp("flag")}
-                >
-                  Flag
-                </th>
+                <th onClick={(e) => handleClickSortProp("name")}>Name</th>
                 <th>Category</th>
                 <th>Actions</th>
               </tr>
@@ -299,15 +272,31 @@ export default function Admin() {
                 ? `${error.status} ${error.payload}`
                 : sortedTasks
                   ? sortedTasks.map((t) => (
-                      <AdminTask
-                        showFlag={showFlag}
-                        task={t}
-                        key={t.id}
-                      ></AdminTask>
+                      <tr>
+                        <td>{t.name}</td>
+                        <td>{t.category ?? "Other"}</td>
+                        <td>
+                          <button
+                            className="button solid"
+                            onClick={() => {
+                              setCurrentEditingTask(t);
+                            }}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                      </tr>
                     ))
                   : ""}
             </tbody>
           </table>
+          {currentEditingTask && (
+            <AdminTask
+              task={currentEditingTask}
+              showFlag={true}
+              onClose={() => setCurrentEditingTask(null)}
+            />
+          )}
         </div>
       )}
     </Layout>

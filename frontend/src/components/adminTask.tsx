@@ -7,10 +7,12 @@ import {
 } from "../api/backendComponents";
 import { CtfTask } from "../api/backendSchemas";
 import DateSelector from "./dateSelector";
+import style from "./adminTask.module.css";
 
 export interface AdminTaskProps {
   task: CtfTask;
   showFlag: boolean;
+  onClose: () => void;
 }
 
 const AdminTask: React.FC<AdminTaskProps> = (props) => {
@@ -50,114 +52,150 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
     setIsModified(JSON.stringify(props.task) !== JSON.stringify(updatedTask));
   }, [updatedTask]);
 
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key == "Escape") {
+      props.onClose();
+    }
+  };
   return (
-    <tr key={updatedTask.id} className="hover">
-      <td>
-        <input
-          type="text"
-          value={updatedTask.name}
-          onChange={(e) =>
-            setUpdatedtask({
-              ...updatedTask,
-              name: e.currentTarget.value,
-            })
-          }
-        />
-      </td>
-      <td>
-        <input
-          type="number"
-          value={updatedTask.points}
-          onChange={(e) =>
-            setUpdatedtask({
-              ...updatedTask,
-              points: Number(e.currentTarget.value),
-            })
-          }
-        />
-      </td>
-      <td>
-        <textarea
-          cols={70}
-          rows={10}
-          onChange={(e) =>
-            setUpdatedtask({
-              ...updatedTask,
-              description: e.currentTarget.value,
-            })
-          }
-          value={updatedTask.description}
-        ></textarea>
-      </td>
-      <td>
-        <DateSelector
-          onChange={(e) =>
-            setUpdatedtask({
-              ...updatedTask,
-              releaseDateTime: e.toISOString(),
-            })
-          }
-          defaultDate={props.task.releaseDateTime}
-        />
-      </td>
-      <td>
-        <input
-          type="text"
-          value={props.showFlag ? updatedTask.flag : "***"}
-          disabled={!props.showFlag}
-          onChange={(e) =>
-            props.showFlag
-              ? setUpdatedtask({
-                  ...updatedTask,
-                  flag: e.currentTarget.value,
-                })
-              : ""
-          }
-        />
-      </td>
-      <td>
-        <select
-          className="input"
-          defaultValue=""
-          onChange={(e) => {
-            setUpdatedtask({
-              ...updatedTask,
-              category: e.currentTarget.value,
-            });
-          }}
-        >
-          <option value="">Select category</option>;
-          {allTaskCategories?.map((category) => (
-            <option key={category}>{category}</option>
-          ))}
-        </select>
-        <input
-          type="text"
-          placeholder="New category"
-          value={updatedTask.category ?? undefined}
-          onChange={(e) => {
-            setUpdatedtask({
-              ...updatedTask,
-              category: e.currentTarget.value,
-            });
-          }}
-        />
-      </td>
-      <td>
-        <button className="button" onClick={deleteTask}>
-          Delete
-        </button>
-        <br />
-        <br />
-        <button
-          disabled={!isModified}
-          className={`button ${isModified ? "solid" : ""}`}
-          onClick={updateTask}
-        >
-          Update
-        </button>
-      </td>
-    </tr>
+    <>
+      <dialog
+        open
+        key={updatedTask.id}
+        className={style.dialog}
+        onKeyUp={handleKeyPress}
+      >
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Task Name</span>
+          </label>
+          <input
+            autoFocus
+            type="text"
+            value={updatedTask.name}
+            onChange={(e) =>
+              setUpdatedtask({
+                ...updatedTask,
+                name: e.currentTarget.value,
+              })
+            }
+          />
+        </div>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Points</span>
+          </label>
+          <input
+            type="number"
+            value={updatedTask.points}
+            onChange={(e) =>
+              setUpdatedtask({
+                ...updatedTask,
+                points: Number(e.currentTarget.value),
+              })
+            }
+          />
+        </div>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">
+              Description (Rendered as markdown)
+            </span>
+          </label>
+          <textarea
+            cols={70}
+            rows={10}
+            onChange={(e) =>
+              setUpdatedtask({
+                ...updatedTask,
+                description: e.currentTarget.value,
+              })
+            }
+            value={updatedTask.description}
+          ></textarea>
+        </div>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">
+              Release Date Time (Empty for release now)
+            </span>
+          </label>
+          <DateSelector
+            onChange={(e) =>
+              setUpdatedtask({
+                ...updatedTask,
+                releaseDateTime: e.toISOString(),
+              })
+            }
+            defaultDate={props.task.releaseDateTime}
+          />
+        </div>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Flag</span>
+          </label>
+          <input
+            type="text"
+            value={props.showFlag ? updatedTask.flag : "***"}
+            disabled={!props.showFlag}
+            onChange={(e) =>
+              props.showFlag
+                ? setUpdatedtask({
+                    ...updatedTask,
+                    flag: e.currentTarget.value,
+                  })
+                : ""
+            }
+          />
+        </div>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Category</span>
+          </label>
+          <select
+            className="input"
+            defaultValue=""
+            onChange={(e) => {
+              setUpdatedtask({
+                ...updatedTask,
+                category: e.currentTarget.value,
+              });
+            }}
+          >
+            <option value="">Select category</option>;
+            {allTaskCategories?.map((category) => (
+              <option key={category}>{category}</option>
+            ))}
+          </select>
+          <input
+            type="text"
+            placeholder="New category"
+            value={updatedTask.category ?? undefined}
+            onChange={(e) => {
+              setUpdatedtask({
+                ...updatedTask,
+                category: e.currentTarget.value,
+              });
+            }}
+          />
+        </div>
+        <div className="form-control">
+          <button className="button" onClick={deleteTask}>
+            Delete
+          </button>
+          <br />
+          <br />
+          <button
+            disabled={!isModified}
+            className={`button ${isModified ? "solid" : ""}`}
+            onClick={updateTask}
+          >
+            Update
+          </button>
+        </div>
+      </dialog>
+      <div onClick={() => props.onClose()} className={style.backDrop} />
+    </>
   );
 };
 

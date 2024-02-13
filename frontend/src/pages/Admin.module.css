@@ -1,0 +1,8 @@
+.adminTable {
+  td {
+    word-wrap: anywhere;
+    button {
+      word-wrap: normal;
+    }
+  }
+}
