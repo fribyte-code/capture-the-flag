@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_BRAND_NAME: string;
   readonly VITE_APP_BRAND_LOGO: string;
   readonly VITE_APP_BRAND_LOGO_DARK: string;
+  readonly VITE_APP_COLOR_SCHEME: "fribyte" | "heltsikker" | undefined;
   // more env variables...
 }
 
@@ -24,6 +25,7 @@ interface Window {
     APP_BRAND_NAME?: string;
     APP_BRAND_LOGO?: string;
     APP_BRAND_LOGO_DARK?: string;
+    APP_COLOR_SCHEME?: "fribyte" | "heltsikker";
     [key: string]: string | undefined | number | boolean;
   };
 }
