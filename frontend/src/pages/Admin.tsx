@@ -124,21 +124,18 @@ export default function Admin() {
         <p>Loading</p>
       ) : (
         <div style={{ maxWidth: "1200px" }}>
-          <a
-            href="#"
+          <h1 style={{ marginBottom: "0" }}>Task management</h1>
+
+          <button
             onClick={(e) => {
               e.preventDefault();
               navigate("/admin/teams");
             }}
-            className="btn btn-neutral"
+            className="button solid"
           >
             Team management
-          </a>
-          <br />
-          <br />
-          <h1>Task management</h1>
-          <br />
-          <br />
+          </button>
+
           <form onSubmit={handleAddTask}>
             <h2>Add new task</h2>
             <div className="form-control">
