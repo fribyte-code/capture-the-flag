@@ -19,6 +19,7 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
     useAdminAllCategories({});
   async function deleteTask() {
     if (updatedTask.id) {
+      props.onClose();
       await fetchAdminDeleteTask({
         pathParams: {
           id: updatedTask.id,
@@ -31,6 +32,7 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
   }
   async function updateTask() {
     if (updatedTask.id) {
+      props.onClose();
       await fetchAdminUpdateTask({
         pathParams: {
           id: updatedTask.id,
