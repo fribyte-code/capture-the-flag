@@ -27,7 +27,7 @@ function ToasterSection() {
     <div>
       <ToastContainer
         position="bottom-right"
-        autoClose={500000}
+        autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
