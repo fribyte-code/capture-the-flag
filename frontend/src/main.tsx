@@ -17,7 +17,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 (() => {
   const colorScheme =
     import.meta.env.VITE_APP_COLOR_SCHEME || config.APP_COLOR_SCHEME;
-  console.log(config);
   if (colorScheme) {
     const htmlRoot = document.getElementsByTagName("html")[0];
     htmlRoot.setAttribute("data-color-scheme", colorScheme);
