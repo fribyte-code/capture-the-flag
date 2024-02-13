@@ -6,6 +6,7 @@ import {
   useAdminAllTasks,
 } from "../api/backendComponents";
 import { CtfTask } from "../api/backendSchemas";
+import DateSelector from "./dateSelector";
 
 export interface AdminTaskProps {
   task: CtfTask;
@@ -87,6 +88,17 @@ const AdminTask: React.FC<AdminTaskProps> = (props) => {
           }
           value={updatedTask.description}
         ></textarea>
+      </td>
+      <td>
+        <DateSelector
+          onChange={(e) =>
+            setUpdatedtask({
+              ...updatedTask,
+              releaseDateTime: e.toISOString(),
+            })
+          }
+          defaultDate={props.task.releaseDateTime}
+        />
       </td>
       <td>
         <input

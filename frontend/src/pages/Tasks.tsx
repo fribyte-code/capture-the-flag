@@ -2,25 +2,31 @@ import { useEffect, useMemo, useState } from "react";
 import { useTasks } from "../api/backendComponents";
 import Layout from "./layout";
 import { CtfTaskReadModel } from "../api/backendSchemas";
-import { useFirstBloodNotification } from "../hooks/useFirstBloodNotification";
-import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TaskGroupComponent from "../components/tasks/taskGroupComponent";
 import Toggle from "../components/toggle";
 import style from "./tasks.module.css";
 import GroupList from "../components/tasks/groupList";
-import classNames from "classnames";
+import { useTaskRefresher } from "../hooks/useTaskRefresh";
 
 export type GroupedTasks = Record<string, CtfTaskReadModel[]>;
 
 export default function Tasks() {
-  const { data, isLoading, error } = useTasks({});
-  const firstBloodNotification = useFirstBloodNotification();
+  const { data, isLoading, error, refetch: refetchTasks } = useTasks({});
+  const { refresh } = useTaskRefresher();
 
   const [showSolvedTasks, setShowSolvedTasks] = useState(true);
   const [currentGroup, setCurrentGroup] = useState<keyof GroupedTasks | null>(
     null,
   );
+
+  //Refetch on websocket signal to refetch tasks
+  useEffect(() => {
+    const refetchTasksAsync = async () => {
+      await refetchTasks();
+    };
+    refetchTasksAsync();
+  }, [refresh]);
 
   useEffect(() => {
     if (error) {
@@ -41,45 +47,6 @@ export default function Tasks() {
     }
     return groupedTasks;
   }, [data, showSolvedTasks]);
-
-  function ToasterSection() {
-    useEffect(() => {
-      if (firstBloodNotification && firstBloodNotification.task) {
-        toast.success(
-          `🩸First Blood: ${firstBloodNotification.task.name} solved by ${firstBloodNotification.teamId}🩸`,
-          {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          },
-        );
-      }
-    }, [firstBloodNotification]);
-
-    return (
-      <div>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Bounce}
-        />
-      </div>
-    );
-  }
 
   const handleGroupChange = (group: keyof GroupedTasks) =>
     setCurrentGroup(group);
@@ -116,7 +83,6 @@ export default function Tasks() {
           </>
         )
       )}
-      <ToasterSection />
     </Layout>
   );
 }

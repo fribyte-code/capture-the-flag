@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 import Header from "../components/defaultHeader";
 import style from "./layout.module.css";
 import classNames from "classnames";
+import ToasterSection from "../components/toasterSection";
 
 interface LayoutProps extends PropsWithChildren {
   wide?: boolean;
@@ -20,6 +21,8 @@ const Layout: React.FC<LayoutProps> = (props) => {
       >
         {props.children}
       </div>
+
+      <ToasterSection />
     </>
   );
 };

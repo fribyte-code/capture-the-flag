@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { CtfTaskWriteModel } from "../api/backendSchemas";
 import { useNavigate } from "react-router-dom";
 import AdminTask from "../components/adminTask";
-
+import DateSelector from "../components/dateSelector";
 export default function Admin() {
   const navigate = useNavigate();
   const {
@@ -26,6 +26,7 @@ export default function Admin() {
     points: 0,
     description: "",
     flag: "Flag{the-flag}",
+    releaseDateTime: null,
   });
 
   async function handleAddTask(e: React.FormEvent<HTMLFormElement>) {
@@ -184,6 +185,22 @@ export default function Admin() {
             </div>
             <div className="form-control">
               <label className="label">
+                <span className="label-text">
+                  Release Date Time (Empty for release now)
+                </span>
+              </label>
+              <DateSelector
+                onChange={(value) => {
+                  setNewTask({
+                    ...newTask,
+                    releaseDateTime: value.toISOString(),
+                  });
+                }}
+                defaultDate={newTask.releaseDateTime}
+              />
+            </div>
+            <div className="form-control">
+              <label className="label">
                 <span className="label-text">Flag</span>
               </label>
               <input
@@ -260,6 +277,12 @@ export default function Admin() {
                   onClick={(e) => handleClickSortProp("description")}
                 >
                   Description
+                </th>
+                <th
+                  className="cursor-pointer"
+                  onClick={(e) => handleClickSortProp("releaseTime")}
+                >
+                  Release Time
                 </th>
                 <th
                   className="cursor-pointer"

@@ -26,7 +26,7 @@ public class CtfSignalrHub : Hub<ICtfSignalrHubClient>
 
     public Task SendSolvedTask(SolvedTaskReadModel solvedTask) =>
         Clients.All.ReceiveSolvedTask(solvedTask);
-
+    
     public override async Task OnConnectedAsync()
     {
         _logger.LogInformation("SignalR hub connect: {ConnectionId}", Context.ConnectionId);
@@ -62,9 +62,15 @@ public interface ICtfSignalrHubClient
     Task ReceiveSolvedTask(SolvedTaskReadModel solvedTask);
     
     /// <summary>
+    /// Triggers when the time of one or more new tasks to release
+    /// </summary>
+    /// <returns></returns>
+    Task SignalNewTaskRelease();
+
     /// Triggered when a team solves a task and is the first team to solve it
     /// </summary>
     /// <param name="solvedTask"></param>
     /// <returns></returns>
     Task ReceiveFirstBloodNotification(SolvedTaskReadModel solvedTask);
+
 }
