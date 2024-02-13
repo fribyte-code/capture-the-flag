@@ -9,23 +9,22 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   onChange,
   defaultDate,
 }) => {
-  const [releaseDate, setReleaseDate] = useState<Date | null>(null);
-  const [releaseTime, setReleaseTime] = useState<Date | null>(null);
+  const [releaseDate, setReleaseDate] = useState<Date | null>(
+    defaultDate ? new Date(defaultDate) : null,
+  );
+  const [releaseTime, setReleaseTime] = useState<Date | null>(
+    defaultDate ? new Date(defaultDate) : null,
+  );
 
+  const [userChangedDate, setUserChangedDate] = useState<boolean>(false);
   useEffect(() => {
-    if (releaseDate) {
-      if (releaseTime) {
-        let newReleaseDateTime = releaseDate;
-        newReleaseDateTime.setHours(releaseTime.getUTCHours());
-        newReleaseDateTime.setMinutes(releaseTime.getUTCMinutes());
-        newReleaseDateTime.setSeconds(releaseTime.getUTCSeconds());
-        onChange(newReleaseDateTime);
-      } else {
-        let newReleaseDateTime = releaseDate;
-        newReleaseDateTime.setHours(0);
-        newReleaseDateTime.setMinutes(0);
-        newReleaseDateTime.setSeconds(0);
-      }
+    if (userChangedDate && releaseDate && releaseTime) {
+      let newReleaseDateTime = releaseDate;
+      newReleaseDateTime.setHours(releaseTime.getUTCHours());
+      newReleaseDateTime.setMinutes(releaseTime.getUTCMinutes());
+      newReleaseDateTime.setSeconds(releaseTime.getUTCSeconds());
+      onChange(newReleaseDateTime);
+      console.log(newReleaseDateTime);
     }
   }, [releaseDate, releaseTime]);
 
@@ -53,6 +52,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
         defaultValue={defDate?.split("T")[0]}
         onChange={(event) => {
           setReleaseDate(new Date(event.target.value));
+          setUserChangedDate(true);
         }}
         className="input input-bordered"
       />
@@ -64,6 +64,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
         defaultValue={defDate?.split("T")[1]}
         onChange={(event) => {
           setReleaseTime(event.target.valueAsDate);
+          setUserChangedDate(true);
         }}
         className="input input-bordered"
       />
