@@ -28,8 +28,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({
     }
   }, [releaseDate, releaseTime]);
 
-  //This is absolutely vile and cursed, but i honestly cannot look at dates again wihtout going absolutely apeshit
-  //Besides, it only shows it to the user :)
+  //This is to convert the Date() object to a format that the input field accepts as defaultValue
   const defaultDateAsDate =
     defaultDate != null ? new Date(defaultDate) : undefined;
   const defDate =
