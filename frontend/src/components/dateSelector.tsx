@@ -9,9 +9,24 @@ const DateSelector: React.FC<DateSelectorProps> = ({
   onChange,
   defaultDate,
 }) => {
-  const [releaseDateTime, setReleaseDateTime] = useState<Date | null>(
-    new Date(),
+  const [releaseDate, setReleaseDate] = useState<Date | null>(
+    defaultDate ? new Date(defaultDate) : null,
   );
+  const [releaseTime, setReleaseTime] = useState<Date | null>(
+    defaultDate ? new Date(defaultDate) : null,
+  );
+
+  const [userChangedDate, setUserChangedDate] = useState<boolean>(false);
+  useEffect(() => {
+    if (userChangedDate && releaseDate && releaseTime) {
+      let newReleaseDateTime = releaseDate;
+      newReleaseDateTime.setHours(releaseTime.getUTCHours());
+      newReleaseDateTime.setMinutes(releaseTime.getUTCMinutes());
+      newReleaseDateTime.setSeconds(releaseTime.getUTCSeconds());
+      onChange(newReleaseDateTime);
+      console.log(newReleaseDateTime);
+    }
+  }, [releaseDate, releaseTime]);
 
   //This is absolutely vile and cursed, but i honestly cannot look at dates again wihtout going absolutely apeshit
   //Besides, it only shows it to the user :)
@@ -26,21 +41,30 @@ const DateSelector: React.FC<DateSelectorProps> = ({
           .toISOString()
           .slice(0, -8)
       : undefined;
-
   return (
     <>
       <label>
-        <span className="label-text">Format: mm/dd/yyy hh:mm</span>
+        <span className="label-text">Date</span>
       </label>
 
       <input
-        type="datetime-local"
-        value={defDate}
+        type="date"
+        defaultValue={defDate?.split("T")[0]}
         onChange={(event) => {
-          setReleaseDateTime(new Date(event.target.value));
-          if (releaseDateTime) {
-            onChange(releaseDateTime);
-          }
+          setReleaseDate(new Date(event.target.value));
+          setUserChangedDate(true);
+        }}
+        className="input input-bordered"
+      />
+      <label>
+        <span className="label-text">Time</span>
+      </label>
+      <input
+        type="time"
+        defaultValue={defDate?.split("T")[1]}
+        onChange={(event) => {
+          setReleaseTime(event.target.valueAsDate);
+          setUserChangedDate(true);
         }}
         className="input input-bordered"
       />
