@@ -1,0 +1,56 @@
+/*
+* Dark theme colors
+*/
+:root {
+  --bgColor: #171717;
+  --bgColorSecondary: #262626;
+  --bgColorTetriary: #4b4b4b;
+
+  --textColor: rgb(250, 250, 250);
+  --textColorSecondary: rgb(163, 163, 163);
+  --borderColor: #707479;
+  --borderColorFaint: #70747957;
+
+  --inputDisabledColor: #707070;
+
+  --buttonSolidColor: #800000;
+  --buttonSolidColorHover: #a51f1f;
+  --buttonColorPressed: #eb4141;
+  --buttonDisabledColor: rgb(41, 41, 41);
+
+  --buttonSolidTextColor: white;
+  --buttonTextColor: var(--textColor);
+  --disabledTextColor: rgb(138, 138, 138);
+
+  --maxWidth: 1200px;
+}
+
+/*
+* Light theme colors
+*/
+html[data-theme="light"] {
+  --bgColor: white;
+  --bgColorSecondary: rgba(0, 0, 0, 0.04);
+  --bgColorTetriary: #343c4b;
+
+  --textColor: rgb(39, 39, 39);
+  --textColorSecondary: rgb(163, 163, 163);
+  --borderColor: #555d67;
+
+  --inputDisabledColor: rgba(0, 0, 0, 0.08);
+
+  --buttonSolidColor: #800000;
+  --buttonSolidColorHover: #a51f1f;
+  --buttonColorPressed: #eb4141;
+  --buttonDisabledColor: rgb(216, 216, 216);
+
+  --buttonSolidTextColor: white;
+  --buttonTextColor: var(--textColor);
+  --disabledTextColor: rgb(102, 102, 102);
+}
+
+html[data-color-scheme="heltsikker"] {
+  --buttonSolidColor: #462774;
+  --buttonSolidColorHover: #553486;
+  --buttonColorPressed: #65419b;
+}
