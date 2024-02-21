@@ -86,6 +86,30 @@ export type CtfTaskWriteModel = {
   category?: string | null;
 };
 
+export type Invitation = {
+  /**
+   * @format uuid
+   */
+  id?: string;
+  /**
+   * @format date-time
+   */
+  createdAt: string;
+  invitationCode?: string;
+  /**
+   * @format date-time
+   */
+  expires?: string | null;
+};
+
+export type InvitationWriteModel = {
+  invitationCode?: string;
+  /**
+   * @format date-time
+   */
+  expires?: string | null;
+};
+
 export type LeaderboardEntry = {
   teamId?: string;
   /**
@@ -106,6 +130,11 @@ export type LoginCredentials = {
 
 export type NewTeam = {
   username?: string;
+};
+
+export type Register = {
+  username?: string;
+  invitationCode?: string;
 };
 
 export type SolveTaskRequest = {

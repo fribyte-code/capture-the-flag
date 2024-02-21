@@ -14,7 +14,7 @@ public class TaskReleaseState
         this.LastRelease = lastRelease;
     }
 }
-public class TaskReleaseBackgroundJob:IHostedService,IDisposable
+public class TaskReleaseBackgroundJob : IHostedService, IDisposable
 {
 
     private readonly ILogger<TaskReleaseBackgroundJob> _logger;
@@ -33,7 +33,7 @@ public class TaskReleaseBackgroundJob:IHostedService,IDisposable
     public Task StartAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Task Release Background Job is running.");
-        _timer = new Timer(DoWork, null, TimeSpan.FromSeconds(65-DateTime.UtcNow.Second),
+        _timer = new Timer(DoWork, null, TimeSpan.FromSeconds(65 - DateTime.UtcNow.Second),
             TimeSpan.FromMinutes(1));
         return Task.CompletedTask;
     }
