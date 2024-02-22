@@ -302,13 +302,14 @@ export default function Admin() {
             />
           )}
 
-           <h2 style={{ marginBottom: "1" }}>Test the First Blood Video:</h2>
+          <h2 style={{ marginBottom: "1" }}>Test the First Blood Video:</h2>
           <button
             className="button solid"
             onClick={() =>
               setShowFirstBloodVideoTest(
                 <FirstBloodVideo
                   teamId="SOME_NAME_that-is-super-long"
+                  taskName="Open Source Intelligence - The GameBoy Treasure Hunt"
                   onClose={() => setShowFirstBloodVideoTest(null)}
                 />,
               )
@@ -318,7 +319,6 @@ export default function Admin() {
           </button>
           {showFirstBloodVideoTest}
         </div>
-
       )}
     </Layout>
   );

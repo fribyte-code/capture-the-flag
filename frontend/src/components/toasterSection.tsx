@@ -20,8 +20,11 @@ function ToasterSection() {
     setMessage(null);
   }, [toastMessage]);
 
+  /**
+   * TODO: Please remove the FirstBloodVideo logic after Heltsikker event
+   */
   useEffect(() => {
-    if (firstBloodNotification && firstBloodNotification.task) {
+    if (firstBloodNotification?.task) {
       if (
         config.APP_COLOR_SCHEME == "heltsikker" &&
         location.pathname == "/leaderboard"
@@ -29,6 +32,7 @@ function ToasterSection() {
         if (toRenderVideo == null) {
           setToRenderVideo(
             <FirstBloodVideo
+              taskName={firstBloodNotification.task.name}
               teamId={firstBloodNotification.teamId ?? ""}
               onClose={() => setToRenderVideo(null)}
             />,

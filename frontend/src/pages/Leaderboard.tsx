@@ -1,10 +1,8 @@
 import Layout from "./layout";
 import { useLeaderboard } from "../hooks/useLeaderboard";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import style from "./leaderboard.module.css";
-import { ToastContext } from "../App";
-import FirstBloodVideo from "../components/heltsikkerComponents/firstBloodVideo";
 
 export default function Leaderboard() {
   // We need to move useLeaderboard one level up if we want to show teamScore on all pages
@@ -54,7 +52,6 @@ export default function Leaderboard() {
   }, [leaderboard]);
   return (
     <Layout>
-
       <div>
         <h1>Live leaderboard</h1>
         <br />

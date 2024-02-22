@@ -1,13 +1,23 @@
-import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { SyntheticEvent, useRef, useState } from "react";
 import style from "./firstBloodVideo.module.css";
 
 export interface FirstBloodVideoProps {
   teamId: string;
+  taskName?: string;
   onClose: () => void;
 }
+/**
+ * Will show a loud video with alternating team names and task names.
+ * Called by `toasterSection.tsx` when a team solves a task first.
+ * But only if the theme is "heltsikker" and the user is on the leaderboard page.
+ *
+ * Ordered by Heltsikker for their CTF event, should probably be removed after the event.
+ */
 const FirstBloodVideo: React.FC<FirstBloodVideoProps> = (props) => {
   const video = useRef(null);
   const teamNameDivRef = useRef<HTMLDivElement>(null);
+  const [teamNameDivText, setTeamNameDivText] = useState<string>(props.teamId);
+
   const videOnTimeUpdate = (e: SyntheticEvent<HTMLVideoElement, Event>) => {
     let video = e.currentTarget;
     if (!teamNameDivRef) {
@@ -18,28 +28,21 @@ const FirstBloodVideo: React.FC<FirstBloodVideoProps> = (props) => {
     }
     let teamNameDiv = teamNameDivRef.current;
     if (video.currentTime >= 5 && video.currentTime < 11) {
-      if (teamNameDiv.style.display === "none") {
-        teamNameDiv.style.display = "block"; // Show the text
-        teamNameDiv.style.animation = "none"; // Reset animation
-        setTimeout(function () {
-          // Trigger reflow
-          teamNameDiv.style.animation = ""; // Reapply animation
-        }, 10);
-      }
+      showTextAndRestartAnimation(props.taskName ?? props.teamId);
     } else if (video.currentTime >= 11 && video.currentTime < 14) {
       teamNameDiv.style.display = "none";
     } else if (video.currentTime >= 14 && video.currentTime < 20) {
-      if (teamNameDiv.style.display === "none") {
-        teamNameDiv.style.display = "block"; // Show the text again
-        teamNameDiv.style.animation = "none"; // Reset animation
-        setTimeout(function () {
-          // Trigger reflow
-          teamNameDiv.style.animation = ""; // Reapply animation
-        }, 10);
-      }
+      showTextAndRestartAnimation(props.teamId);
     } else if (video.currentTime >= 20 && video.currentTime < 23) {
       teamNameDiv.style.display = "none";
     } else if (video.currentTime >= 23) {
+      showTextAndRestartAnimation(props.teamId);
+    } else {
+      teamNameDiv.style.display = "none"; // Hide the text
+    }
+
+    function showTextAndRestartAnimation(textContent: string) {
+      setTeamNameDivText(textContent);
       if (teamNameDiv.style.display === "none") {
         teamNameDiv.style.display = "block"; // Show the text again
         teamNameDiv.style.animation = "none"; // Reset animation
@@ -48,8 +51,6 @@ const FirstBloodVideo: React.FC<FirstBloodVideoProps> = (props) => {
           teamNameDiv.style.animation = ""; // Reapply animation
         }, 10);
       }
-    } else {
-      teamNameDiv.style.display = "none"; // Hide the text
     }
   };
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -79,7 +80,7 @@ const FirstBloodVideo: React.FC<FirstBloodVideoProps> = (props) => {
             />
           </video>
           <div ref={teamNameDivRef} className={style.teamName}>
-            {props.teamId}
+            {teamNameDivText}
           </div>
         </div>
       </dialog>

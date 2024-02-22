@@ -9,8 +9,8 @@
 .videoContainer {
   position: relative;
   width: 100%; /* Adjust based on your video size */
-
 }
+
 .teamName {
   font-size: 5vh;
   position: absolute;
@@ -27,11 +27,12 @@
 
   animation: comeInFromBehind 1s ease-in forwards; /* Adjust duration and timing function as needed */
 }
+
 video {
   width: 100%;
-
   border-radius: 0.5rem;
 }
+
 .backDrop {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -42,6 +43,7 @@ video {
   backdrop-filter: blur(2px);
   z-index: 90;
 }
+
 .dialog {
   position: fixed;
   top: 50%;
@@ -56,4 +58,3 @@ video {
   border-radius: 0.5rem;
   padding: 2rem;
 }
-
