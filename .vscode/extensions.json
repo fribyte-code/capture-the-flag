@@ -5,6 +5,8 @@
     "nhoizey.gremlins",
     "xabikos.javascriptsnippets",
     "codeandstuff.package-json-upgrade",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "usernamehw.errorlens",
+    "yoavbls.pretty-ts-errors"
   ]
 }

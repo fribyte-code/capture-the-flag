@@ -5,12 +5,13 @@ import {
   useAdminAllCategories,
   useAdminAllTasks,
 } from "../api/backendComponents";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { CtfTask, CtfTaskWriteModel } from "../api/backendSchemas";
 import { useNavigate } from "react-router-dom";
 import AdminTask from "../components/adminTask";
 import DateSelector from "../components/dateSelector";
 import style from "./Admin.module.css";
+import FirstBloodVideo from "../components/heltsikkerComponents/firstBloodVideo";
 export default function Admin() {
   const navigate = useNavigate();
   const {
@@ -118,6 +119,9 @@ export default function Admin() {
   }
   (window as any).batchImportTasks = batchImportTasks;
 
+  // This is to test volume and stuff of the video for the large display they plan to use :)
+  const [showFirstBloodVideoTest, setShowFirstBloodVideoTest] =
+    useState<ReactNode | null>(null);
   return (
     <Layout>
       {isLoading ? (
@@ -297,6 +301,23 @@ export default function Admin() {
               onClose={() => setCurrentEditingTask(null)}
             />
           )}
+
+          <h2 style={{ marginBottom: "1" }}>Test the First Blood Video:</h2>
+          <button
+            className="button solid"
+            onClick={() =>
+              setShowFirstBloodVideoTest(
+                <FirstBloodVideo
+                  teamId="SOME_NAME_that-is-super-long"
+                  taskName="Open Source Intelligence - The GameBoy Treasure Hunt"
+                  onClose={() => setShowFirstBloodVideoTest(null)}
+                />,
+              )
+            }
+          >
+            Test First Blood!
+          </button>
+          {showFirstBloodVideoTest}
         </div>
       )}
     </Layout>

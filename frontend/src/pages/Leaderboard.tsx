@@ -50,7 +50,6 @@ export default function Leaderboard() {
       },
     ]);
   }, [leaderboard]);
-
   return (
     <Layout>
       <div>
