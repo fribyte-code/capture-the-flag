@@ -14,8 +14,17 @@ export function useAuth() {
     fetchMeFromApi();
   }, []);
 
+  /**
+   * List of paths that are allowed to be accessed without being logged in
+   */
+  const allowedUnauthorizedPaths = ["/leaderboard"];
+
   useEffect(() => {
-    if (!me && isLoaded) {
+    if (
+      !me &&
+      isLoaded &&
+      !allowedUnauthorizedPaths.includes(location.pathname)
+    ) {
       logout();
     } else if (!!me && isLoaded && location.pathname == "/login") {
       navigate("/");
@@ -26,9 +35,11 @@ export function useAuth() {
     try {
       const meFromApi = await fetchMe({});
       setMe(meFromApi);
-      setIsLoaded(true);
     } catch (error) {
-      navigate("/login");
+      // Its okay to fail here, user is not logged in
+      setMe(null);
+    } finally {
+      setIsLoaded(true);
     }
   }
 
