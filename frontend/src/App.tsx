@@ -1,5 +1,5 @@
 import "./styles/index.css";
-import React, { ReactNode, createContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Tasks from "./pages/Tasks";
 import Login from "./pages/Login";

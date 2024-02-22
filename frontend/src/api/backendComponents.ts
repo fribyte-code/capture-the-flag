@@ -27,7 +27,7 @@ export const useLogin = (
   options?: Omit<
     reactQuery.UseMutationOptions<undefined, LoginError, LoginVariables>,
     "mutationFn"
-  >,
+  >
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<undefined, LoginError, LoginVariables>({
@@ -54,7 +54,7 @@ export const useLogout = <TData = undefined>(
   options?: Omit<
     reactQuery.UseQueryOptions<undefined, LogoutError, TData>,
     "queryKey" | "queryFn" | "initialData"
-  >,
+  >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
@@ -88,7 +88,7 @@ export const useMe = <TData = Schemas.LoggedInUserDto>(
   options?: Omit<
     reactQuery.UseQueryOptions<Schemas.LoggedInUserDto, MeError, TData>,
     "queryKey" | "queryFn" | "initialData"
-  >,
+  >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
@@ -113,7 +113,7 @@ export type LeaderboardVariables = BackendContext["fetcherOptions"];
 
 export const fetchLeaderboard = (
   variables: LeaderboardVariables,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) =>
   backendFetch<LeaderboardResponse, LeaderboardError, undefined, {}, {}, {}>({
     url: "/Api/Leaderboard",
@@ -127,7 +127,7 @@ export const useLeaderboard = <TData = LeaderboardResponse>(
   options?: Omit<
     reactQuery.UseQueryOptions<LeaderboardResponse, LeaderboardError, TData>,
     "queryKey" | "queryFn" | "initialData"
-  >,
+  >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
@@ -152,7 +152,7 @@ export type AdminAllTasksVariables = BackendContext["fetcherOptions"];
 
 export const fetchAdminAllTasks = (
   variables: AdminAllTasksVariables,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) =>
   backendFetch<
     AdminAllTasksResponse,
@@ -172,7 +172,7 @@ export const useAdminAllTasks = <TData = AdminAllTasksResponse>(
       TData
     >,
     "queryKey" | "queryFn" | "initialData"
-  >,
+  >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
@@ -197,7 +197,7 @@ export type AdminAddTaskVariables = {
 
 export const fetchAdminAddTask = (
   variables: AdminAddTaskVariables,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) =>
   backendFetch<
     Schemas.CtfTask,
@@ -216,7 +216,7 @@ export const useAdminAddTask = (
       AdminAddTaskVariables
     >,
     "mutationFn"
-  >,
+  >
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
@@ -246,7 +246,7 @@ export type AdminUpdateTaskVariables = {
 
 export const fetchAdminUpdateTask = (
   variables: AdminUpdateTaskVariables,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) =>
   backendFetch<
     Schemas.CtfTask,
@@ -265,7 +265,7 @@ export const useAdminUpdateTask = (
       AdminUpdateTaskVariables
     >,
     "mutationFn"
-  >,
+  >
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
@@ -294,7 +294,7 @@ export type AdminDeleteTaskVariables = {
 
 export const fetchAdminDeleteTask = (
   variables: AdminDeleteTaskVariables,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) =>
   backendFetch<
     undefined,
@@ -313,7 +313,7 @@ export const useAdminDeleteTask = (
       AdminDeleteTaskVariables
     >,
     "mutationFn"
-  >,
+  >
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
@@ -335,7 +335,7 @@ export type AdminAllCategoriesVariables = BackendContext["fetcherOptions"];
 
 export const fetchAdminAllCategories = (
   variables: AdminAllCategoriesVariables,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) =>
   backendFetch<
     AdminAllCategoriesResponse,
@@ -355,7 +355,7 @@ export const useAdminAllCategories = <TData = AdminAllCategoriesResponse>(
       TData
     >,
     "queryKey" | "queryFn" | "initialData"
-  >,
+  >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
@@ -395,7 +395,7 @@ export const useTasks = <TData = TasksResponse>(
   options?: Omit<
     reactQuery.UseQueryOptions<TasksResponse, TasksError, TData>,
     "queryKey" | "queryFn" | "initialData"
-  >,
+  >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
@@ -444,7 +444,7 @@ export const useSolve = (
       SolveVariables
     >,
     "mutationFn"
-  >,
+  >
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<
@@ -466,7 +466,7 @@ export type SolveHistoryVariables = BackendContext["fetcherOptions"];
 
 export const fetchSolveHistory = (
   variables: SolveHistoryVariables,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) =>
   backendFetch<SolveHistoryResponse, SolveHistoryError, undefined, {}, {}, {}>({
     url: "/Api/Tasks/solve/history",
@@ -480,7 +480,7 @@ export const useSolveHistory = <TData = SolveHistoryResponse>(
   options?: Omit<
     reactQuery.UseQueryOptions<SolveHistoryResponse, SolveHistoryError, TData>,
     "queryKey" | "queryFn" | "initialData"
-  >,
+  >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
@@ -505,7 +505,7 @@ export type AllTeamsVariables = BackendContext["fetcherOptions"];
 
 export const fetchAllTeams = (
   variables: AllTeamsVariables,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) =>
   backendFetch<AllTeamsResponse, AllTeamsError, undefined, {}, {}, {}>({
     url: "/Api/Team",
@@ -519,7 +519,7 @@ export const useAllTeams = <TData = AllTeamsResponse>(
   options?: Omit<
     reactQuery.UseQueryOptions<AllTeamsResponse, AllTeamsError, TData>,
     "queryKey" | "queryFn" | "initialData"
-  >,
+  >
 ) => {
   const { fetcherOptions, queryOptions, queryKeyFn } =
     useBackendContext(options);
@@ -544,7 +544,7 @@ export type AddTeamVariables = {
 
 export const fetchAddTeam = (
   variables: AddTeamVariables,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ) =>
   backendFetch<undefined, AddTeamError, Schemas.NewTeam, {}, {}, {}>({
     url: "/Api/Team",
@@ -557,12 +557,144 @@ export const useAddTeam = (
   options?: Omit<
     reactQuery.UseMutationOptions<undefined, AddTeamError, AddTeamVariables>,
     "mutationFn"
-  >,
+  >
 ) => {
   const { fetcherOptions } = useBackendContext();
   return reactQuery.useMutation<undefined, AddTeamError, AddTeamVariables>({
     mutationFn: (variables: AddTeamVariables) =>
       fetchAddTeam({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type GetInvitationLinkError = Fetcher.ErrorWrapper<undefined>;
+
+export type GetInvitationLinkVariables = BackendContext["fetcherOptions"];
+
+export const fetchGetInvitationLink = (
+  variables: GetInvitationLinkVariables,
+  signal?: AbortSignal
+) =>
+  backendFetch<
+    Schemas.Invitation,
+    GetInvitationLinkError,
+    undefined,
+    {},
+    {},
+    {}
+  >({ url: "/Api/Team/invitation", method: "get", ...variables, signal });
+
+export const useGetInvitationLink = <TData = Schemas.Invitation>(
+  variables: GetInvitationLinkVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      Schemas.Invitation,
+      GetInvitationLinkError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useBackendContext(options);
+  return reactQuery.useQuery<Schemas.Invitation, GetInvitationLinkError, TData>(
+    {
+      queryKey: queryKeyFn({
+        path: "/Api/Team/invitation",
+        operationId: "getInvitationLink",
+        variables,
+      }),
+      queryFn: ({ signal }) =>
+        fetchGetInvitationLink({ ...fetcherOptions, ...variables }, signal),
+      ...options,
+      ...queryOptions,
+    }
+  );
+};
+
+export type PostInvitationLinkError = Fetcher.ErrorWrapper<undefined>;
+
+export type PostInvitationLinkVariables = {
+  body?: Schemas.InvitationWriteModel;
+} & BackendContext["fetcherOptions"];
+
+export const fetchPostInvitationLink = (
+  variables: PostInvitationLinkVariables,
+  signal?: AbortSignal
+) =>
+  backendFetch<
+    undefined,
+    PostInvitationLinkError,
+    Schemas.InvitationWriteModel,
+    {},
+    {},
+    {}
+  >({ url: "/Api/Team/invitation", method: "post", ...variables, signal });
+
+export const usePostInvitationLink = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      undefined,
+      PostInvitationLinkError,
+      PostInvitationLinkVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useBackendContext();
+  return reactQuery.useMutation<
+    undefined,
+    PostInvitationLinkError,
+    PostInvitationLinkVariables
+  >({
+    mutationFn: (variables: PostInvitationLinkVariables) =>
+      fetchPostInvitationLink({ ...fetcherOptions, ...variables }),
+    ...options,
+  });
+};
+
+export type RegisterWithInvitationLinkError = Fetcher.ErrorWrapper<undefined>;
+
+export type RegisterWithInvitationLinkVariables = {
+  body?: Schemas.Register;
+} & BackendContext["fetcherOptions"];
+
+export const fetchRegisterWithInvitationLink = (
+  variables: RegisterWithInvitationLinkVariables,
+  signal?: AbortSignal
+) =>
+  backendFetch<
+    Schemas.ApplicationUser,
+    RegisterWithInvitationLinkError,
+    Schemas.Register,
+    {},
+    {},
+    {}
+  >({
+    url: "/Api/Team/invitation/register",
+    method: "post",
+    ...variables,
+    signal,
+  });
+
+export const useRegisterWithInvitationLink = (
+  options?: Omit<
+    reactQuery.UseMutationOptions<
+      Schemas.ApplicationUser,
+      RegisterWithInvitationLinkError,
+      RegisterWithInvitationLinkVariables
+    >,
+    "mutationFn"
+  >
+) => {
+  const { fetcherOptions } = useBackendContext();
+  return reactQuery.useMutation<
+    Schemas.ApplicationUser,
+    RegisterWithInvitationLinkError,
+    RegisterWithInvitationLinkVariables
+  >({
+    mutationFn: (variables: RegisterWithInvitationLinkVariables) =>
+      fetchRegisterWithInvitationLink({ ...fetcherOptions, ...variables }),
     ...options,
   });
 };
@@ -607,4 +739,9 @@ export type QueryOperation =
       path: "/Api/Team";
       operationId: "allTeams";
       variables: AllTeamsVariables;
+    }
+  | {
+      path: "/Api/Team/invitation";
+      operationId: "getInvitationLink";
+      variables: GetInvitationLinkVariables;
     };

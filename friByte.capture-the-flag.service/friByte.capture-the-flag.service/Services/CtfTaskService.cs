@@ -233,9 +233,10 @@ public class CtfTaskService : ICtfTaskService
         if (isFirstBlood)
         {
             var task = await _ctfContext.CtfTasks.FindAsync(taskId);
-            if (task == null){
+            if (task == null)
+            {
                 return;
-            } 
+            }
             string message = $"First blood: Task {task.Name} was solved by team {teamId}!";
             var solvedTaskReadModel = new SolvedTaskReadModel(new SolvedTask(teamId, task));
             await _ctfSignalrHubContext.Clients.All.ReceiveFirstBloodNotification(solvedTaskReadModel);

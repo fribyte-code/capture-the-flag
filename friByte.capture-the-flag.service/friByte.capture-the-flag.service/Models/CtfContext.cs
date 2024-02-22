@@ -9,6 +9,7 @@ public class CtfContext : DbContext
 
     public DbSet<CtfTask> CtfTasks { get; set; }
     public DbSet<SolvedTask> SolvedTasks { get; set; }
+    public DbSet<Invitation> Invitations { get; set; }
 
     public void Migrate()
     {

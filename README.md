@@ -15,8 +15,9 @@ Functionality:
 - [x] Live scoreboard
 - [x] Challenges Management panel
 - [x] Team Management panel
+- [x] Self register teams with invitation code
 - [ ] User Management panel
-- [ ] Release challenges at certain time
+- [x] Release challenges at certain time
 - [ ] SSO Auth
 - [ ] Connect challenges to a certain event (allow for keeping challenges over time and reusing them)
 - [ ] Easy export and import of challenges
@@ -55,7 +56,7 @@ Basic guide from Microsoft: https://learn.microsoft.com/en-us/ef/core/get-starte
 
 Essentially:
 
-1. `cd friByte.capture-the-flag.service`
+1. `cd friByte.capture-the-flag.service/friByte.capture-the-flag.service` from root of repository
 2. Run `dotnet ef migrations add <NAME-OF-MIGRATION> --context CtfContext` ex: `dotnet ef migrations add CtfFlag-AddHint --context CtfContext`
 3. The migration will automatically be applied when you run the application either by clicking run in the IDE or by `dotnet run`.
 

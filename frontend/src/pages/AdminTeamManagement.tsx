@@ -1,12 +1,46 @@
 import Layout from "./layout";
-import { fetchAddTeam, useAllTeams } from "../api/backendComponents";
-import { useState } from "react";
+import {
+  fetchAddTeam,
+  fetchPostInvitationLink,
+  useAllTeams,
+  useGetInvitationLink,
+} from "../api/backendComponents";
+import { useEffect, useState } from "react";
+import { InvitationWriteModel } from "../api/backendSchemas";
+import DateSelector from "../components/dateSelector";
+
+import { toast } from "react-toastify";
 
 export default function AdminTeamManagement() {
   const { data: teams, isLoading, refetch } = useAllTeams({});
   const [showPassword, setShowPassword] = useState(false);
   const [newTeams, setNewTeams] = useState("");
   const [teamPasswordToShow, setTeamPasswordToShow] = useState("");
+
+  const { data: invitationCodeData } = useGetInvitationLink({});
+  const [invitation, setInvitation] = useState<InvitationWriteModel>({
+    invitationCode: "",
+    expires: null,
+  });
+
+  useEffect(() => {
+    if (invitationCodeData?.invitationCode) {
+      setInvitation({
+        invitationCode: invitationCodeData.invitationCode,
+        expires: invitationCodeData.expires,
+      });
+    }
+  }, [invitationCodeData]);
+
+  async function handleInvitationUpdate(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    await fetchPostInvitationLink({
+      body: invitation,
+    });
+
+    toast("Invitation code updated");
+  }
 
   async function handleAddNewTeam(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -32,6 +66,57 @@ export default function AdminTeamManagement() {
         <p>Loading</p>
       ) : (
         <div style={{ maxWidth: "1200px" }}>
+          <form onSubmit={handleInvitationUpdate}>
+            <h2>Edit invitation code</h2>
+            <p>
+              Allow teams to register their own name using an invitation code.
+              Send this url to participants for easy access:{" "}
+              <a href={"/login?invitationCode=" + invitation.invitationCode}>
+                {"/login?invitationCode=" + invitation.invitationCode}
+              </a>
+            </p>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Invitation code:</span>
+                <input
+                  type="text"
+                  value={invitation.invitationCode}
+                  onChange={(e) =>
+                    setInvitation({
+                      ...invitation,
+                      invitationCode: e.target.value,
+                    })
+                  }
+                  name="invitationCode"
+                  placeholder="Invitation code"
+                  className="input"
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">
+                  Invitation expiry (empty for never, must fill both date and
+                  time):
+                </span>
+              </label>
+              <DateSelector
+                onChange={(e) =>
+                  setInvitation({
+                    ...invitation,
+                    expires: e.toISOString(),
+                  })
+                }
+                defaultDate={invitation.expires}
+              />
+            </div>
+            <input
+              type="submit"
+              className="button solid"
+              value="Add or update"
+            />
+          </form>
           <form onSubmit={handleAddNewTeam}>
             <h2>Add new teams</h2>
             <div className="form-control">
