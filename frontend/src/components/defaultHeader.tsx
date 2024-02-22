@@ -41,7 +41,18 @@ export default function Header() {
       >
         Leaderboard
       </a>
-
+      {!me && (
+        <a
+          href="/login"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/login");
+          }}
+          className={classNames(style.navItem, style.leaderboardLink)}
+        >
+          Login
+        </a>
+      )}
       {me && (
         <>
           <a
