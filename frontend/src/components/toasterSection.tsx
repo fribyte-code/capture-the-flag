@@ -26,12 +26,14 @@ function ToasterSection() {
         config.APP_COLOR_SCHEME == "heltsikker" &&
         location.pathname == "/leaderboard"
       ) {
-        setToRenderVideo(
-          <FirstBloodVideo
-            teamId={firstBloodNotification.teamId ?? ""}
-            onClose={() => setToRenderVideo(null)}
-          />,
-        );
+        if (toRenderVideo == null) {
+          setToRenderVideo(
+            <FirstBloodVideo
+              teamId={firstBloodNotification.teamId ?? ""}
+              onClose={() => setToRenderVideo(null)}
+            />,
+          );
+        }
       } else {
         setMessage(
           `🩸First Blood: ${firstBloodNotification.task.name} solved by ${firstBloodNotification.teamId}🩸`,
