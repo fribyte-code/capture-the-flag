@@ -52,14 +52,9 @@ export default function Leaderboard() {
       },
     ]);
   }, [leaderboard]);
-  const { toast } = useContext(ToastContext);
   return (
     <Layout>
-      <button
-        onClick={() => {
-          toast(<FirstBloodVideo />);
-        }}
-      ></button>
+
       <div>
         <h1>Live leaderboard</h1>
         <br />

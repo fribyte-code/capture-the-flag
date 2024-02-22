@@ -1,8 +1,12 @@
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import style from "./firstBloodVideo.module.css";
-const FirstBloodVideo: React.FC = (props) => {
+
+export interface FirstBloodVideoProps {
+  teamId: string;
+  onClose: () => void;
+}
+const FirstBloodVideo: React.FC<FirstBloodVideoProps> = (props) => {
   const video = useRef(null);
-  const [teamName, setTeamName] = useState("LOOOL");
   const teamNameDivRef = useRef<HTMLDivElement>(null);
   const videOnTimeUpdate = (e: SyntheticEvent<HTMLVideoElement, Event>) => {
     let video = e.currentTarget;
@@ -48,20 +52,38 @@ const FirstBloodVideo: React.FC = (props) => {
       teamNameDiv.style.display = "none"; // Hide the text
     }
   };
-
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key == "Escape") {
+      props.onClose();
+    }
+  };
   return (
     <>
-      <div className={style.videoContainer}>
-        <video autoPlay onTimeUpdate={(e) => videOnTimeUpdate(e)} ref={video}>
-          <source
-            src="https://files.fribyte.no/heltsikker/video.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div ref={teamNameDivRef} className={style.teamName}>
-          {teamName}
+      <dialog
+        open
+        key={props.teamId}
+        className={style.dialog}
+        onKeyUp={handleKeyPress}
+        autoFocus
+      >
+        <div className={style.videoContainer}>
+          <video
+            autoPlay
+            onTimeUpdate={(e) => videOnTimeUpdate(e)}
+            ref={video}
+            onEnded={() => props.onClose()}
+          >
+            <source
+              src="https://files.fribyte.no/heltsikker/video.mp4"
+              type="video/mp4"
+            />
+          </video>
+          <div ref={teamNameDivRef} className={style.teamName}>
+            {props.teamId}
+          </div>
         </div>
-      </div>
+      </dialog>
+      <div onClick={() => props.onClose()} className={style.backDrop} />
     </>
   );
 };

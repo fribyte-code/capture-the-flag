@@ -9,9 +9,10 @@
 .videoContainer {
   position: relative;
   width: 100%; /* Adjust based on your video size */
+
 }
 .teamName {
-  font-size: 1.5rem;
+  font-size: 5vh;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -21,11 +22,38 @@
   display: none;
   font-family: "Bungee", sans-serif;
   text-shadow:
-    4px 4px 0px #000,
-    8px 8px 0px rgba(0, 0, 0, 0.5);
+    0.4vh 0.4vh 0.4vh #000,
+    0.8vh 0.8vh 0.8vh rgba(0, 0, 0, 0.5);
 
   animation: comeInFromBehind 1s ease-in forwards; /* Adjust duration and timing function as needed */
 }
 video {
   width: 100%;
+
+  border-radius: 0.5rem;
 }
+.backDrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px);
+  z-index: 90;
+}
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  max-width: 100%;
+  transform: translate(-50%, -50%);
+  max-height: 80%;
+  margin: 0;
+  overflow-y: auto;
+  background-color: var(--bgColor);
+  z-index: 100;
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
