@@ -14,7 +14,6 @@ export interface FirstBloodVideoProps {
  * Ordered by Heltsikker for their CTF event, should probably be removed after the event.
  */
 const FirstBloodVideo: React.FC<FirstBloodVideoProps> = (props) => {
-  const video = useRef(null);
   const teamNameDivRef = useRef<HTMLDivElement>(null);
   const [teamNameDivText, setTeamNameDivText] = useState<string>(props.teamId);
 
@@ -71,7 +70,6 @@ const FirstBloodVideo: React.FC<FirstBloodVideoProps> = (props) => {
           <video
             autoPlay
             onTimeUpdate={(e) => videOnTimeUpdate(e)}
-            ref={video}
             onEnded={() => props.onClose()}
           >
             <source
