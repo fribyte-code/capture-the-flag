@@ -28,7 +28,9 @@ export function useAuth() {
       setMe(meFromApi);
       setIsLoaded(true);
     } catch (error) {
-      navigate("/login");
+      if (location.pathname != "/leaderboard") {
+        navigate("/login");
+      }
     }
   }
 

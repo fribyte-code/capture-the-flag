@@ -30,6 +30,18 @@ export default function Header() {
         />
         <DarkIcon />
       </div>
+      <div>
+        <a
+          href="/leaderboard"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/leaderboard");
+          }}
+          className={classNames(style.navItem, style.leaderboardLink)}
+        >
+          Leaderboard
+        </a>
+      </div>
       {me && (
         <>
           <a
@@ -41,16 +53,6 @@ export default function Header() {
             className={classNames(style.navItem, style.tasksLink)}
           >
             Tasks
-          </a>
-          <a
-            href="/leaderboard"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/leaderboard");
-            }}
-            className={classNames(style.navItem, style.leaderboardLink)}
-          >
-            Leaderboard
           </a>
           {me && me.isAdmin && (
             <a

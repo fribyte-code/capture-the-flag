@@ -8,7 +8,7 @@ namespace friByte.capture_the_flag.service.Controllers;
 /// <summary>
 /// API endpoints for serving leaderboard
 /// </summary>
-[Authorize(Roles = $"{IdentityRoleNames.TeamRoleName}, {IdentityRoleNames.AdminRoleName}")]
+//[Authorize(Roles = $"{IdentityRoleNames.TeamRoleName}, {IdentityRoleNames.AdminRoleName}")]
 [ApiController]
 [Produces("application/json")]
 [Route("Api/[controller]")]
