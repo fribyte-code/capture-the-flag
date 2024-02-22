@@ -154,7 +154,7 @@ public class
     /// </summary>
     private static string GenerateTeamPassword()
     {
-        var adjectives = new[]
+        var adjectivesAndVerbs = new[]
         {
             "awesome", "sad", "happy", "angry", "excited", "big", "small", "huge", "tiny", "singing", "hacking", "coding", "sleeping", "running", "jumping", "flying", "swimming", "dancing", "singing", "laughing", "crying", "screaming", "whispering", "yelling", "talking", "walking", "sitting", "standing", "lying", "thinking", "dreaming", "eating", "drinking", "smoking", "kissing", "hugging", "loving", "hating", "fighting", "arguing", "debating", "winning", "losing", "drawing", "painting", "writing", "reading", "learning", "teaching", "cooking", "baking", "cleaning", "washing", "drying", "ironing", "sewing", "knitting", "crocheting", "weaving", "spinning", "dyeing", "printing", "photographing", "filming", "recording", "playing", "singing", "dancing", "acting", "directing", "producing", "editing", "composing", "arranging", "conducting", "performing", "listening", "watching", "reading", "writing", "drawing", "painting", "sculpting", "carving", "engraving", "building", "constructing", "designing", "planning", "organizing", "managing", "leading", "following", "helping", "assisting", "supporting", "encouraging", "motivating", "inspiring", "influencing", "persuading", "convincing", "arguing", "debating", "discussing", "talking", "speaking", "whispering", "yelling", "screaming", "crying", "laughing", "smiling", "frowning", "grinning", "winking", "blinking", "nodding", "bowing", "saluting", "waving", "pointing", "touching", "holding", "grabbing", "squeezing", "pushing", "pulling", "lifting", "dropping", "throwing", "catching", "kicking", "punching", "hitting", "slapping", "scratching", "biting", "licking",
         };
@@ -166,7 +166,7 @@ public class
         var rnd = new Random();
         var passPhrase = new List<string>
         {
-            adjectives[rnd.Next(adjectives.Length)],
+            adjectivesAndVerbs[rnd.Next(adjectivesAndVerbs.Length)],
             nouns[rnd.Next(nouns.Length)],
         };
 
