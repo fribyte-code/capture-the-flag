@@ -266,8 +266,21 @@ export default function Admin() {
           <table className={style.adminTable}>
             <thead>
               <tr>
-                <th onClick={(e) => handleClickSortProp("name")}>Name</th>
-                <th>Category</th>
+                <th role="button" onClick={(e) => handleClickSortProp("name")}>
+                  Name
+                </th>
+                <th
+                  role="button"
+                  onClick={(e) => handleClickSortProp("category")}
+                >
+                  Category
+                </th>
+                <th
+                  role="button"
+                  onClick={(e) => handleClickSortProp("points")}
+                >
+                  Points
+                </th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -279,6 +292,7 @@ export default function Admin() {
                       <tr>
                         <td>{t.name}</td>
                         <td>{t.category ?? "Other"}</td>
+                        <td>{t.points}</td>
                         <td>
                           <button
                             className="button solid"
