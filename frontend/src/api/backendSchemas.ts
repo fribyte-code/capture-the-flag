@@ -65,6 +65,10 @@ export type CtfTaskReadModel = {
   description?: string;
   isSolved?: boolean | null;
   /**
+   * @format int32
+   */
+  solvedCount?: number;
+  /**
    * @format date-time
    */
   releaseDateTime?: string | null;

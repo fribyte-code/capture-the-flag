@@ -72,6 +72,17 @@ public class TasksController : ControllerBase
     {
         return _ctfTaskService.GetSolveHistoryAsync();
     }
+
+    /// <summary>
+    /// Get a list of teams that have solved a given task.
+    /// </summary>
+    /// <param name="id">Task ID</param>
+    /// <returns>List of team names</returns>
+    [HttpGet(":id/solvedby", Name = "GetTeamsSolvedByTask")]
+    public Task<List<string>> GetTeamsSolvedByTask(Guid id)
+    {
+        return _ctfTaskService.GetTeamsSolvedByTaskAsync(id);
+    }
 }
 
 public class SolveTaskRequest

@@ -12,6 +12,7 @@ import AdminTask from "../components/adminTask";
 import DateSelector from "../components/dateSelector";
 import style from "./Admin.module.css";
 import FirstBloodVideo from "../components/heltsikkerComponents/firstBloodVideo";
+import Modal from "../components/common/modal";
 export default function Admin() {
   const navigate = useNavigate();
   const {
@@ -309,11 +310,12 @@ export default function Admin() {
             </tbody>
           </table>
           {currentEditingTask && (
-            <AdminTask
-              task={currentEditingTask}
-              showFlag={true}
+            <Modal
+              open={!!currentEditingTask}
               onClose={() => setCurrentEditingTask(null)}
-            />
+            >
+              <AdminTask task={currentEditingTask} showFlag={true} />
+            </Modal>
           )}
 
           <h2 style={{ marginBottom: "1" }}>Test the First Blood Video:</h2>

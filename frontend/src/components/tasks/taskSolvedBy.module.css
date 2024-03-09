@@ -1,0 +1,12 @@
+.container {
+  width: 200px;
+
+  ol {
+    li:first-of-type::marker {
+      content: "🔥";
+    }
+    li {
+      padding-left: 0.7rem;
+    }
+  }
+}

@@ -497,6 +497,64 @@ export const useSolveHistory = <TData = SolveHistoryResponse>(
   });
 };
 
+export type GetTeamsSolvedByTaskQueryParams = {
+  /**
+   * @format uuid
+   */
+  id?: string;
+};
+
+export type GetTeamsSolvedByTaskError = Fetcher.ErrorWrapper<undefined>;
+
+export type GetTeamsSolvedByTaskResponse = string[];
+
+export type GetTeamsSolvedByTaskVariables = {
+  queryParams?: GetTeamsSolvedByTaskQueryParams;
+} & BackendContext["fetcherOptions"];
+
+export const fetchGetTeamsSolvedByTask = (
+  variables: GetTeamsSolvedByTaskVariables,
+  signal?: AbortSignal
+) =>
+  backendFetch<
+    GetTeamsSolvedByTaskResponse,
+    GetTeamsSolvedByTaskError,
+    undefined,
+    {},
+    GetTeamsSolvedByTaskQueryParams,
+    {}
+  >({ url: "/Api/Tasks/:id/solvedby", method: "get", ...variables, signal });
+
+export const useGetTeamsSolvedByTask = <TData = GetTeamsSolvedByTaskResponse>(
+  variables: GetTeamsSolvedByTaskVariables,
+  options?: Omit<
+    reactQuery.UseQueryOptions<
+      GetTeamsSolvedByTaskResponse,
+      GetTeamsSolvedByTaskError,
+      TData
+    >,
+    "queryKey" | "queryFn" | "initialData"
+  >
+) => {
+  const { fetcherOptions, queryOptions, queryKeyFn } =
+    useBackendContext(options);
+  return reactQuery.useQuery<
+    GetTeamsSolvedByTaskResponse,
+    GetTeamsSolvedByTaskError,
+    TData
+  >({
+    queryKey: queryKeyFn({
+      path: "/Api/Tasks/:id/solvedby",
+      operationId: "getTeamsSolvedByTask",
+      variables,
+    }),
+    queryFn: ({ signal }) =>
+      fetchGetTeamsSolvedByTask({ ...fetcherOptions, ...variables }, signal),
+    ...options,
+    ...queryOptions,
+  });
+};
+
 export type AllTeamsError = Fetcher.ErrorWrapper<undefined>;
 
 export type AllTeamsResponse = Schemas.ApplicationUser[];
@@ -734,6 +792,11 @@ export type QueryOperation =
       path: "/Api/Tasks/solve/history";
       operationId: "solveHistory";
       variables: SolveHistoryVariables;
+    }
+  | {
+      path: "/Api/Tasks/:id/solvedby";
+      operationId: "getTeamsSolvedByTask";
+      variables: GetTeamsSolvedByTaskVariables;
     }
   | {
       path: "/Api/Team";

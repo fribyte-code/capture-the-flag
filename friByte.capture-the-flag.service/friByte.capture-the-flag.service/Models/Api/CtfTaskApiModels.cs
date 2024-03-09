@@ -16,6 +16,7 @@ public class CtfTaskReadModel
         Points = dbModel.Points;
         Description = dbModel.Description;
         IsSolved = isSolved;
+        SolvedCount = dbModel.SuccessfullSolveAttempts.Count;
         ReleaseDateTime = dbModel.ReleaseDateTime;
         Category = dbModel.Category;
     }
@@ -25,6 +26,7 @@ public class CtfTaskReadModel
     public int Points { get; set; }
     public string Description { get; set; }
     public bool? IsSolved { get; set; }
+    public int SolvedCount { get; set; }
     public DateTimeOffset? ReleaseDateTime { get; set; }
     public string? Category { get; set; } = "Uncategorized";
 }
