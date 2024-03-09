@@ -1,45 +1,49 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { fetchLogin, fetchLogout, fetchMe } from "../api/backendComponents";
 import { LoggedInUserDto } from "../api/backendSchemas";
+import { create } from "zustand";
+
+interface UserStoreState {
+  user: LoggedInUserDto | null;
+  isLoading: boolean;
+  hasFetched: boolean;
+  setUser: (user: LoggedInUserDto | null) => void;
+  setIsLoading: (isLoading: boolean) => void;
+  fetched: () => void;
+}
+const useUserStore = create<UserStoreState>((set) => ({
+  user: null,
+  isLoading: false,
+  hasFetched: false,
+  setUser: (user) => set(() => ({ user })),
+  setIsLoading: (isLoading) => set(() => ({ isLoading })),
+  fetched: () => set(() => ({ hasFetched: true })),
+}));
 
 export function useAuth() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [me, setMe] = useState<LoggedInUserDto | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const { user, setUser, isLoading, setIsLoading, hasFetched, fetched } =
+    useUserStore();
   let [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    fetchMeFromApi();
-  }, []);
-
-  /**
-   * List of paths that are allowed to be accessed without being logged in
-   */
-  const allowedUnauthorizedPaths = ["/leaderboard"];
-
-  useEffect(() => {
-    if (
-      !me &&
-      isLoaded &&
-      !allowedUnauthorizedPaths.includes(location.pathname)
-    ) {
-      logout();
-    } else if (!!me && isLoaded && location.pathname == "/login") {
-      navigate("/");
+    if (!isLoading && !hasFetched) {
+      setIsLoading(true);
+      fetchMeFromApi();
     }
-  }, [me, isLoaded]);
+  }, []);
 
   async function fetchMeFromApi() {
     try {
       const meFromApi = await fetchMe({});
-      setMe(meFromApi);
+      setUser(meFromApi);
     } catch (error) {
       // Its okay to fail here, user is not logged in
-      setMe(null);
+      setUser(null);
     } finally {
-      setIsLoaded(true);
+      fetched();
+      setIsLoading(false);
     }
   }
 
@@ -66,14 +70,22 @@ export function useAuth() {
       console.debug("logout");
       await fetchLogout({});
       navigate("/login");
-      setMe(null);
+      setUser(null);
       deleteCookie(".AspNetCore.Identity.Application");
     } catch (error) {
       // Cookie is most probably not valid
     }
   }
 
-  return { me, login, logout, errorMsg, fetchMeFromApi };
+  return {
+    me: user,
+    login,
+    logout,
+    errorMsg,
+    fetchMeFromApi,
+    isLoading,
+    hasFetched,
+  };
 }
 
 function deleteCookie(cookieName: string) {
