@@ -4,11 +4,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Tasks from "./pages/Tasks";
 import Login from "./pages/Login";
 import Leaderboard from "./pages/Leaderboard";
-import Admin from "./pages/Admin";
-import AdminTeamManagement from "./pages/AdminTeamManagement";
 import useTheme from "./hooks/useTheme";
 import config from "./config";
 import useDynamicHead from "./utils/useDynamicHead";
+import Protected from "./components/protected";
+import Admin from "./pages/Admin";
+import AdminTeamManagement from "./pages/AdminTeamManagement";
 
 export const ThemeContext = createContext<{
   theme: "light" | "dark";
@@ -44,11 +45,15 @@ const App = () => {
       <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Tasks />} />
             <Route path="/login" element={<Login />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/teams" element={<AdminTeamManagement />} />
+            <Route element={<Protected />}>
+              <Route path="/" element={<Tasks />} />
+            </Route>
+            <Route element={<Protected scope="admin" />}>
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/teams" element={<AdminTeamManagement />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </ThemeContext.Provider>
