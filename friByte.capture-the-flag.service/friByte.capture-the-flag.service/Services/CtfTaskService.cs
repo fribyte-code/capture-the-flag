@@ -31,6 +31,9 @@ public interface ICtfTaskService
     /// </summary>
     Task<List<CtfTaskReadModel>> GetAllReleasedTasksIncludingIsSolvedOrNot(string teamName);
 
+    Task<List<string>> GetTeamsSolvedByTaskAsync(Guid taskId);
+    
+
     /// <summary>
     /// Returns all categories used on existing tasks.
     /// </summary>
@@ -79,11 +82,20 @@ public class CtfTaskService : ICtfTaskService
                 Points = t.Points,
                 Description = t.Description,
                 IsSolved = t.SuccessfullSolveAttempts.Any(st => st.TeamId == teamName),
+                SolvedCount = t.SuccessfullSolveAttempts.Count,
                 ReleaseDateTime = t.ReleaseDateTime,
                 Category = t.Category,
             })
             .OrderBy(t => t.Name)
             .ToListAsync();
+    }
+
+    public Task<List<string>> GetTeamsSolvedByTaskAsync(Guid taskId)
+    {
+        return _ctfContext.SolvedTasks
+            .Where(t => t.TaskId == taskId)
+            .OrderBy(t => t.CreatedAt)
+            .Select(t => t.TeamId).ToListAsync();
     }
 
     public Task<List<string>> GetAllCategories()

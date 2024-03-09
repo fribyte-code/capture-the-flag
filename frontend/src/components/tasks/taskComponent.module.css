@@ -36,10 +36,19 @@
     padding-bottom: 1rem;
   }
 
+  .solveFormContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .submitForm {
     input[type="submit"] {
       margin-left: 1rem;
     }
+  }
+
+  .solvedByText {
+    color: var(--textColorSecondary);
   }
 }
 
