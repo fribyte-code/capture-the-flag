@@ -39,6 +39,9 @@ svg {
 .markdown a:hover {
   text-decoration: underline;
 }
+.markdown img {
+  width: 100%;
+}
 
 /*
  *    Common element styles

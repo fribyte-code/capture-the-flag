@@ -86,7 +86,7 @@ public class CtfTaskService : ICtfTaskService
                 ReleaseDateTime = t.ReleaseDateTime,
                 Category = t.Category,
             })
-            .OrderBy(t => t.Name)
+            .OrderByDescending(t => t.Points)
             .ToListAsync();
     }
 
