@@ -58,8 +58,11 @@ public class
             // Perhaps add some claims like username and roles here
         };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(claimsIdentity));
+        await HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity),
+            new AuthenticationProperties() { IsPersistent = true}
+            );
 
         return Ok(new { Message = "Logged in" });
     }
